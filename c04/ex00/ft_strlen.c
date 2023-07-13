@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 16:52:12 by svilla-d          #+#    #+#             */
-/*   Updated: 2023/07/12 16:52:13 by svilla-d         ###   ########.fr       */
+/*   Updated: 2023/07/13 10:53:16 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	ft_strlen(char *str)
 	int	len;
 
 	len = 0;
-	while (*str++ != '\0')
+	while (*str++)
 		len++;
 	return (len);
 }

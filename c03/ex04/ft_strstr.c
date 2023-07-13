@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 12:33:55 by svilla-d          #+#    #+#             */
-/*   Updated: 2023/07/13 10:29:05 by svilla-d         ###   ########.fr       */
+/*   Updated: 2023/07/13 11:45:48 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,17 @@ char	*ft_strstr(char *str, char *to_find)
 	return (0);
 }
 
-// int	main(void)
-// {
-// 	char palabra1[] = "123 56 789 0";
-// 	char to_find[] = "56";
-// 	char *ra, *rb;
+int	main(void)
+{
+	char palabra1[] = "123 56 789 0";
+	char to_find[] = "56";
+	char *ra, *rb;
 
-// 	ra = strstr(palabra1, to_find);
-// 	printf("%s, %s :: %s(%p)\n", palabra1, to_find, ra, ra);
+	ra = strstr(palabra1, to_find);
+	printf("%s, %s :: %s(%p)\n", palabra1, to_find, ra, ra);
 
-// 	rb = ft_strstr(palabra1, to_find);
-// 	printf("%s, %s :: %s(%p)\n", palabra1, to_find, rb, rb);
+	rb = ft_strstr(palabra1, to_find);
+	printf("%s, %s :: %s(%p)\n", palabra1, to_find, rb, rb);
 
-// 	return (0);
-// }
+	return (0);
+}

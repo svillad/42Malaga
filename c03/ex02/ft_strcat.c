@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 12:28:57 by svilla-d          #+#    #+#             */
-/*   Updated: 2023/07/13 10:28:50 by svilla-d         ###   ########.fr       */
+/*   Updated: 2023/07/13 11:46:38 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,18 +33,18 @@ char	*ft_strcat(char *dest, char *src)
 	return (dest);
 }
 
-// int	main(void)
-// {
-// 	char palabra1[10] = "ABC";
-// 	char palabra2a[10] = "123";
-// 	char palabra2b[10] = "123";
-// 	char *ra, *rb;
+int	main(void)
+{
+	char palabra1[10] = "ABCD";
+	char palabra2a[10] = "123";
+	char palabra2b[10] = "123";
+	char *ra, *rb;
 
-// 	ra = strcat(palabra2a, palabra1);
-// 	printf("%s, %s :: %s\n", palabra1, palabra2a, ra);
+	ra = strcat(palabra2a, palabra1);
+	printf("%s, %s :: %s\n", palabra1, palabra2a, ra);
 
-// 	rb = ft_strcat(palabra2b, palabra1);
-// 	printf("%s, %s :: %s\n", palabra1, palabra2b, rb);
+	rb = ft_strcat(palabra2b, palabra1);
+	printf("%s, %s :: %s\n", palabra1, palabra2b, rb);
 
-// 	return (0);
-// }
+	return (0);
+}

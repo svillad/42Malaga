@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 12:34:58 by svilla-d          #+#    #+#             */
-/*   Updated: 2023/07/13 10:29:11 by svilla-d         ###   ########.fr       */
+/*   Updated: 2023/07/13 11:53:34 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,19 +51,19 @@ unsigned int	ft_strlcat(char *dest, char *src, unsigned int size)
 	return (total_len);
 }
 
-// int	main(void)
-// {
-// 	char palabra1[6] = "ABCDE";
-// 	char destino_a[20] = "123";
-// 	char destino_b[20] = "123";
-// 	int ra, rb;
-// 	unsigned int n = 10;
+int	main(void)
+{
+	char palabra1[6] = "ABCDE";
+	char destino_a[20] = "123";
+	char destino_b[20] = "123";
+	int ra, rb;
+	unsigned int n = 1;
 
-// 	ra = strlcat(destino_a, palabra1, n);
-// 	printf("%s, %s :: %d\n", palabra1, destino_a, ra);
+	ra = strlcat(destino_a, palabra1, n);
+	printf("%s, %s :: %d\n", palabra1, destino_a, ra);
 
-// 	rb = ft_strlcat(destino_b, palabra1, n);
-// 	printf("%s, %s :: %d\n", palabra1, destino_b, rb);
+	rb = ft_strlcat(destino_b, palabra1, n);
+	printf("%s, %s :: %d\n", palabra1, destino_b, rb);
 
-// 	return (0);
-// }
+	return (0);
+}

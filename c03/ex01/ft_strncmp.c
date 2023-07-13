@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 12:23:18 by svilla-d          #+#    #+#             */
-/*   Updated: 2023/07/13 10:35:42 by svilla-d         ###   ########.fr       */
+/*   Updated: 2023/07/13 11:45:48 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,18 +33,18 @@ int	ft_strncmp(char *s1, char *s2, unsigned int n)
 	return (*(s1 + i) - *(s2 + i));
 }
 
-// int	main(void)
-// {
-// 	char palabra1[10] = "1234";
-// 	char palabra2[10] = "1234";
-// 	int r;
-// 	int n = 0;
+int	main(void)
+{
+	char palabra1[10] = "1230";
+	char palabra2[10] = "1234";
+	int r;
+	int n = 3;
 
-// 	r = strncmp(palabra1, palabra2, n);
-// 	printf("%s, %s :: %d\n", palabra1, palabra2, r);
+	r = strncmp(palabra1, palabra2, n);
+	printf("%s, %s :: %d\n", palabra1, palabra2, r);
 
-// 	r = ft_strncmp(palabra1, palabra2, n);
-// 	printf("%s, %s :: %d\n", palabra1, palabra2, r);
+	r = ft_strncmp(palabra1, palabra2, n);
+	printf("%s, %s :: %d\n", palabra1, palabra2, r);
 
-// 	return (0);
-// }
+	return (0);
+}
