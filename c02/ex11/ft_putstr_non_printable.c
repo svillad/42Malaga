@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 02:08:55 by svilla-d          #+#    #+#             */
-/*   Updated: 2023/07/10 02:37:15 by svilla-d         ###   ########.fr       */
+/*   Updated: 2023/07/14 09:59:56 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	ft_char_to_hex(char c, char *hex)
 	const char	table_hex[] = "0123456789abcdef";
 
 	hex[0] = '\\';
-	hex[1] = table_hex[c / 16];
+	hex[1] = table_hex[(c / 16) & 0x0F];
 	hex[2] = table_hex[c % 16];
 }
 
