@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 15:25:22 by svilla-d          #+#    #+#             */
-/*   Updated: 2023/07/13 21:26:04 by svilla-d         ###   ########.fr       */
+/*   Updated: 2023/07/17 15:26:50 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ t_estados	ft_get_state(t_estados estado, char c, int *num, int *signo)
 		*num = *num * 10 + (c - 48);
 	}
 	else
-		estado = E_FIN; 
+		estado = E_FIN;
 	return (estado);
 }
 
@@ -81,6 +81,36 @@ int	ft_atoi(char *str)
 	}
 	num = num * signo;
 	return (num);
+}
+
+int	ft_isdigit(int c)
+{
+	if ((c >= '0' && c <= '9'))
+		return (1);
+	return (0);
+}
+
+int	ft_atoi2(char *str)
+{
+	int	s;
+	int	val;
+
+	s = 1;
+	val = 0;
+	while (*str == ' ' || *str == '\n' || *str == '\t' || *str == '\f'
+		|| *str == '\v' || *str == '\r')
+		str++;
+	if (*str == '-')
+		s = -1;
+	if (*str == '-' || *str == '+')
+		++str;
+	while (ft_isdigit(*str))
+	{
+		val = val * 10 + (*str - '0');
+		str++;
+	}
+	val *= s;
+	return (val);
 }
 
 // int main() {

@@ -24,28 +24,28 @@ int	ft_strlen(char *str)
 
 int ft_check_base(char *base)
 {
-    int len;
+	int	len;
 	int i;
 	int j;
 	
 	len = ft_strlen(base);
-    if (len == 0 || len == 1)
-        return (ERROR_01);
+	if (len == 0 || len == 1)
+		return (ERROR_01);
 	i = 0;
 	while (i < len)
 	{
-        if (base[i] == '+' || base[i] == '-')
-            return (ERROR_POS_NEG);
+		if (base[i] == '+' || base[i] == '-')
+			return (ERROR_POS_NEG);
 		j = i+1;
 		while (j < len)
 		{
-            if (base[i] == base[j])
-                return (ERROR_CHAR_DUP);
+			if (base[i] == base[j])
+				return (ERROR_CHAR_DUP);
 			j++;
-        }
+		}
 		i++;
-    }
-    return (OK);
+	}
+	return (OK);
 }
 
 void	ft_putnbr_base(int nbr, char *base)
@@ -58,7 +58,7 @@ void	ft_putnbr_base(int nbr, char *base)
 	err = ft_check_base(base);
 	if (err){
 		printf("Error: %d\n", err);
-        return ;
+		return ;
 	}
 
 	if (nbr == 0){
@@ -69,8 +69,8 @@ void	ft_putnbr_base(int nbr, char *base)
 	b = ft_strlen(base);
 	i = 0;
 	if (nbr < 0)
-    {
-        write(1, "-", 1);
+	{
+		write(1, "-", 1);
 		if (nbr == INT_MIN)
 		{
 			number[i] = base[(nbr % b) & 0x0F];
