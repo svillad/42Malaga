@@ -1,4 +1,15 @@
-#include <stdio.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_putnbr_base.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/17 19:02:11 by svilla-d          #+#    #+#             */
+/*   Updated: 2023/07/17 19:56:40 by svilla-d         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <unistd.h>
 #include <limits.h>
 
@@ -11,6 +22,8 @@
 int		ft_strlen(char *str);
 int		ft_check_base(char *base);
 void	ft_putnbr_base(int nbr, char *base);
+int		ft_process_negative(int *nbr, char *number, char *base);
+int		ft_process_number(int nbr, int pos, char *number, char *base);
 
 int	ft_strlen(char *str)
 {
@@ -22,21 +35,23 @@ int	ft_strlen(char *str)
 	return (len);
 }
 
-int ft_check_base(char *base)
+int	ft_check_base(char *base)
 {
 	int	len;
-	int i;
-	int j;
-	
+	int	i;
+	int	j;
+
 	len = ft_strlen(base);
 	if (len == 0 || len == 1)
 		return (ERROR_01);
 	i = 0;
 	while (i < len)
 	{
+		if (base[i] < ' ' || base[i] > '~')
+			return (ERROR_POS_NEG);
 		if (base[i] == '+' || base[i] == '-')
 			return (ERROR_POS_NEG);
-		j = i+1;
+		j = i + 1;
 		while (j < len)
 		{
 			if (base[i] == base[j])
@@ -48,86 +63,58 @@ int ft_check_base(char *base)
 	return (OK);
 }
 
-void	ft_putnbr_base(int nbr, char *base)
+int	ft_process_negative(int *nbr, char *number, char *base)
 {
+	int	i;
 	int	b;
-	int i;
-	char number[20];
-	int err;
-
-	err = ft_check_base(base);
-	if (err){
-		printf("Error: %d\n", err);
-		return ;
-	}
-
-	if (nbr == 0){
-		write(1, "0", 1);
-		return ;
-	}
 
 	b = ft_strlen(base);
 	i = 0;
-	if (nbr < 0)
+	if (*nbr < 0)
 	{
 		write(1, "-", 1);
-		if (nbr == INT_MIN)
+		if (*nbr == INT_MIN)
 		{
-			number[i] = base[(nbr % b) & 0x0F];
-			nbr = nbr / b;
-			
-			// write(1,"**", 2);
-			// write(1,&number[i], 1);
-			// write(1,"**", 2);
+			number[i] = base[(*nbr % b)];
+			*nbr = *nbr / b;
 			i++;
 		}
-		nbr = -nbr;
-	}   
-	while(nbr>0)
-	{
-		number[i] = base[(nbr % b) & 0x0F];
-		nbr = nbr / b;
-		i++;
+		*nbr = -*nbr;
 	}
-	while(i>0)
-		write(1,&number[--i], 1);
-		// printf("%c", number[--i]);
-	// printf("\n");
-	return ;
+	return (i);
 }
 
-
-int		main(void)
+int	ft_process_number(int nbr, int pos, char *number, char *base)
 {
-	printf("c04 - ex04\n");
-	write(1, "42:", 3);
-	ft_putnbr_base(42, "0123456789");
-	write(1, "\n2a:", 4);
-	ft_putnbr_base(42, "0123456789abcdef");
-	write(1, "\n-2a:", 5);
-	ft_putnbr_base(-42, "0123456789abcdef");
-	write(1, "\n0:", 3);
-	ft_putnbr_base(0, "0123456789abcdef");
-	write(1, "\nINT_MAX:", 9);
-	ft_putnbr_base(INT_MAX, "0123456789");
-	write(1, "\nINT_MAX:", 9);
-	ft_putnbr_base(INT_MAX, "0123456789abcdef");
-	write(1, "\nINT_MAX:", 9);
-	ft_putnbr_base(INT_MAX, "ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba9876543210");
-	write(1, "\nINT_MIN:", 9);
-	ft_putnbr_base(INT_MIN, "0123456789");
-	write(1, "\nINT_MIN:", 9);
-	ft_putnbr_base(INT_MIN, "0123456789abcdef");
-	// write(1, "\n-2143247366 : ", 15);
-	// ft_putnbr_base(INT_MIN + 4236282, "'~");
-	write(1, "\n-1:", 4);
-	ft_putnbr_base(-1, "0123456789abcdef");
-	write(1, "\n:", 2);
-	ft_putnbr_base(42, "");
-	write(1, "\n:", 2);
-	ft_putnbr_base(42, "0");
-	write(1, "\n:", 2);
-	ft_putnbr_base(42, "+-0123456789abcdef");
-	write(1, "\n:", 2);
-	ft_putnbr_base(42, "\v0123456789abcdef");
+	int	b;
+
+	b = ft_strlen(base);
+	while (nbr > 0)
+	{
+		number[pos] = base[(nbr % b)];
+		nbr = nbr / b;
+		pos++;
+	}
+	return (pos);
+}
+
+void	ft_putnbr_base(int nbr, char *base)
+{
+	int		i;
+	char	number[100];
+	int		err;
+
+	err = ft_check_base(base);
+	if (err)
+		return ;
+	if (nbr == 0)
+	{
+		write(1, "0", 1);
+		return ;
+	}
+	i = ft_process_negative(&nbr, number, base);
+	i = ft_process_number(nbr, i, number, base);
+	while (i > 0)
+		write(1, &number[--i], 1);
+	return ;
 }

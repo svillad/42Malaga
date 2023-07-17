@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 15:25:22 by svilla-d          #+#    #+#             */
-/*   Updated: 2023/07/17 15:26:50 by svilla-d         ###   ########.fr       */
+/*   Updated: 2023/07/17 18:20:31 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,13 +113,14 @@ int	ft_atoi2(char *str)
 	return (val);
 }
 
-// int main() {
-// 	printf("TEST\n");
-// 	printf("%i\n", ft_atoi("\t\n\v\f\r      23"));
-// 	printf("%i\n", ft_atoi("     ------+++++---12341"));
-// 	printf("%i\n", ft_atoi("     ------+++++---123413"));
-// 	printf("%i\n", ft_atoi("00000000002147483647"));
-// 	printf("%i\n", ft_atoi("-2147483648"));
-// 	printf("%i\n", ft_atoi("a"));
-// 	return (0);
-// }
+int main() {
+	printf("TEST\n");
+	printf("%i\n", ft_atoi("\t\n\v\f\r      23"));
+	printf("%i\n", ft_atoi(" -h1"));
+	printf("%i\n", ft_atoi("     ------+++++---12341"));
+	printf("%i\n", ft_atoi("     ------+++++---123413"));
+	printf("%i\n", ft_atoi("00000000002147483647"));
+	printf("%i\n", ft_atoi("-2147483648"));
+	printf("%i\n", ft_atoi("a"));
+	return (0);
+}
