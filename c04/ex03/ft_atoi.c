@@ -6,11 +6,9 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 15:25:22 by svilla-d          #+#    #+#             */
-/*   Updated: 2023/07/17 18:20:31 by svilla-d         ###   ########.fr       */
+/*   Updated: 2023/07/18 07:59:57 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include <stdio.h>
 
 typedef enum _estados {
 	E_INICIAL,
@@ -81,46 +79,4 @@ int	ft_atoi(char *str)
 	}
 	num = num * signo;
 	return (num);
-}
-
-int	ft_isdigit(int c)
-{
-	if ((c >= '0' && c <= '9'))
-		return (1);
-	return (0);
-}
-
-int	ft_atoi2(char *str)
-{
-	int	s;
-	int	val;
-
-	s = 1;
-	val = 0;
-	while (*str == ' ' || *str == '\n' || *str == '\t' || *str == '\f'
-		|| *str == '\v' || *str == '\r')
-		str++;
-	if (*str == '-')
-		s = -1;
-	if (*str == '-' || *str == '+')
-		++str;
-	while (ft_isdigit(*str))
-	{
-		val = val * 10 + (*str - '0');
-		str++;
-	}
-	val *= s;
-	return (val);
-}
-
-int main() {
-	printf("TEST\n");
-	printf("%i\n", ft_atoi("\t\n\v\f\r      23"));
-	printf("%i\n", ft_atoi(" -h1"));
-	printf("%i\n", ft_atoi("     ------+++++---12341"));
-	printf("%i\n", ft_atoi("     ------+++++---123413"));
-	printf("%i\n", ft_atoi("00000000002147483647"));
-	printf("%i\n", ft_atoi("-2147483648"));
-	printf("%i\n", ft_atoi("a"));
-	return (0);
 }
