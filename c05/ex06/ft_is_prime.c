@@ -6,12 +6,9 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 14:41:00 by svilla-d          #+#    #+#             */
-/*   Updated: 2023/07/18 14:59:26 by svilla-d         ###   ########.fr       */
+/*   Updated: 2023/07/19 10:09:15 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include <stdio.h>
-#include <limits.h>
 
 int	ft_is_prime(int nb);
 
