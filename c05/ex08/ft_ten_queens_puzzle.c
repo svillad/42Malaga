@@ -1,22 +1,30 @@
-#include <stdio.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_ten_queens_puzzle.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/20 16:57:48 by svilla-d          #+#    #+#             */
+/*   Updated: 2023/07/20 17:04:46 by svilla-d         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <unistd.h>
-#include <stdlib.h>
 
-#define N 4
+#define N 10
 
-char  *ft_get_queens_positions(int **table);
-int	**ft_init_table(int n);
-int ft_is_good_position(int **table, int fila, int col);
-int ft_ten_queens_puzzle(void);
+void	ft_get_queens_positions(int table[][N], char queens[]);
+void	ft_init_table(int table[][N]);
+int		ft_is_good_position(int table[][N], int row, int col);
+int		ft_ten_queens_puzzle(void);
 
-char  *ft_get_queens_positions(int **table)
+void	ft_get_queens_positions(int table[][N], char queens[])
 {
-	int		i;
-	int		j;
-	int 	p;
-	char	*queens;
+	int	i;
+	int	j;
+	int	p;
 
-	queens = (char *)malloc ((N+2) * sizeof(char));
 	i = -1;
 	p = 0;
 	while (++i < N)
@@ -26,118 +34,89 @@ char  *ft_get_queens_positions(int **table)
 		{
 			if (table[i][j] == 1)
 			{
-				queens[p] = j + '0';
-				p++;
+				queens[p++] = j + '0';
 				break ;
 			}
-		}	
+		}
 	}
 	queens[p++] = '\n';
 	queens[p] = '\0';
-	return queens;
 }
 
-void ft_print_table(int **table) {
-	for (int i = 0; i < N; i++) {
-		for (int j = 0; j < N; j++) {
-			printf("%c ", table[i][j] == 1 ? 'Q' : '-');
-		}
-		printf("\n");
-	}
-	printf("\n");
-}
-
-int	**ft_init_table(int n)
+void	ft_init_table(int table[][N])
 {
 	int	i;
 	int	j;
-	int	**table;
 
-	table = (int **)malloc (n * sizeof(int *));
 	i = -1;
 	while (++i < N)
 	{
-		table[i] = (int *)malloc(n * sizeof(int));
 		j = -1;
 		while (++j < N)
 			table[i][j] = 0;
 	}
-	return table;
 }
 
-int ft_is_good_position(int **table, int fila, int col)
+int	ft_is_good_position(int table[][N], int row, int col)
 {
 	int	i;
 	int	j;
 
 	i = -1;
-	while (++i < fila) {
+	while (++i < row)
+	{
 		if (table[i][col] == 1)
 			return (0);
 	}
-	i = fila + 1;
+	i = row + 1;
 	j = col + 1;
-	while (--i >= 0 && --j >= 0) {
+	while (--i >= 0 && --j >= 0)
+	{
 		if (table[i][j] == 1)
-			return (0);			
+			return (0);
 	}
-	i = fila + 1;
+	i = row + 1;
 	j = col - 1;
-	while (--i >= 0 && ++j < N) {
+	while (--i >= 0 && ++j < N)
+	{
 		if (table[i][j] == 1)
 			return (0);
 	}
 	return (1);
 }
 
-int ft_set_queens(int **table, int fila) {
+int	ft_set_queens(int table[][N], int row)
+{
 	int		col;
-	int		soluciones;
-	char	*queens;
-	char	c;
+	int		solutions;
+	char	queens[N + 2];
 
-	if (fila == N){
-		// ft_print_table(table);
-		queens = ft_get_queens_positions(table);
-		write(1, queens, N+1);
-		// scanf("%c", &c);
-		free(queens);
+	if (row == N)
+	{
+		ft_get_queens_positions(table, queens);
+		write(1, queens, N + 1);
 		return (1);
 	}
-
-	soluciones = 0;
+	solutions = 0;
 	col = -1;
-	while (++col < N) {
-		ft_print_table(table);
-		scanf("%c", &c);
-
-		if (ft_is_good_position(table, fila, col)) {
-			table[fila][col] = 1;
-			soluciones += ft_set_queens(table, fila + 1);
-			table[fila][col] = 0;
+	while (++col < N)
+	{
+		if (ft_is_good_position(table, row, col))
+		{
+			table[row][col] = 1;
+			solutions += ft_set_queens(table, row + 1);
+			table[row][col] = 0;
 		}
 	}
-	return soluciones;
+	return (solutions);
 }
 
-int ft_ten_queens_puzzle(void) {
-	int		**table;
-	int		soluciones; 
-
-	table = ft_init_table(N);
-	// ft_print_table(table);
-	soluciones = ft_set_queens(table, 0);
-	//soluciones = ft_ten_queens_puzzle();
-	printf("Total de soluciones encontradas: %d\n", soluciones);
-	free(table);
-	return soluciones;
-}
-
-int main (void)
+int	ft_ten_queens_puzzle(void)
 {
-	int	s;
+	int	table[N][N];
+	int	solutions; 
 
-	s = ft_ten_queens_puzzle();
-	printf("Total de soluciones encontradas: %d\n", s);
-	return (0);
+	ft_init_table(table);
+	solutions = ft_set_queens(table, 0);
+	return (solutions);
 }
