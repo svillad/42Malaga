@@ -6,31 +6,28 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 14:29:48 by svilla-d          #+#    #+#             */
-/*   Updated: 2023/07/18 14:35:42 by svilla-d         ###   ########.fr       */
+/*   Updated: 2023/07/21 01:15:38 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#define R_MAX 65535
 
 int	ft_sqrt(int nb);
 
 int	ft_sqrt(int nb)
 {
-	int	r;
+	unsigned int	r;
+	unsigned int	num;
 
-	if (nb <= 0)
+	num = (unsigned int)nb;
+	if (num <= 0)
 		return (0);
-	if (nb == 1)
+	if (num == 1)
 		return (1);
-	r = nb / 2;
-	while (r > 0 && r * r != nb)
-		r--;
-	return (r);
+	r = 2;
+	while (r < R_MAX && r * r < num)
+		r++;
+	if (r * r == num)
+		return (r);
+	return (0);
 }
-
-// int	ft_sqrt_recursive(int nb, int r)
-// {
-// 	if (r == 0)
-// 		return (0);
-// 	if (r * r == nb)
-// 		return r;
-//     return (ft_sqrt_recursive(nb, r - 1));
-// }
