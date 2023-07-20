@@ -1,91 +1,98 @@
 #include <stdio.h>
+#include <stdlib.h>
 
-#define N 8
+#define N 10
 
-int tablero[N][N];
-
-void imprimirTablero() {
+void ft_print_table(int **table) {
 	for (int i = 0; i < N; i++) {
 		for (int j = 0; j < N; j++) {
-			printf("%c ", tablero[i][j] == 1 ? 'Q' : '.');
+			printf("%c ", table[i][j] == 1 ? 'Q' : '-');
 		}
 		printf("\n");
 	}
 	printf("\n");
 }
 
-int esSeguro(int fila, int columna) {
+int	**ft_init_table(int n)
+{
 	int	i;
 	int	j;
-	char c;
-	scanf("%c",&c);
-	printf("\n");
+	int	**table;
 
-	imprimirTablero();
+	table = (int **)malloc (n * sizeof(int *));
+	i = -1;
+	while (++i < N)
+	{
+		table[i] = (int *)malloc(n * sizeof(int));
+		j = -1;
+		while (++j < N)
+			table[i][j] = 0;
+	}
+	return table;
+}
 
-	printf("(%d, %d)\n", fila, columna);
-	
+int ft_is_good_position(int **table, int fila, int col)
+{
+	int	i;
+	int	j;
+
 	i = -1;
 	while (++i < fila) {
-		printf("  1) (%d, %d) ", i, columna);
-		if (tablero[i][columna] == 1)
-			return 0;
+		if (table[i][col] == 1)
+			return (0);
 	}
 	i = fila + 1;
-	j = columna + 1;
+	j = col + 1;
 	while (--i >= 0 && --j >= 0) {
-		printf("  2) (%d, %d) ", i, j);
-		if (tablero[i][j] == 1)
-			return 0;			
+		if (table[i][j] == 1)
+			return (0);			
 	}
 	i = fila + 1;
-	j = columna - 1;
+	j = col - 1;
 	while (--i >= 0 && ++j < N) {
-		printf("  3) (%d, %d) ", i, j);
-		if (tablero[i][j] == 1)
-			return 0;
+		if (table[i][j] == 1)
+			return (0);
 	}
 	return (1);
 }
 
-int resolverNReinas(int fila) {
-	char c;
-	if (fila == N) {
-		imprimirTablero();
-		return 1;
-	}
-
+int ft_set_queens(int **table, int fila) {
+	int col;
 	int soluciones = 0;
 
-	for (int columna = 0; columna < N; columna++) {
-		if (esSeguro(fila, columna)) {
-			tablero[fila][columna] = 1;
-			soluciones += resolverNReinas(fila + 1);
-			tablero[fila][columna] = 0;
+	if (fila == N){
+		ft_print_table(table);
+		return (1);
+	}
+	col = -1;
+	while (++col < N) {
+		if (ft_is_good_position(table, fila, col)) {
+			table[fila][col] = 1;
+			soluciones += ft_set_queens(table, fila + 1);
+			table[fila][col] = 0;
 		}
 	}
-
-
 	return soluciones;
 }
 
 int ft_ten_queens_puzzle(void);
 
 int ft_ten_queens_puzzle(void) {
-	for (int i = 0; i < N; i++) {
-		for (int j = 0; j < N; j++) {
-			tablero[i][j] = 0;
-		}
-	}
+	int **table;
+	int soluciones; 
 
-	int totalSoluciones = resolverNReinas(0);
-	printf("Total de soluciones encontradas: %d\n", totalSoluciones);
+	table = ft_init_table(N);
+	ft_print_table(table);
+	soluciones = ft_set_queens(table, 0);
 
-	return 0;
+	return soluciones;
 }
 
 int main (void)
 {
-	ft_ten_queens_puzzle();
+	int	s;
+
+	s = ft_ten_queens_puzzle();
+	printf("Total de soluciones encontradas: %d\n", s);
 	return (0);
 }
