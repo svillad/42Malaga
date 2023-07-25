@@ -10,13 +10,16 @@ NAME = bsq
 all: $(NAME)
 
 %.o: %.c
-	gcc $(CFLAGS) -c $< -o $@
+	cc $(CFLAGS) -c $< -o $@
 
 $(NAME): $(OBJECTS)
-	gcc $(CFLAGS) $(OBJECTS) -o $(NAME)
+	cc $(CFLAGS) $(OBJECTS) -o $(NAME)
 
 clean: 
 	rm -f $(OBJECTS)
 
 fclean: clean
 	rm -f $(NAME)
+
+re: fclean all
+	

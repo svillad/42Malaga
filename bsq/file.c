@@ -18,11 +18,11 @@ char	*ft_read_file(char *file_name)
 		return (NULL);
 	}
 	content = (char *)malloc((len + 1) * sizeof(char));
+	if (!content)
+		return (NULL);
 	i = -1;
 	while (++i < len)
-	{
 		content[i] = buffer[i];
-	}
 	content[i] = '\0';
 	if (close(file) == -1)
 		return (NULL);

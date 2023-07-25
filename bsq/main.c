@@ -16,7 +16,7 @@ void		ft_check_first_line(char *line1, int n)
 	if (n < 4)
 		line1[0] = -1;
 	i = 0;
-	while ((line1[i] < '0' || line1[i] > '9') && i < n - 4)
+	while ((line1[i] < '0' || line1[i] > '9') && i < n - 3)
 	{
 		line1[0] = -1;
 		i++;
@@ -33,6 +33,8 @@ char	*ft_get_first_line_input(char *str, int n)
 	int		i;
 
 	line1 = (char *)malloc(n * sizeof(char));
+	if (!line1)
+		return (NULL);
 	i = -1;
 	while (++i < n)
 		line1[i] = str[i];
