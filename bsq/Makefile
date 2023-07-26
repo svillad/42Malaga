@@ -1,5 +1,5 @@
 # Archivos fuente
-SOURCES = main.c file.c utils.c
+SOURCES = main.c file.c utils.c line_one.c
 OBJECTS = $(SOURCES:.c=.o)
 CFLAGS = -Wall -Wextra -Werror
 

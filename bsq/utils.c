@@ -1,6 +1,6 @@
 #include "utils.h"
 
-int ft_atoi(char *str)
+int ft_get_rows(char *str)
 {
 	int i;
 	int num;
@@ -14,6 +14,8 @@ int ft_atoi(char *str)
 		num = num * 10 + str[i] - '0';
 		i++;
 	}
+	if (num <= 0)
+		return (-2);
 	return (num);
 }
 
