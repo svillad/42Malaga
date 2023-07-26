@@ -155,6 +155,34 @@ int	ft_init_map(char **map, int rows, char *info)
 	return (0);
 }
 
+
+int	ft_process_map(char **map, int rows, int cols, char cobst)
+{
+	int	i;
+	int	j;
+	int **solution_map;
+
+	solution_map = (int **)malloc(rows * sizeof(int *));
+	if (!solution_map)
+		return (-1);
+	i = -1;
+	while (++i < rows)
+	{
+		solution_map[i] = (int *)malloc(cols * sizeof(int));
+		while (j < cols)
+		{
+			if (i == 0 || j == 0)
+				solution_map[i][j] = 1;
+			else if (map[i][j] == cobst)
+				solution_map[i][j] = 0;
+			else
+				solution_map[i][j] = ft_get_min_value(solution_map[i - 1][j], solution_map[i][j - 1], solution_map[i - 1][j - 1]) + 1;
+		}
+		i++;
+	}
+	return (0);
+}
+
 void	ft_free_memory(char **map, char *info, char *line1)
 {
 	int	i;
