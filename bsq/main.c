@@ -133,53 +133,93 @@ void	ft_strcpy(char *dest, char *src)
 	dest[i] = '\0';
 }
 
-int	ft_init_map(char **map, int rows, char *info)
+char	**ft_init_map(int rows, char *info)
 {
-	int	i;
-	int	row_size;
-	int j;
+	int		i;
+	int		j;
+	int		col;
+	char	**map;
 
 	map = (char **)malloc((rows + 1) * sizeof(char *));
+	if (!map)
+		return (NULL);
 	i = 0;
 	j = 0;
 	while (info[i])
 	{
-		row_size = ft_get_row_size(&info[i]);
-		map[j] = (char *)malloc(row_size * sizeof(char));
+		col = ft_get_row_size(&info[i]);
+		map[j] = (char *)malloc(col * sizeof(char));
+		if (!map[j])
+			return (NULL);
 		ft_strcpy(map[j], &info[i]);
-		i += row_size;
+		i += col;
 		j++;
 	}
 	map[j] = NULL;
-	ft_print_map(map);
-	return (0);
+	return (map);
 }
 
 
-int	ft_process_map(char **map, int rows, int cols, char cobst)
+int	**ft_process_map(char **map, int rows, int cols, char cobst)
 {
 	int	i;
 	int	j;
-	int **solution_map;
+	int **s_map;
 
-	solution_map = (int **)malloc(rows * sizeof(int *));
-	if (!solution_map)
-		return (-1);
+	s_map = (int **)malloc(rows * sizeof(int *));
+	if (!s_map)
+		return (NULL);
 	i = -1;
+	while (map[++i]!=NULL)
+	{
+		s_map[i] = (int *)malloc(cols * sizeof(int));
+		j = 0;
+		while (map[i][j])
+		{
+			printf("%c ", map[i][j]);
+			if (i == 0 || j == 0)
+				s_map[i][j] = 1;
+			else if (map[i][j] == cobst)
+				s_map[i][j] = 0;
+			else
+				s_map[i][j] = ft_get_min_value(s_map[i - 1][j],
+				s_map[i][j - 1], s_map[i - 1][j - 1]) + 1;
+			j++;
+		}
+		printf("\n");
+	}
+	return (s_map);
+}
+
+int ft_find_max_square(int **smap, int rows, int cols)
+{
+	int	i;
+	int	j;
+	int max;
+	int px;
+	int py;
+
+	i = -1;
+	max = smap[0][0];
 	while (++i < rows)
 	{
-		solution_map[i] = (int *)malloc(cols * sizeof(int));
-		while (j < cols)
+		j = -1;
+		while (++j < cols)
 		{
-			if (i == 0 || j == 0)
-				solution_map[i][j] = 1;
-			else if (map[i][j] == cobst)
-				solution_map[i][j] = 0;
-			else
-				solution_map[i][j] = ft_get_min_value(solution_map[i - 1][j], solution_map[i][j - 1], solution_map[i - 1][j - 1]) + 1;
+			printf("%d,%d::%d -> %d\n", px, py, max, smap[i][j]);
+			
+			if (smap[i][j] > max)
+			{
+				px = i;
+				py = j;
+				max = smap[i][j];
+			}
+
 		}
-		i++;
 	}
+	px -= max + 1;
+	py -= max + 1;
+	printf("%d,%d::%d\n", px, py, max);
 	return (0);
 }
 
@@ -213,10 +253,13 @@ int	ft_case_N(char *file_name)
 {
 	char	*info;
 	char	*line1;
-	int		rows;
 	char	**map;
+	int		rows;
+	// int		cols;
+	int		**smap;
 
 	map = NULL;
+	smap = NULL;
 	info = ft_read_file(file_name);
 	line1 = ft_get_first_line_file(info);
 	if (line1[0] == -1)
@@ -225,7 +268,11 @@ int	ft_case_N(char *file_name)
 		return (-1);
 	}
 	rows = ft_atoi(line1);
-	ft_init_map(map, rows, &info[ft_strlen(line1)] + 1);
+	map = ft_init_map(rows, &info[ft_strlen(line1)] + 1);
+	ft_print_map(map);
+	printf("%d %d %c\n", rows, 28, line1[ft_strlen(line1) - 2]);
+	ft_process_map(map, rows, 28, line1[ft_strlen(line1) - 2]);
+	//ft_find_max_square(smap, rows, 28);
 	ft_free_memory(map, info, line1);
 	return (0);
 }
