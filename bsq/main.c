@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ereca-ca <ereca-ca@student.42malaga.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/27 12:20:39 by ereca-ca          #+#    #+#             */
+/*   Updated: 2023/07/27 12:20:41 by ereca-ca         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdio.h>
 #include "ft_file.h"
 #include "ft_utils.h"
@@ -8,6 +20,8 @@
 #include "ft_map.h"
 #include "ft_case_n.h"
 #include "ft_case_1.h"
+
+#include <stdio.h>
 
 int	main(int n, char **arg)
 {

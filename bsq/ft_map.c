@@ -1,4 +1,29 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_map.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ereca-ca <ereca-ca@student.42malaga.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/27 12:18:39 by ereca-ca          #+#    #+#             */
+/*   Updated: 2023/07/27 12:18:42 by ereca-ca         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_map.h"
+
+void	ft_free_row(char **map)
+{
+	int	j;
+
+	j = 0;
+	while (map[j])
+	{
+		free(map[j]);
+		j++;
+	}
+	free(map);
+}
 
 char	**ft_init_map(int rows, char *info, char *line1)
 {
@@ -7,24 +32,24 @@ char	**ft_init_map(int rows, char *info, char *line1)
 	int		col_ref;
 	char	**map;
 
-	if (info == NULL)
-		return (NULL);
 	map = (char **)malloc((rows + 1) * sizeof(char *));
 	if (!map)
 		return (NULL);
 	i = 0;
-	j = 0;
+	j = -1;
 	col_ref = ft_get_row_size(&info[0]);
-	while (info[i])
+	while (++j < rows && info[i])
 	{
 		map[j] = ft_get_line(col_ref, &info[i], line1);
 		if (!map[j])
 			return (NULL);
 		i += col_ref;
-		j++;
 	}
 	if (j != rows)
+	{
+		ft_free_row(map);
 		return (NULL);
+	}
 	map[j] = NULL;
 	return (map);
 }
@@ -36,12 +61,17 @@ char	*ft_get_line(int col_ref, char *info, char *line1)
 
 	col = ft_get_row_size(info);
 	if (col != col_ref)
+	{
 		return (NULL);
+	}
 	line = (char *)malloc(col * sizeof(char));
 	if (!line)
 		return (NULL);
 	if (ft_copy_line(line, info, line1) < 0)
+	{
+		free(line);
 		return (NULL);
+	}
 	return (line);
 }
 
@@ -49,29 +79,29 @@ int	**ft_process_map(char **map, int rows, int cols, char cobst)
 {
 	int	i;
 	int	j;
-	int	**s_map;
+	int	**m;
 
-	s_map = (int **)malloc(rows * sizeof(int *));
-	if (!s_map)
+	m = (int **)malloc(rows * sizeof(int *));
+	if (!m)
 		return (NULL);
 	i = -1;
 	while (map[++i] != NULL)
 	{
-		s_map[i] = (int *)malloc(cols * sizeof(int));
-		j = 0;
-		while (map[i][j])
+		m[i] = (int *)malloc(cols * sizeof(int));
+		if (!m[i])
+			return (NULL);
+		j = -1;
+		while (map[i][++j])
 		{
 			if ((i == 0 || j == 0) && map[i][j] != cobst)
-				s_map[i][j] = 1;
+				m[i][j] = 1;
 			else if (map[i][j] == cobst)
-				s_map[i][j] = 0;
+				m[i][j] = 0;
 			else
-				s_map[i][j] = ft_get_min_value(s_map[i - 1][j],
-						s_map[i][j - 1], s_map[i - 1][j - 1]) + 1;
-			j++;
+				m[i][j] = ft_min(m[i - 1][j], m[i][j - 1], m[i - 1][j - 1]) + 1;
 		}
 	}
-	return (s_map);
+	return (m);
 }
 
 int	ft_copy_line(char *dest, char *src, char *line1)

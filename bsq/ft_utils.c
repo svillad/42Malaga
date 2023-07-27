@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_utils.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/27 12:20:19 by ereca-ca          #+#    #+#             */
+/*   Updated: 2023/07/27 12:59:26 by svilla-d         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_utils.h"
 
 int	ft_strlen(char *str)
@@ -10,7 +22,7 @@ int	ft_strlen(char *str)
 	return (i);
 }
 
-int	ft_get_min_value(int a, int b, int c)
+int	ft_min(int a, int b, int c)
 {
 	int	minimum;
 
@@ -32,18 +44,26 @@ void	ft_free_memory(char **map, char *info, char *line1)
 		while (map[i] != NULL)
 		{
 			free(map[i]);
-			map[i] = NULL;
 			i++;
 		}
-		free(map[i]);
-		map[i] = NULL;
 		free(map);
 	}
 	if (info != NULL)
 		free(info);
 	if (line1 != NULL)
 		free(line1);
-	map = NULL;
-	info = NULL;
-	line1 = NULL;
+}
+
+char	*ft_strcpy(char *info, char *line1)
+{
+	int	i;
+
+	i = 0;
+	while (line1[i])
+	{
+		info[i] = line1[i];
+		i++;
+	}
+	info[i] = '\0';
+	return (info);
 }
