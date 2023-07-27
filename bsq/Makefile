@@ -1,5 +1,5 @@
 # Archivos fuente
-SOURCES = main.c file.c utils.c line_one.c
+SOURCES = main.c ft_file.c ft_utils.c ft_line_one.c ft_prints.c ft_get_sizes.c ft_square.c ft_map.c ft_case_n.c
 OBJECTS = $(SOURCES:.c=.o)
 CFLAGS = -Wall -Wextra -Werror
 

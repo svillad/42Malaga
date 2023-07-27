@@ -1,5 +1,5 @@
-#ifndef FILE_H
-# define FILE_H
+#ifndef FT_FILE_H
+# define FT_FILE_H
 
 # include <fcntl.h>
 # include <stdlib.h>
