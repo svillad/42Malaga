@@ -3,14 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   ft_case_n.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: ereca-ca <ereca-ca@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/27 12:16:41 by ereca-ca          #+#    #+#             */
-/*   Updated: 2023/07/27 13:08:52 by svilla-d         ###   ########.fr       */
+/*   Created: 2023/07/27 13:39:43 by ereca-ca          #+#    #+#             */
+/*   Updated: 2023/07/27 13:39:46 by ereca-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_case_n.h"
+
+void	ft_free_info_line1(char *info, char *line1)
+{
+	if (info != NULL)
+		free(info);
+	if (line1 != NULL)
+		free(line1);
+}
 
 void	ft_free_memory_sln(int **smap, int *square)
 {
@@ -46,9 +54,7 @@ int	ft_process_data(char *info, char *line1)
 	map = ft_init_map(rows, &info[ft_strlen(line1) + 1], line1);
 	if (!map)
 	{
-		//ft_free_memory(map, info, line1);
-		free(info);
-		free(line1);
+		ft_free_info_line1(info, line1);
 		return (-2);
 	}
 	cols = ft_get_cols(map);
@@ -76,7 +82,7 @@ int	ft_case_n(char *file_name)
 	if (!line1 || line1[0] == -1)
 	{
 		free(info);
-		if(!line1)
+		if (!line1)
 			free(line1);
 		return (-2);
 	}

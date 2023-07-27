@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ereca-ca <ereca-ca@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/27 12:18:39 by ereca-ca          #+#    #+#             */
-/*   Updated: 2023/07/27 12:18:42 by ereca-ca         ###   ########.fr       */
+/*   Created: 2023/07/27 13:41:18 by ereca-ca          #+#    #+#             */
+/*   Updated: 2023/07/27 13:41:20 by ereca-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	ft_free_row(char **map)
 		free(map[j]);
 		j++;
 	}
-	free(map);
 }
 
 char	**ft_init_map(int rows, char *info, char *line1)
@@ -42,7 +41,7 @@ char	**ft_init_map(int rows, char *info, char *line1)
 	{
 		map[j] = ft_get_line(col_ref, &info[i], line1);
 		if (!map[j])
-			return (NULL);
+			break ;
 		i += col_ref;
 	}
 	if (j != rows)
