@@ -1,0 +1,63 @@
+Pasos para realizar los examenes de 42Malaga.
+Registrarse al exam en la plataforma!!
+Login con user: exam, pass: exam. (leer el fonde de pantalla al momento del examen)
+
+0) Existe un README en el directorio docs (buscarlo de ser necesario : docs).
+
+    En este seguramente se encuentra toda la información y el comando para ejecutar el examen.
+
+1) En una terminal (la llamaremos t1: exam) ejecutamos: examshell
+
+    En este punto nos pedirá usuario y contraseña del campus. Los ingresamos, debemos ver nuestra foto.
+    Nos dice el nivel y cantidad de puntos. (iniciamos en nivel 0). Cada que resolvamos un punto, se abrirá
+    un nuevo ejercicio.
+
+    En este nos dan las instrucciones para comenzar los ejercicios, como por ejemplo:
+        * La ruta donde se encuentra la descripción de los ejercicios.
+        * La rura donde se encuentra nuestro repositorio (directorio de trabajo)
+
+2) En otra terminal (la llamaremos t2: instrucciones del ejercicio). Vamos a la carpeta de instrucciones por cada ejercicio.
+    
+    Para esta ocasión nuestro directorio de ejercicios se encuentra en ~/subjects/ejercicio
+    Ingresamos al directorio del ejercicio a resolver, por ejemplo ~/subjects/only_z
+    Dentro del directorio hay un documento de texto en varios idiomas, con la descripcion de nuestro nuevo ejercicio
+    Tener en cuenta que: nos dicen:
+        * Nombre de los archivos a entregar
+        * Funciones permitidas
+        * Protitipos
+        * Ejemplos de ejecución
+        * Funcion vs programa(incluir main)
+
+3) En otra terminal (la llamaremos t3: directorio de trabajo). Vamos al repositorio para subir las soluciones
+
+    Debemos crear un directorio por cada ejercicio.
+    Para esta ocasión nuestro directorio de trabajo se encuentra en ~/rendu/ejercicio
+    Ingresamos al directorio, por ejemplo ~/rendu/only_z
+
+4) Realizamos nuestra implementación:
+    no se encesita header
+    ni normi...
+
+5) Usar el control de versiones git:
+    
+    * git add .
+    * git commit -m "mensaje"
+    * git push
+
+6) Luego de haber subido los cambios al repositorio, volvemos a la t1 y ejecutamos el comando grademe.
+
+    Esto hace que nos evaluen los ejercicios, de estar funcionando, pasaremos al siguiente ejercicio.
+    Repetimos el proceso (desde el punto 2).
+
+    Si tenemos algún problema, nos genera un archivo de logs, en el directorio ~/tracer/numero_ejercicio
+    Aqui podemos las posibles causas del error.
+
+*** Ejercicios exam01 ***
+only_z: programa que escriba una z en la salida estandar.
+ft_strlen: funcion que retorne la cantidad de caracteres de un string.
+rotone: un programa que reciba argumentos de entrada un único paramatro...
+inter: un programa que reciba dos argumentos de entrada str1 y str2, debe verificar las mostrar las letra de str1 que estan en str (sin mostrar diplicados).
+ft_itoa: una funcion que convierta de int a string (usar memoria dinámica)
+    char * ft_itoa(int nbr);
+ft_split: una funcion que retorne una "tabla" de palabras a partir de un cadena de caracters (memotia dinamica).
+    char **ft_split(char *str);
