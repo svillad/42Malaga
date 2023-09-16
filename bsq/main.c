@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ereca-ca <ereca-ca@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 12:20:39 by ereca-ca          #+#    #+#             */
-/*   Updated: 2023/07/27 12:20:41 by ereca-ca         ###   ########.fr       */
+/*   Updated: 2023/07/27 17:27:38 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,12 @@ int	main(int n, char **arg)
 		while (++i < n)
 		{
 			error = ft_case_n(arg[i]);
-			if (error == -1)
+			if (error == -1)	
 				write(1, "error\n", 6);
 			else if (error == -2)
 				write(1, "map error\n", 10);
 		}
 	}
+	//system("leaks bsq");
 	return (0);
 }

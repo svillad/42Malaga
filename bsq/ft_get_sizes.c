@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_get_sizes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ereca-ca <ereca-ca@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 12:17:49 by ereca-ca          #+#    #+#             */
-/*   Updated: 2023/07/27 12:17:51 by ereca-ca         ###   ########.fr       */
+/*   Updated: 2023/07/27 17:23:29 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	ft_get_cols(char **map)
 	int	j;
 
 	j = 0;
-	while (map[1][j] != '\0')
+	while (map[0][j] != '\0')
 	{
 		j++;
 	}

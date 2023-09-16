@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_utils.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ereca-ca <ereca-ca@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 13:42:18 by ereca-ca          #+#    #+#             */
-/*   Updated: 2023/07/27 13:42:21 by ereca-ca         ###   ########.fr       */
+/*   Updated: 2023/07/27 17:20:38 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include <unistd.h>
 # include <stdlib.h>
+#include <stdio.h>
+
 
 int		ft_strlen(char *str);
 int		ft_min(int a, int b, int c);
