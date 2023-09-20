@@ -1,20 +1,20 @@
 # Directorio de la librería (ajústalo según tu estructura)
-LIBFT_DIR = ../../libft
+LIBFT_DIR = ../
 
 # Fuentes y objetos
-SOURCES = main.c test_ft_isalpha.c ft_isalpha.c
+SOURCES = $(wildcard *.c)
 OBJECTS = $(SOURCES:.c=.o)
 
 # Compilador y opciones de compilación
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -I$(LIBFT_DIR) -I. # Agrega -I. para incluir el directorio actual
+CFLAGS = -Wall -Wextra -Werror -I$(LIBFT_DIR) -I.
 
 # Nombre del ejecutable
 NAME = test.out
 
 .PHONY: all clean fclean re
 
-all: $(NAME)
+all: lib $(NAME) clean
 
 $(NAME): $(OBJECTS)
 	$(CC) $(CFLAGS) $^ -o $@ -L$(LIBFT_DIR) -lft
@@ -22,13 +22,22 @@ $(NAME): $(OBJECTS)
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-clean:
+clean: cleanlib
 	rm -f $(OBJECTS)
 
-fclean: clean
+fclean: fcleanlib clean
 	rm -f $(NAME)
 
-re: fclean all
+re: fclean lib all
 
-path: 
-	ls $(LIBFT_DIR)
+lib:
+	make -C .. re
+
+cleanlib:
+	make -C .. clean
+
+fcleanlib:
+	make -C .. fclean
+
+# gcc -o test_ft_isalpha main.c test_ft_isalpha.c ../ft_isalpha.c -I. -I./tests
+# ./test_ft_isalpha
