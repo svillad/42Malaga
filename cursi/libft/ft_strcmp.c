@@ -1,27 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/21 08:44:09 by svilla-d          #+#    #+#             */
-/*   Updated: 2023/09/23 12:45:34 by svilla-d         ###   ########.fr       */
+/*   Created: 2023/09/23 10:18:51 by svilla-d          #+#    #+#             */
+/*   Updated: 2023/09/23 10:59:28 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-char	*ft_strchr(const char *str, int c)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	int	i;
+	unsigned int	i;
 
 	i = 0;
-	while (str[i] != '\0')
+	if (s1 == s2)
+		return (0);
+	while (s1[i] && s2[i])
 	{
-		if (str[i] == (unsigned char)c)
-			return ((char *)&str[i]);
+		if (s1[i] != s2[i])
+			break ;
 		i++;
 	}
-	if (str[i] == (unsigned char)c)
-		return ((char *)&str[i]);
-	return (0);
+	return (s1[i] - s2[i]);
 }

@@ -1,11 +1,11 @@
 #include <stdio.h>
-#include <string.h> 
+#include <string.h>
 #include "../libft.h"
 
 // Función de prueba personalizada
-void test_ft_strchr() {
+void test_ft_memchr() {
     printf("\n****************************************\n");
-    printf("TEST: ft_strchr\n");
+    printf("TEST: ft_memchr\n");
     int total = 0;
     int ok = 0;
 
@@ -13,10 +13,10 @@ void test_ft_strchr() {
     total++;
     const char *empty_str = "";
     int search_char = '\0';
-    char *ft_result = ft_strchr(empty_str, search_char);
-    char *std_result = strchr(empty_str, search_char);
+    char *ft_result = ft_memchr(empty_str, search_char, 3);
+    char *std_result = memchr(empty_str, search_char, 3);
     if (ft_result != std_result) {
-        printf("  %d) Error: (%s,%c) ft_strchr:%c no coincide con strchr:%c.\n",
+        printf("  %d) Error: (%s,%c) ft_memchr:%c no coincide con memchr:%c.\n",
         total, empty_str, search_char, *ft_result, *std_result);
     } else {
         ok++;
@@ -26,10 +26,10 @@ void test_ft_strchr() {
     total++;
     const char *text = "Hola, mundo!";
     search_char = 'a';
-    ft_result = ft_strchr(text, search_char);
-    std_result = strchr(text, search_char);
+    ft_result = ft_memchr(text, search_char, 4);
+    std_result = memchr(text, search_char, 4);
     if (ft_result != std_result) {
-        printf("  %d) Error: (%s,%c) ft_strchr:%c no coincide con strchr:%c.\n",
+        printf("  %d) Error: (%s,%c) ft_memchr:%c no coincide con memchr:%c.\n",
         total, text, search_char, *ft_result, *std_result);
     } else {
         ok++;
@@ -38,10 +38,10 @@ void test_ft_strchr() {
     // Caso 3: Cadena no vacía, buscar carácter en el extremo
     total++;
     search_char = '!';
-    ft_result = ft_strchr(text, search_char);
-    std_result = strchr(text, search_char);
+    ft_result = ft_memchr(text, search_char, 4);
+    std_result = memchr(text, search_char, 4);
     if (ft_result != std_result) {
-        printf("  %d) Error: (%s,%c) ft_strchr:%c no coincide con strchr:%c.\n",
+        printf("  %d) Error: (%s,%c) ft_memchr:%c no coincide con memchr:%c.\n",
         total, text, search_char, *ft_result, *std_result);
     } else {
         ok++;
@@ -50,10 +50,10 @@ void test_ft_strchr() {
     // Caso 4: Carácter no encontrado
     total++;
     search_char = 'x';
-    ft_result = ft_strchr(text, search_char);
-    std_result = strchr(text, search_char);
+    ft_result = ft_memchr(text, search_char, 20);
+    std_result = memchr(text, search_char, 20);
     if (ft_result != std_result) {
-        printf("  %d) Error: (%s,%c) ft_strchr:%c no coincide con strchr:%c.\n",
+        printf("  %d) Error: (%s,%c) ft_memchr:%c no coincide con memchr:%c.\n",
         total, text, search_char, *ft_result, *std_result);
     } else {
         ok++;

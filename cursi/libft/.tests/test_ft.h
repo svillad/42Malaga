@@ -12,5 +12,7 @@ void test_ft_tolower();
 void test_ft_strlen();
 void test_ft_strchr();
 void test_ft_strrchr();
+void test_ft_memchr();
+void test_ft_memcmp();
 
 #endif
