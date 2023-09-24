@@ -1,29 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memchr.c                                        :+:      :+:    :+:   */
+/*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/23 10:26:17 by svilla-d          #+#    #+#             */
-/*   Updated: 2023/09/24 09:12:40 by svilla-d         ###   ########.fr       */
+/*   Created: 2023/09/24 10:02:59 by svilla-d          #+#    #+#             */
+/*   Updated: 2023/09/24 10:53:25 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 
-void	*ft_memchr(const void *s, int c, size_t n)
+size_t	ft_strlcat(char *dst, const char *src, size_t size)
 {
+	size_t	dst_len;
+	size_t	src_len;
 	size_t	i;
+	size_t	j;
 
-	i = 0;
-	while (i < n)
+	dst_len = 0;
+	while (dst[dst_len] != '\0')
+		dst_len++;
+	src_len = 0;
+	while (src[src_len] != '\0')
+		src_len++;
+	if (size <= dst_len)
+		return (size + src_len);
+	i = dst_len;
+	j = 0;
+	while (i < size - 1 && src[j])
 	{
-		if (((unsigned char *)s)[i] == (unsigned char)c)
-			return (&((unsigned char *)s)[i]);
+		dst[i] = src[j];
 		i++;
+		j++;
 	}
-	if (((unsigned char *)s)[i] == (unsigned char)c && i < n)
-		return (&((unsigned char *)s)[i]);
-	return (0);
+	dst[i] = '\0';
+	return (dst_len + src_len);
 }

@@ -1,25 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strrchr.c                                       :+:      :+:    :+:   */
+/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/21 08:44:09 by svilla-d          #+#    #+#             */
-/*   Updated: 2023/09/24 09:40:32 by svilla-d         ###   ########.fr       */
+/*   Created: 2023/09/24 10:02:59 by svilla-d          #+#    #+#             */
+/*   Updated: 2023/09/24 10:06:32 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-char	*ft_strrchr(const char *str, int c)
-{
-	int	i;
+#include <stdio.h>
 
+size_t	ft_strlcpy(char *dst, const char *src, size_t size)
+{
+	size_t	len;
+	size_t	i;
+
+	len = 0;
+	while (src[len] != '\0')
+		len++;
+	if (size == 0)
+		return (len);
 	i = 0;
-	while (str[i] != '\0')
+	while (i < size - 1 && src[i])
+	{
+		dst[i] = src[i];
 		i++;
-	while (i > 0 && str[i] != (unsigned char)c)
-		i--;
-	if (str[i] == (unsigned char)c)
-		return ((char *)&str[i]);
-	return (0);
+	}
+	dst[i] = '\0';
+	return (len);
 }

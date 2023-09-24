@@ -1,25 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strrchr.c                                       :+:      :+:    :+:   */
+/*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/21 08:44:09 by svilla-d          #+#    #+#             */
-/*   Updated: 2023/09/24 09:40:32 by svilla-d         ###   ########.fr       */
+/*   Created: 2023/09/24 08:44:56 by svilla-d          #+#    #+#             */
+/*   Updated: 2023/09/24 09:30:30 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-char	*ft_strrchr(const char *str, int c)
-{
-	int	i;
+#include <stdio.h>
 
-	i = 0;
-	while (str[i] != '\0')
-		i++;
-	while (i > 0 && str[i] != (unsigned char)c)
-		i--;
-	if (str[i] == (unsigned char)c)
-		return ((char *)&str[i]);
-	return (0);
+void	*ft_memcpy(void *dest, const void *src, size_t n)
+{
+	size_t	i;
+
+	if (!dest && !src)
+		return (0);
+	i = -1;
+	while (++i < n) 
+		((unsigned char *)dest)[i] = ((unsigned char *)src)[i];
+	return (dest);
 }
