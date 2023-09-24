@@ -1,27 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/23 10:18:51 by svilla-d          #+#    #+#             */
-/*   Updated: 2023/09/23 10:59:28 by svilla-d         ###   ########.fr       */
+/*   Created: 2023/09/24 11:07:43 by svilla-d          #+#    #+#             */
+/*   Updated: 2023/09/24 11:10:37 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_strcmp(const char *s1, const char *s2)
-{
-	unsigned int	i;
+#include <stdlib.h>
 
-	i = 0;
-	if (s1 == s2)
+char	*ft_strdup(const char *src)
+{
+	size_t	i;
+	size_t	len;
+	char	*dest;
+
+	len = 0;
+	while (src[len] != '\0')
+		len++;
+	dest = (char *)malloc(len + 1);
+	if (!dest)
 		return (0);
-	while (s1[i] && s2[i])
-	{
-		if (s1[i] != s2[i])
-			break ;
-		i++;
-	}
-	return (s1[i] - s2[i]);
+	i = -1;
+	while (++i < len) 
+		((unsigned char *)dest)[i] = ((unsigned char *)src)[i];
+	dest[len] = '\0';
+	return (dest);
 }
