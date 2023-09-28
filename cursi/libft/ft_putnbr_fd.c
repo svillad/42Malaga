@@ -1,32 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/24 11:07:43 by svilla-d          #+#    #+#             */
-/*   Updated: 2023/09/28 13:03:40 by svilla-d         ###   ########.fr       */
+/*   Created: 2023/09/28 22:55:59 by svilla-d          #+#    #+#             */
+/*   Updated: 2023/09/28 23:09:27 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include <unistd.h>
 
-char	*ft_strdup(const char *src)
+void	ft_putdigit_fd(int n, int fd)
 {
-	size_t	i;
-	size_t	len;
-	char	*dest;
+	char	digit;
 
-	len = 0;
-	while (src[len] != '\0')
-		len++;
-	dest = (char *)malloc(len + 1);
-	if (!dest)
-		return (0);
-	i = -1;
-	while (++i < len) 
-		((unsigned char *)dest)[i] = ((unsigned char *)src)[i];
-	dest[len] = '\0';
-	return (dest);
+	digit = '0' + n;
+	write(fd, &digit, 1);
+}
+
+void	ft_putnbr_fd(int n, int fd)
+{
+	if (n == -2147483648)
+	{
+		write(fd, "-2147483648", 11);
+		return ;
+	}
+	if (n < 0)
+	{
+		write(fd, "-", 1);
+		n = -n;
+	}
+	if (n >= 10)
+	{
+		ft_putnbr_fd(n / 10, fd);
+		ft_putdigit_fd(n % 10, fd);
+	}
+	else
+	{
+		ft_putdigit_fd(n, fd);
+	}
 }
