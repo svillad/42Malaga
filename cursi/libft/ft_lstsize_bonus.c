@@ -1,44 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_lstsize_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/28 22:55:59 by svilla-d          #+#    #+#             */
-/*   Updated: 2023/09/29 08:08:12 by svilla-d         ###   ########.fr       */
+/*   Created: 2023/09/29 01:30:45 by svilla-d          #+#    #+#             */
+/*   Updated: 2023/09/29 01:36:43 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
+#include "libft.h"
 
-static void	ft_putdigit_fd(int n, int fd)
+int	ft_lstsize(t_list *lst)
 {
-	char	digit;
+	int	count;
 
-	digit = '0' + n;
-	write(fd, &digit, 1);
-}
-
-void	ft_putnbr_fd(int n, int fd)
-{
-	if (n == -2147483648)
+	count = 0;
+	while (lst)
 	{
-		write(fd, "-2147483648", 11);
-		return ;
+		count++;
+		lst = lst->next;
 	}
-	if (n < 0)
-	{
-		write(fd, "-", 1);
-		n = -n;
-	}
-	if (n >= 10)
-	{
-		ft_putnbr_fd(n / 10, fd);
-		ft_putdigit_fd(n % 10, fd);
-	}
-	else
-	{
-		ft_putdigit_fd(n, fd);
-	}
+	return (count);
 }

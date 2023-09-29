@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 15:53:28 by svilla-d          #+#    #+#             */
-/*   Updated: 2023/09/29 00:41:31 by svilla-d         ###   ########.fr       */
+/*   Updated: 2023/09/29 08:07:35 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #define TRUE 1
 #define FALSE 0
 
-int	ft_count_words(char const *s, char c)
+static int	ft_count_words(char const *s, char c)
 {
 	size_t	i;
 	int		num_words;
@@ -39,7 +39,7 @@ int	ft_count_words(char const *s, char c)
 	return (num_words);
 }
 
-char	*ft_add_word(const char *s, char c)
+static char	*ft_add_word(const char *s, char c)
 {
 	int		start;
 	int		end;
@@ -53,7 +53,7 @@ char	*ft_add_word(const char *s, char c)
 	return (ft_substr(s, start, end - start));
 }
 
-char	**ft_allocate_memory(const char *s, char c)
+static char	**ft_allocate_memory(const char *s, char c)
 {
 	int		num_words;
 
@@ -63,7 +63,7 @@ char	**ft_allocate_memory(const char *s, char c)
 	return ((char **)malloc((num_words + 1) * sizeof(char *)));
 }
 
-void	*ft_free_memory(char **result, int i)
+static void	*ft_free_memory(char **result, int i)
 {
 	while (i > 0)
 		free(result[--i]);

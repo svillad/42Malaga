@@ -6,14 +6,14 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 14:05:56 by svilla-d          #+#    #+#             */
-/*   Updated: 2023/09/28 16:38:06 by svilla-d         ###   ########.fr       */
+/*   Updated: 2023/09/29 08:08:12 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "libft.h"
 
-int	is_in_set(char c, char const *set)
+static int	is_in_set(char c, char const *set)
 {
 	while (*set)
 	{

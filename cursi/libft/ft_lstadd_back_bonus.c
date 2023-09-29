@@ -1,44 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_lstadd_back_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/28 22:55:59 by svilla-d          #+#    #+#             */
-/*   Updated: 2023/09/29 08:08:12 by svilla-d         ###   ########.fr       */
+/*   Created: 2023/09/29 08:18:57 by svilla-d          #+#    #+#             */
+/*   Updated: 2023/09/29 08:22:00 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
+#include "libft.h"
 
-static void	ft_putdigit_fd(int n, int fd)
+void	ft_lstadd_back(t_list **lst, t_list *new_node)
 {
-	char	digit;
+	t_list	*last;
 
-	digit = '0' + n;
-	write(fd, &digit, 1);
-}
-
-void	ft_putnbr_fd(int n, int fd)
-{
-	if (n == -2147483648)
+	if (!new_node)
+		return ;
+	if (!*lst)
 	{
-		write(fd, "-2147483648", 11);
+		*lst = new_node;
 		return ;
 	}
-	if (n < 0)
-	{
-		write(fd, "-", 1);
-		n = -n;
-	}
-	if (n >= 10)
-	{
-		ft_putnbr_fd(n / 10, fd);
-		ft_putdigit_fd(n % 10, fd);
-	}
-	else
-	{
-		ft_putdigit_fd(n, fd);
-	}
+	last = *lst;
+	while (last->next)
+		last = last->next;
+	last->next = new_node;
 }
