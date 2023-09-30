@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 11:07:43 by svilla-d          #+#    #+#             */
-/*   Updated: 2023/09/28 13:03:40 by svilla-d         ###   ########.fr       */
+/*   Updated: 2023/09/30 10:12:55 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*ft_strdup(const char *src)
 	if (!dest)
 		return (0);
 	i = -1;
-	while (++i < len) 
+	while (++i < len)
 		((unsigned char *)dest)[i] = ((unsigned char *)src)[i];
 	dest[len] = '\0';
 	return (dest);

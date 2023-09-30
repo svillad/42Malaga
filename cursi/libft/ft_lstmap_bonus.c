@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 13:37:52 by svilla-d          #+#    #+#             */
-/*   Updated: 2023/09/29 14:32:43 by svilla-d         ###   ########.fr       */
+/*   Updated: 2023/09/30 10:43:19 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,26 @@
 
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 {
-	t_list	*new_list;
+	t_list	*result;
 	t_list	*new_node;
 
-	if (!lst || !f || !del)
+	result = NULL;
+	if (!lst || !f)
 		return (NULL);
-	new_list = NULL;
 	while (lst)
 	{
 		new_node = ft_lstnew(f(lst->content));
 		if (!new_node)
 		{
-			ft_lstclear(&new_list, del);
+			if (!del)
+				ft_lstdelone(lst, del);
 			return (NULL);
 		}
-		ft_lstadd_back(&new_list, new_node);
+		if (!result)
+			result = new_node;
+		else
+			ft_lstadd_back(&result, new_node);
 		lst = lst->next;
 	}
-	return (new_list);
+	return (result);
 }
