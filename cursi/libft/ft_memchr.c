@@ -6,21 +6,25 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 10:26:17 by svilla-d          #+#    #+#             */
-/*   Updated: 2023/09/30 10:21:34 by svilla-d         ###   ########.fr       */
+/*   Updated: 2023/09/30 13:21:41 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 
-void	*ft_memchr(const void *s, int c, size_t n)
+void	*ft_memchr(const void *ptr, int value, size_t n)
 {
-	size_t	i;
+	size_t			i;
+	unsigned char	*str;
+	unsigned char	c;
 
 	i = 0;
+	str = (unsigned char *)ptr;
+	c = (unsigned char)value;
 	while (i < n)
 	{
-		if (((unsigned char *)s)[i] == (unsigned char)c)
-			return (&((unsigned char *)s)[i]);
+		if (str[i] == c)
+			return (&str[i]);
 		i++;
 	}
 	return (0);

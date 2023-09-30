@@ -6,21 +6,21 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 08:40:28 by svilla-d          #+#    #+#             */
-/*   Updated: 2023/09/24 08:42:39 by svilla-d         ###   ########.fr       */
+/*   Updated: 2023/09/30 14:23:49 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 
-void	ft_bzero(void *s, size_t n)
+void	ft_bzero(void *ptr, size_t n)
 {
-	unsigned char	*cp;
+	unsigned char	*str;
 
-	cp = s;
+	str = (unsigned char *)ptr;
 	while (n > 0)
 	{
-		*cp = 0;
-		cp++;
+		*str = 0;
+		str++;
 		n--;
 	}
 }

@@ -6,22 +6,24 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 08:19:33 by svilla-d          #+#    #+#             */
-/*   Updated: 2023/09/24 08:41:19 by svilla-d         ###   ########.fr       */
+/*   Updated: 2023/09/30 14:21:29 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 
-void	*ft_memset(void *s, int c, size_t n)
+void	*ft_memset(void *ptr, int value, size_t n)
 {
-	unsigned char	*cp;
+	unsigned char	*str;
+	unsigned char	c;
 
-	cp = s;
+	str = (unsigned char *)ptr;
+	c = (unsigned char)value;
 	while (n > 0)
 	{
-		*cp = (unsigned char)c;
-		cp++;
+		*str = value;
+		str++;
 		n--;
 	}
-	return (s);
+	return (ptr);
 }
