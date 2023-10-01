@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 12:58:36 by svilla-d          #+#    #+#             */
-/*   Updated: 2023/09/30 15:58:45 by svilla-d         ###   ########.fr       */
+/*   Updated: 2023/10/01 10:36:36 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -298,18 +298,107 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
  *         resultado de la concatenación de `s1` y `s2`. Si se produce un error
  *         en la asignación de memoria o si `s1` o `s2` son NULL, se devuelve
  *         NULL.
- * @ref ft_strlen, ft_strdup, free
- * @author Tu nombre (o el autor original, si corresponde)
+ * @author Sebastian Villa
  */
 char	*ft_strjoin(char const *s1, char const *s2);
+/**
+ * @brief Elimina caracteres específicos del principio y el final de una cadena
+ *        de caracteres.
+ * @param s1 Cadena de caracteres de la que se eliminarán los caracteres.
+ * @param set Cadena de caracteres que contiene los caracteres que se deben
+ *        eliminar.
+ * @return Devuelve una nueva cadena de caracteres que es una copia de s1, pero
+ *         sin los caracteres especificados en set al principio y al final.
+ *         En caso de error, o si s1 o set son NULL, devuelve NULL.
+ * @note El usuario es responsable de liberar la memoria asignada a la cadena
+ *       resultante utilizando la función free().
+ * @author Sebastian Villa
+ */
 char	*ft_strtrim(char const *s1, char const *set);
+/**
+ * @brief Divide una cadena en subcadenas basadas en un carácter delimitador.
+ * @param s Cadena de caracteres que se dividirá.
+ * @param c El carácter delimitador que se utilizará para dividir la cadena.
+ * @return Devuelve un puntero a un arreglo de cadenas (matriz de cadenas) 
+ *         terminado en NULL que representa las subcadenas resultantes.
+ *         En caso de error o si s es NULL, devuelve NULL.
+ * @author Sebastian Villa
+ */
 char	**ft_split(char const *s, char c);
+/**
+ * @brief Convierte un entero en una cadena de caracteres.
+ * @param n El entero que se convertirá en una cadena de caracteres.
+ * @return Devuelve un puntero a una nueva cadena de caracteres que representa el
+ *         entero. En caso de error o si no se puede asignar memoria, devuelve
+ *         NULL.
+ * @author Sebastian Villa
+ */
 char	*ft_itoa(int n);
+/**
+ * @brief Crea una nueva cadena de caracteres aplicando una función a cada
+ *        carácter de una cadena dada.
+ * @param s La cadena de caracteres a la que se aplicará la función.
+ * @param f La función que se aplicará a cada carácter. Debe tomar dos parámetros
+ *        - Un entero sin signo que representa la posición del carácter.
+ *        - Un carácter que representa el carácter actual en la cadena.
+ * @return Devuelve un puntero a una nueva cadena de caracteres que contiene los
+ *         resultados de aplicar la función a cada carácter de la cadena original
+ *         . En caso de error o si no se puede asignar memoria, devuelve NULL.
+ * @author Sebastian Villa
+ */
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
+/**
+ * @brief Aplica una función a cada carácter de una cadena dada.
+ * @param s La cadena de caracteres a la que se aplicará la función.
+ * @param f La función que se aplicará a cada carácter. Debe tomar dos parámetros
+ *        - Un entero sin signo que representa el índice del carácter.
+ *        - Un puntero a carácter que representa el carácter actual en la cadena.
+ * @return No devuelve ningún valor.
+ * @note Si la cadena 's' o la función 'f' son NULL, la función no hace nada.
+ * @author Sebastian Villa
+ */
 void	ft_striteri(char *s, void (*f)(unsigned int, char*));
+/**
+ * @brief Escribe un carácter en el descriptor de archivo especificado.
+ * @param c El carácter que se escribirá en el archivo.
+ * @param fd El descriptor de archivo en el que se escribirá el carácter.
+ *        - 1 (stdout): la salida estándar (la pantalla)
+ *        - 2 (stderr): representa la salida de errores estándar.
+ * @return No devuelve ningún valor.
+ * @author Sebastian Villa
+ */
 void	ft_putchar_fd(char c, int fd);
+/**
+ * @brief Escribe una cadena de caracteres en el descriptor especificado.
+ * @param s La cadena de caracteres que se escribirá en el archivo.
+ * @param fd El descriptor de archivo en el que se escribirá la cadena.
+ *        - 1 (stdout): la salida estándar (la pantalla)
+ *        - 2 (stderr): representa la salida de errores estándar.
+ * @return No devuelve ningún valor.
+ * @author Sebastian Villa
+ */
 void	ft_putstr_fd(char *s, int fd);
+/**
+ * @brief Escribe una cadena de caracteres seguida de un salto de línea en el
+ *        descriptor de archivo especificado.
+ * @param s La cadena de caracteres que se escribirá en el archivo.
+ * @param fd El descriptor de archivo en el que se escribirá la cadena seguida de
+ *        un salto de línea.
+ *        - 1 (stdout): la salida estándar (la pantalla)
+ *        - 2 (stderr): representa la salida de errores estándar.
+ * @return No devuelve ningún valor.
+ * @author Sebastian Villa
+ */
 void	ft_putendl_fd(char *s, int fd);
+/**
+ * @brief Escribe un número entero en un descriptor de archivo especificado.
+ * @param n (int): El número entero que se va a escribir en el descriptor de
+ *        archivo.
+ * @param fd (int): El descriptor de archivo en el que se va a escribir el número
+ *        - 1 (stdout): la salida estándar (la pantalla)
+ *        - 2 (stderr): representa la salida de errores estándar.
+ * @return No devuelve ningún valor.
+ */
 void	ft_putnbr_fd(int n, int fd);
 t_list	*ft_lstnew(void *content);
 void	ft_lstadd_front(t_list **lst, t_list *new);
