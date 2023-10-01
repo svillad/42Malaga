@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 12:58:36 by svilla-d          #+#    #+#             */
-/*   Updated: 2023/10/01 10:36:36 by svilla-d         ###   ########.fr       */
+/*   Updated: 2023/10/01 12:18:12 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -398,16 +398,92 @@ void	ft_putendl_fd(char *s, int fd);
  *        - 1 (stdout): la salida estándar (la pantalla)
  *        - 2 (stderr): representa la salida de errores estándar.
  * @return No devuelve ningún valor.
+ * @author Sebastian Villa
  */
 void	ft_putnbr_fd(int n, int fd);
+/**
+ * @brief Crea un nuevo nodo de lista con el contenido especificado.
+ * @param content (void *): El contenido que se asignará al nuevo nodo.
+ * @return Un puntero al nuevo nodo de lista si la asignación de memoria tuvo
+ *         éxito. NULL si la asignación de memoria falló.
+ * @author Sebastian Villa
+ */
 t_list	*ft_lstnew(void *content);
+/**
+ * @brief Agrega un nuevo nodo al principio de una lista enlazada.
+ * @param lst (t_list **): Un puntero al puntero al primer nodo de la lista.
+ * @param new (t_list *): El nuevo nodo que se agregará al principio de la lista.
+ * @return Nada.
+ * @author Sebastian Villa
+ */
 void	ft_lstadd_front(t_list **lst, t_list *new);
+/**
+ * @brief Calcula el tamaño (número de nodos) de una lista enlazada.
+ * @param lst (t_list *): Un puntero al primer nodo de la lista.
+ * @return El número de nodos en la lista.
+ * @note Esta función recorre la lista enlazada desde el nodo dado y cuenta el
+ *       número de nodos en la lista, devolviendo este valor como resultado.
+ * @author Sebastian Villa
+ */
 int		ft_lstsize(t_list *lst);
+/**
+ * @brief Devuelve un puntero al último nodo de una lista enlazada.
+ * @param lst (t_list *): Un puntero al primer nodo de la lista.
+ * @return Un puntero al último nodo de la lista. Si la lista está vacía,
+ *         devuelve NULL.
+ * @note Esta función recorre la lista enlazada desde el nodo dado hasta
+ *       encontrar el último nodo y devuelve un puntero a ese último nodo.
+ * @author Sebastian Villa
+ */
 t_list	*ft_lstlast(t_list *lst);
+/**
+ * @brief Agrega un nuevo nodo al final de una lista enlazada.
+ * @param lst (t_list **): Un puntero al puntero del primer nodo de la lista.
+ * @param new_node (t_list *): Un puntero al nuevo nodo que se agregará al final
+ *        de la lista.
+ * @return Nada.
+ * @author Sebastian Villa
+ */
 void	ft_lstadd_back(t_list **lst, t_list *new_node);
+/**
+ * @brief Elimina un nodo de una lista enlazada y libera su memoria.
+ * @param lst (t_list *): Un puntero al nodo que se va a eliminar.
+ * @param del (void (*)(void*)): Un puntero a una función utilizada para liberar
+ *        la memoria ocupada por el contenido del nodo.
+ * @return Nada.
+ * @author Sebastian Villa
+ */
 void	ft_lstdelone(t_list *lst, void (*del)(void*));
+/**
+ * @brief Elimina y libera la memoria de todos los nodos de una lista enlazada y
+ *        su contenido.
+ * @param lst (t_list **): Un puntero al puntero de la lista que se va a eliminar
+ * @param del (void (*)(void*)): Un puntero a una función utilizada para liberar 
+ *      la memoria ocupada por el contenido de cada nodo.
+ * @return Nada.
+ * @author Sebastian Villa
+ */
 void	ft_lstclear(t_list **lst, void (*del)(void*));
+/**
+ * @brief Itera a través de una lista enlazada y aplica una función a cada
+ *        elemento.
+ * @param lst (t_list *): Un puntero al primer elemento de la lista.
+ * @param f (void (*)(void *)): Un puntero a una función que se aplicará a cada
+ *        elemento de la lista.
+ * @return Nada.
+ * @author Sebastian Villa
+ */
 void	ft_lstiter(t_list *lst, void (*f)(void *));
+/**
+ * @brief Crea una nueva lista aplicando una función a cada elemento de la lista
+ *        original.
+ * @param lst (t_list *): Un puntero al primer elemento de la lista original.
+ * @param f (void *(*)(void *)): Un puntero a una función que se aplicará a cada
+ *        elemento de la lista original.
+ * @param del (void (*)(void *)): Un puntero a una función que se utilizará para
+ *        eliminar el contenido de un nodo si es necesario.
+ * @author Sebastian Villa
+ */
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 
 #endif

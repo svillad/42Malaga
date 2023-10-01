@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 08:19:33 by svilla-d          #+#    #+#             */
-/*   Updated: 2023/09/30 14:21:29 by svilla-d         ###   ########.fr       */
+/*   Updated: 2023/10/01 11:54:27 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	*ft_memset(void *ptr, int value, size_t n)
 	c = (unsigned char)value;
 	while (n > 0)
 	{
-		*str = value;
+		*str = c;
 		str++;
 		n--;
 	}
