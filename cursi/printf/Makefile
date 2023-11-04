@@ -1,32 +1,62 @@
-# Archivos fuente
-SOURCES	=  \
-		ft_printf.c
+# Settings
+SRC_DIR	:= src/
+OBJ_DIR	:= obj/
+INCLUDE	:= include
+LIBFT	:= libft
 
-OBJECTS	= $(SOURCES:.c=.o)
-HEADERS = ft_printf.h
+CFLAGS 	:= -Wall -Wextra -Werror -I$(INCLUDE)
+LDFLAGS	:= -L./$(LIBFT) -L.
+LDLIBS	:= -lft -lftprintf
+TARGET	:= a.out
 
-CFLAGS 	= -Wall -Wextra -Werror
-CC 		= gcc
-AR		= ar -crs
+CC 		:= gcc
+AR		:= ar -crs
+RM		:= rm -f
 
-NAME = libft.a
+NAME := libftprintf.a
 
-.PHONY: all clean fclean re bonus
+# Files
+SRC_FILES	= ft_printf.c
+SRC 		= $(addprefix $(SRC_DIR), $(SRC_FILES))
+OBJ 		= $(addprefix $(OBJ_DIR), $(SRC_FILES:.c=.o))
+
+# Define un estilo de mensaje
+define PRINT_MESSAGE
+	@echo "\n*********************************************"
+	@echo "* $1"
+	@echo "*********************************************\n"
+endef
+
+.PHONY: all clean fclean re
 
 all: $(NAME)
+	$(call PRINT_MESSAGE, "Successful building!!!")
 
-%.o: %.c
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c
+	@mkdir -p $(OBJ_DIR)
+	$(call PRINT_MESSAGE, "Compiling $<...")
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(NAME): $(OBJECTS) $(HEADERS)
-	$(AR) $(NAME) $(OBJECTS)
+$(NAME): $(OBJ)
+	$(call PRINT_MESSAGE, "Creating library $(LIBFT)...")
+	@make bonus -C $(LIBFT)
+	$(call PRINT_MESSAGE, "Creating library $@...")
+	$(AR) $(NAME) $(OBJ)
 
 clean: 
-	rm -f $(OBJECTS) $(BONUS_OBJECTS)
+	$(call PRINT_MESSAGE, "Cleaning temporary files...")
+	$(RM) -rf $(OBJ_DIR)
+	@make clean -C $(LIBFT)
 
-fclean: clean
-	rm -f $(NAME)
+fclean:
+	$(call PRINT_MESSAGE, "Removing all generated files...")
+	$(RM) -rf $(OBJ_DIR)
+	@make fclean -C $(LIBFT)
+	$(RM) $(TARGET)
+	$(RM) $(NAME)
 
 re: fclean all
 
-#compile main.c gcc -o a.out main.c -L. -lft
+$(TARGET): main.c $(NAME)
+	$(call PRINT_MESSAGE, "Generating executable $@...")
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS)

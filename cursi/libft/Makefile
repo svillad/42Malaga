@@ -6,7 +6,7 @@
 #    By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/07 11:03:31 by svilla-d          #+#    #+#              #
-#    Updated: 2023/10/07 11:03:36 by svilla-d         ###   ########.fr        #
+#    Updated: 2023/11/04 14:05:01 by svilla-d         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,19 +37,19 @@ NAME = libft.a
 all: $(NAME)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME): $(OBJECTS) $(HEADERS)
-	$(AR) $(NAME) $(OBJECTS)
+	@$(AR) $(NAME) $(OBJECTS)
 
 bonus: $(OBJECTS) $(BONUS_OBJECTS) $(HEADERS)
-	$(AR) $(NAME) $(OBJECTS) $(BONUS_OBJECTS)
+	@$(AR) $(NAME) $(OBJECTS) $(BONUS_OBJECTS)
 
 clean: 
-	rm -f $(OBJECTS) $(BONUS_OBJECTS)
+	@rm -f $(OBJECTS) $(BONUS_OBJECTS)
 
 fclean: clean
-	rm -f $(NAME)
+	@rm -f $(NAME)
 
 re: fclean all
 
