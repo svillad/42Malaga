@@ -16,7 +16,7 @@ RM		:= rm -f
 NAME := libftprintf.a
 
 # Files
-SRC_FILES	= ft_printf.c
+SRC_FILES	= ft_printf.c ft_printf_utils.c
 SRC 		= $(addprefix $(SRC_DIR), $(SRC_FILES))
 OBJ 		= $(addprefix $(OBJ_DIR), $(SRC_FILES:.c=.o))
 
@@ -57,6 +57,7 @@ fclean:
 
 re: fclean all
 
-$(TARGET): main.c $(NAME)
-	$(call PRINT_MESSAGE, "Generating executable $@...")
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS)
+run: main.c $(NAME)
+	$(call PRINT_MESSAGE, "Generating executable $(TARGET)...")
+	@$(CC) $(CFLAGS) $(LDFLAGS) -o $(TARGET) $^ $(LDLIBS)
+	@./$(TARGET)

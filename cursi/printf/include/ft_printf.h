@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 11:42:34 by svilla-d          #+#    #+#             */
-/*   Updated: 2023/11/04 14:36:37 by svilla-d         ###   ########.fr       */
+/*   Updated: 2023/11/10 22:41:44 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define FT_PRINTF_H
 
 # include <stdarg.h>
+# include <unistd.h>
+# include <stdlib.h>
 # include "libft.h"
 
 /**
@@ -27,5 +29,6 @@
  * @author Sebastian Villa
  */
 int	ft_printf(const char *str, ...);
+int	ft_print_unsigned(unsigned int num);
 
 #endif

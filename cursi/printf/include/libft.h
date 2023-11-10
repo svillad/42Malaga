@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 12:58:36 by svilla-d          #+#    #+#             */
-/*   Updated: 2023/10/07 14:35:55 by svilla-d         ###   ########.fr       */
+/*   Updated: 2023/11/10 21:24:53 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -356,9 +356,11 @@ char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 /**
  * @brief Applies a function to each character in a given string.
  * @param s The string to which the function will be applied.
- * @param f The function to apply to each character.It should take two parameters
+
+	* @param f The function to apply to each character.It should take two parameters
  *        - An unsigned integer representing the index of the character.
- *        - A ptr to a character representing the current character in the string
+ *       
+	- A ptr to a character representing the current character in the string
  * @return No return value.
  * @author Sebastian Villa
  */
@@ -369,20 +371,20 @@ void				ft_striteri(char *s, void (*f)(unsigned int, char *));
  * @param fd The file descriptor where the character will be written.
  *        - 1 (stdout): standard output (the screen)
  *        - 2 (stderr): represents standard error output.
- * @return No return value.
+ * @return The number of characters written.
  * @author Sebastian Villa
  */
-void				ft_putchar_fd(char c, int fd);
+int					ft_putchar_fd(char c, int fd);
 /**
  * @brief Writes a string of characters to the specified file descriptor.
  * @param s The string of characters to write to the file.
  * @param fd The file descriptor where the string will be written.
  *        - 1 (stdout): standard output (the screen)
  *        - 2 (stderr): represents standard error output.
- * @return No return value.
+ * @return The number of characters written.
  * @author Sebastian Villa
  */
-void				ft_putstr_fd(char *s, int fd);
+int					ft_putstr_fd(char *s, int fd);
 /**
  * @brief Writes a string of characters followed by a newline to the specified
  *        file descriptor.
@@ -425,7 +427,7 @@ void				ft_lstadd_front(t_list **lst, t_list *new);
  * @brief Calculates the size (number of nodes) of a linked list.
  * @param lst (t_list *): A pointer to the first node of the list.
  * @return The number of nodes in the list.
- * @note This function traverses the linked list from the given node and counts 
+ * @note This function traverses the linked list from the given node and counts
  *       the number of nodes in the list, returning this value as the result.
  * @author Sebastian Villa
  */
@@ -435,7 +437,7 @@ int					ft_lstsize(t_list *lst);
  * @param lst (t_list *): A pointer to the first node of the list.
  * @return A pointer to the last node of the list. If the list is empty.
  *         it returns NULL.
- * @note This function traverses the linked list from the given node until it 
+ * @note This function traverses the linked list from the given node until it
  *       finds the last node and returns a pointer to that last node.
  * @author Sebastian Villa
  */

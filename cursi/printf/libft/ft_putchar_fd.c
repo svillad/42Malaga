@@ -6,13 +6,14 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 22:31:35 by svilla-d          #+#    #+#             */
-/*   Updated: 2023/09/28 22:36:36 by svilla-d         ###   ########.fr       */
+/*   Updated: 2023/11/04 20:20:33 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 
-void	ft_putchar_fd(char c, int fd)
+int	ft_putchar_fd(char c, int fd)
 {
 	write(fd, &c, 1);
+	return (1);
 }
