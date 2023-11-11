@@ -1,43 +1,56 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf_utils.c                                  :+:      :+:    :+:   */
+/*   ft_printf_hex.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/04 20:24:56 by svilla-d          #+#    #+#             */
-/*   Updated: 2023/11/10 22:49:55 by svilla-d         ###   ########.fr       */
+/*   Created: 2023/11/11 11:39:08 by svilla-d          #+#    #+#             */
+/*   Updated: 2023/11/11 12:41:45 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char	*ft_uint_char(unsigned int num)
+int	ft_count_hex(unsigned int num)
 {
-	int				len;
-	unsigned int	temp;
-	char			*result;
+	int	count;
 
-	len = 0;
-	temp = num;
-	while (temp)
+	if (num == 0)
+		return (1);
+	count = 0;
+	while (num != 0)
 	{
-		temp /= 10;
-		len++;
+		num /= 16;
+		count++;
 	}
+	return (count);
+}
+
+char	*ft_hex_char(unsigned int num, const char format)
+{
+	int			len;
+	char		*result;
+	const char	hex_upper[16] = "0123456789ABCDEF";
+	const char	hex_lower[16] = "0123456789abcdef";
+
+	len = ft_count_hex(num);
 	result = (char *)malloc(len + 1);
 	if (!result)
-		return (0);
+		return (NULL);
 	result[len] = '\0';
 	while (len--)
 	{
-		result[len] = num % 10 + '0';
-		num /= 10;
+		if (format == 'X')
+			result[len] = hex_upper[num % 16];
+		else
+			result[len] = hex_lower[num % 16];
+		num /= 16;
 	}
 	return (result);
 }
 
-int	ft_print_unsigned(unsigned int num)
+int	ft_print_hex(unsigned int num, const char format)
 {
 	int		printed_chars;
 	char	*result;
@@ -47,7 +60,7 @@ int	ft_print_unsigned(unsigned int num)
 		printed_chars += write(1, "0", 1);
 	else
 	{
-		result = ft_uint_char(num);
+		result = ft_hex_char(num, format);
 		printed_chars += ft_putstr_fd(result, 1);
 		free(result);
 	}

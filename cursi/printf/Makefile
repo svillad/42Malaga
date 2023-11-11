@@ -16,7 +16,7 @@ RM		:= rm -f
 NAME := libftprintf.a
 
 # Files
-SRC_FILES	= ft_printf.c ft_printf_utils.c
+SRC_FILES	= ft_printf.c ft_printf_int.c ft_printf_hex.c ft_printf_addr.c 
 SRC 		= $(addprefix $(SRC_DIR), $(SRC_FILES))
 OBJ 		= $(addprefix $(OBJ_DIR), $(SRC_FILES:.c=.o))
 
@@ -40,6 +40,8 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 $(NAME): $(OBJ)
 	$(call PRINT_MESSAGE, "Creating library $(LIBFT)...")
 	@make bonus -C $(LIBFT)
+	@cp libft/libft.a .
+	@mv libft.a $(NAME)
 	$(call PRINT_MESSAGE, "Creating library $@...")
 	$(AR) $(NAME) $(OBJ)
 

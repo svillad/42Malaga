@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 11:42:34 by svilla-d          #+#    #+#             */
-/*   Updated: 2023/11/10 22:51:19 by svilla-d         ###   ########.fr       */
+/*   Updated: 2023/11/11 12:40:35 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,21 @@
 
 static int	ft_selection(va_list *args, const char f)
 {
-	int	printed_chars;
-
-	printed_chars = 0;
 	if (f == 'c')
 		return (ft_putchar_fd(va_arg(*args, int), 1));
 	else if (f == 's')
 		return (ft_putstr_fd(va_arg(*args, char *), 1));
 	else if (f == 'p')
-	{
-	}
+		return (ft_print_addr(va_arg(*args, unsigned long long)));
 	else if (f == 'd' || f == 'i')
-		return (ft_putstr_fd(ft_itoa(va_arg(*args, int)), 1));
+		return (ft_print_signed(va_arg(*args, int)));
 	else if (f == 'u')
 		return (ft_print_unsigned(va_arg(*args, unsigned int)));
-	else if (f == 'x')
-	{
-	}
-	else if (f == 'X')
-	{
-	}
+	else if (f == 'x' || f == 'X')
+		return (ft_print_hex(va_arg(*args, unsigned int), f));
 	else if (f == '%')
-		ft_putchar_fd(va_arg(*args, int), 1);
-	else
-	{
-	}
-	return (printed_chars);
+		return (ft_putchar_fd('%', 1));
+	return (0);
 }
 
 int	ft_printf(const char *str, ...)
