@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 23:29:55 by svilla-d          #+#    #+#             */
-/*   Updated: 2023/12/11 00:09:06 by svilla-d         ###   ########.fr       */
+/*   Updated: 2023/12/14 19:36:48 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,62 +28,65 @@ char	*ft_strchr(const char *str, int c)
 	return (0);
 }
 
-char	*ft_substr(char *str, unsigned int start, size_t len)
+char	*ft_substr(const char *str, unsigned int start, size_t len)
 {
 	size_t	i;
-	char	*sub;
+	size_t	s_len;
+	char	*substr;
 
 	if (!str)
-		return (0);
-	if (start > ft_strlen(str))
+		return (NULL);
+	s_len = ft_strlen(str);
+	if (start >= s_len)
 	{
-		sub = malloc((1) * sizeof(char));
-		if (!sub)
+		substr = (char *)malloc(sizeof(char));
+		if (!substr)
 			return (NULL);
-		sub[0] = '\0';
-		return (sub);
+		substr[0] = '\0';
+		return (substr);
 	}
-	if (ft_strlen(str) - start < len)
-		len = ft_strlen(str) - start;
-	sub = malloc((len + 1) * sizeof(char));
-	if (!sub)
+	if (len > s_len - start)
+		len = s_len - start;
+	substr = (char *)malloc((len + 1) * sizeof(char));
+	if (!substr)
 		return (NULL);
 	i = 0;
-	while (start < ft_strlen(str) && i < len && str[start])
-		sub[i++] = str[start++];
-	sub[i] = '\0';
-	return (sub);
+	while (str[start] && i < len)
+		substr[i++] = str[start++];
+	substr[i] = '\0';
+	return (substr);
 }
 
 char	*ft_strjoin(char *s1, char *s2)
 {
-	char	*str;
+	char	*strjoin;
 	size_t	len1;
 	size_t	len2;
 
+	if (!s1)
+	{
+		s1 = (char *)malloc(sizeof(char));
+		if (!s1)
+			return (0);
+		s1[0] = 0;
+	}
 	len1 = ft_strlen(s1);
 	len2 = ft_strlen(s2);
-	str = (char *)malloc((len1 + len2 + 1) * sizeof(char));
-	if (!str)
+	strjoin = (char *)malloc((len1 + len2 + 1) * sizeof(char));
+	if (!strjoin)
 		return (ft_free(&s1));
-	len1 = 0;
-	while (s1 && s1[len1])
-	{
-		str[len1] = s1[len1];
-		len1++;
-	}
-	len2 = 0;
-	while (s2 && s2[len2])
-	{
-		str[len1 + len2] = s2[len2];
-		len2++;
-	}
-	str[len1 + len2] = '\0';
+	len1 = -1;
+	while (s1 && s1[++len1])
+		strjoin[len1] = s1[len1];
+	len2 = -1;
+	while (s2 && s2[++len2])
+		strjoin[len1 + len2] = s2[len2];
+	strjoin[len1 + len2] = '\0';
 	free(s1);
-	return (str);
+	return (strjoin);
 }
 
-size_t	ft_strlen(char *str)
+size_t	ft_strlen(const char *str)
 {
 	size_t	i;
 

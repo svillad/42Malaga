@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 23:30:02 by svilla-d          #+#    #+#             */
-/*   Updated: 2023/12/10 23:51:43 by svilla-d         ###   ########.fr       */
+/*   Updated: 2023/12/14 19:45:23 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*get_next_line(int fd)
 	line = ft_new_line(data);
 	if (!line)
 		return (ft_free(&data));
-	data = ft_clear_data(data, ft_strlen(data));
+	data = ft_delete_used_line(data, ft_strlen(data));
 	return (line);
 }
 
@@ -35,7 +35,7 @@ char	*ft_read_buffer(int fd, char *str)
 	char	*buffer;
 	int		num_chars;
 
-	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
+	buffer = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!buffer)
 		return (ft_free(&str));
 	buffer[0] = '\0';
@@ -61,8 +61,6 @@ char	*ft_new_line(char *str)
 	int		len;
 
 	len = ft_strchr(str, '\n') - str + 1;
-	if (len <= 0) 
-		len = ft_strchr(str, '\0') - str + 1;
 	line = ft_substr(str, 0, len);
 	if (!line)
 		return (NULL);
@@ -76,15 +74,22 @@ char	*ft_free(char **str)
 	return (NULL);
 }
 
-char	*ft_clear_data(char *str, size_t len)
+char	*ft_delete_used_line(char *str, size_t len)
 {
 	char	*new_data;
-	int		pos_n;
+	char	*ptr_nl;
+	int		pos_nl;
 
-	pos_n = ft_strchr(str, '\n') - str + 1;
-	if (pos_n < 0 || !str[pos_n])
+	ptr_nl = ft_strchr(str, '\n');
+	if (!ptr_nl)
+	{
+		new_data = NULL;
 		return (ft_free(&str));
-	new_data = ft_substr(str, pos_n, len - pos_n);
+	}
+	pos_nl = ptr_nl - str + 1;
+	if (pos_nl < 0 || !str[pos_nl])
+		return (ft_free(&str));
+	new_data = ft_substr(str, pos_nl, len - pos_nl);
 	ft_free(&str);
 	if (!new_data)
 		return (NULL);
