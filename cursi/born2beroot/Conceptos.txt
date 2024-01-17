@@ -1,0 +1,335 @@
+Conceptos:
+	Sistemas operativos: debian
+	particiones: logicas, extendidas y primarias.
+	sistema de archivos: ext4, 3, 2... fat16, 32... swap
+	sistema de archivos de linux:
+		/ - the root file system
+			/boot - static files of the boot loader
+			/home - user home directories
+			/tmp  - temporary files
+			/usr  - static data
+				/local - local hierarchy
+			/var  - variable data
+			/svr  - data for services provided by this system
+			/opt  - add-on application software packages
+	BIOS y Boot loader.
+
+Encrypt:
+	* pass: HolaMundo42Malaga
+	* user: svilla-d
+	* pass: Hola42Malaga
+
+Ingresar a "root":
+	* su
+	* pass: HolaMundo42Malaga
+
+Usuarios y grupos:
+	- crear usuario:	sudo adduser <user>
+	- crear grupo:		sudo addgroup <group>
+		* GID: Group ID
+	- info:			getent group <group>
+	- info completa:	cat /etc/group
+	- agregar usuario al grupo:
+		sudo adduser <user> <group>
+
+SSH
+	Es un protocolo y programa para el acceso a un equipo
+	remoto por medio de un canal seguro, en el que la
+	información está cifrada. Puerto comun 22, pero 
+	en nuestro caso será 4242
+
+	Comandos:
+		sudo apt install openssh-server
+		sudo service ssh status
+		sudo service ssh restart
+		ssh <user>@<ip-server> -p <port>
+			- ssh svilla-d@localhost -p 4242
+
+	Configuración:
+		/ect/ssh/sshd_config
+			- Port 4242
+			- PermitRootLogin no
+		/ect/ssh/ssh_config
+			- Port 4242
+
+UFW
+	Es un firewall el cual utiliza la línea de comandos
+	para configurar las iptables usando un pequeño número
+	de comandos simples.
+
+	iptables: programa que permite configurar las tablas
+	proporcionadas por el firewall de Linux.
+
+	Comandos:
+		sudo apt install ufw
+		sudo ufw enable
+		sudo ufw allow <port>
+		sudo ufw status
+		sudo ufw status numbered
+		sudo service ufw status
+
+CONTRASEÑA FUERTE PARA SUDO
+	Directorio reglas:
+		/etc/sudoers.d/sudo_config
+	Directorio logs:
+		/var/log/sudo/sudo_config
+
+	Comandos:
+		mkdir /var/log/sudo
+		touch /etc/sudoers.d/sudo_config
+		nano /etc/sudoers.d/sudo_config
+
+	Reglas:
+		* Numero de intentos:       Defaults  passwd_tries=3
+		* Mensaje pass incorrecto:  Defaults  badpass_message="Mensaje de error personalizado"
+		* Logs comandos sudo:       Defaults  logfile="/var/log/sudo/sudo_config"
+		* Comandos sudo in y out:   Defaults  log_input, log_output
+		* Path de logs sudo:        Defaults  iolog_dir="/var/log/sudo"
+		* Activar el modo tty:      Defaults  requiretty
+		* Restringir dir para sudo: Defaults  secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
+
+POLITICA DE CONTRASEÑA FUERTE
+	Comandos:
+		nano /etc/login.defs
+		sudo apt install libpam-pwquality
+		nano /etc/pam.d/common-password
+
+	Reglas:
+		PASS_MAX_DAYS 30
+		PASS_MIN_DAYS 2
+		PASS_WARN_AGE 2
+
+		* intentos:               retry=3
+		* longitud min:           minlen=10
+		* -: como min, +: como max
+			* upper: ucredit=-1
+			* digit: dcredit=-1
+			* lower: lcredit=-1
+		* iguales consecutivos:   maxrepeat=3
+		* no nombre de usuario:   reject_username
+		* min caract. que no sean anterior pass: difok=7
+		* para usuario root:      enforce_for_root
+
+SCRIPT
+	file importante:	/proc/cpuinfo
+	* arch y kernel:	uname -a
+	* nucleos físicos:	grep "physical id" /proc/cpuinfo | wc -l
+				nproc
+	* nucleos virtuales:grep processor /proc/cpuinfo | wc -l
+
+	* RAM:				free --mega
+	* lee por linea y la carga de acuerdo a la condición dada:
+				awk '$1 == "Mem:" {print $3}'
+				-> la palabra 1 es Mem:? entonces imprima la 3er palabra
+		- Usada: free --mega | awk '$1 == "Mem:" {print $3}'
+		- Total: free --mega | awk '$1 == "Mem:" {print $2}'
+		- %:     free --mega | awk '$1 == "Mem:" {printf("(%.2f%%)\n", $3/$2*100)}'
+	
+	* Disco:			df  -m (Megas)
+		- Total: df -m | grep "/dev/" | grep -v "/boot" | awk '{disk_t += $2} END {printf ("%.1fGb\n"), disk_t/1024}'       
+		- Usada: df -m | grep "/dev/" | grep -v "/boot" | awk '{disk_u += $3} END {print disk_u}'
+		- %:	 df -m | grep "/dev/" | grep -v "/boot" | awk '{disk_u += $3} {disk_t+= $2} END {printf("%d"), disk_u/disk_t*100}'
+
+	*CPU Load:			vmstat [periodo] [cantidad]
+		- cpul=$(vmstat 1 2 | tail -1 | awk '{printf $15}')
+		- cpu_op=$(expr 100 - $cpul)
+		- cpu_fin=$(printf "%.1f" $cpu_op)
+
+	* Boot:
+		- who -b
+
+	* LVM:
+		- Particiones:	lsblk
+		- lvmu=$(if [ $(lsblk | grep "lvm" | wc -l) -gt 0 ]; then echo yes; else echo no; fi)
+
+	* TCP coneexiones: ss -ta (socket -t tcp, -a escucha)
+		- tcpc=$(ss -ta | grep ESTAB | wc -l)
+
+	* Red:
+		- ip=$(hostname -I)
+		- mac=$(ip link | grep "link/ether" | awk '{print $2}')
+
+	* SUDO
+		- cmnd=$(journalctl _COMM=sudo | grep COMMAND | wc -l)
+
+CRON
+	- sudo crontab -u root -e
+	- */10 * * * * sh /ruta del script
+	- sudo /etc/init.d/cron stop
+	- sudo /etc/init.d/cron start
+
+Servidores web:
+	* Lighttpd:
+		- ligero y de alto rendimiento diseñado para ser eficiente en el consumo
+			de recursos y rápido en la entrega de contenido estático y dinámico
+		- Apache, Nginx, Caddy...
+		- sudo apt install lighttpd
+		- sudo ufw allow 80
+		- sudo ufw status
+
+	* Wordpress:
+		-  Es un sistema de gestión de contenidos enfocado a la creación de
+			cualquier tipo de página web
+		- sudo apt install wget zip
+			wget:	para descargar archivos de la web
+			zip:	para comprimir y descomprimir archivos en formato ZIP
+		- sudo wget https://es.wordpress.org/latest-es_ES.zip
+		- sudo unzip latest-es_ES.zip
+		- sudo mv html/ html_old/
+		- sudo mv wordpress/ html
+		- sudo chmod -R 755 html
+
+	* Mariadb
+		- Es una base de datos
+		- sudo apt install mariadb-server
+		- Restringir el acceso al servidor y eliminar las cuentas no utilizadas
+			- sudo mysql_secure_installation
+		- sudo mysql_secure_installation
+			Switch to unix_socket autentication? → N
+			Change the root password? → N
+			Remove anonymous users? → Y
+			Disallow root login remotely? → Y
+			Remove test database and acces to it? → Y
+			Reaload privilege tables now? → Y
+
+		- SQL:
+			- CREATE DATABASE wp_database;
+			- SHOW DATABASES;
+			- CREATE USER 'svilla-d'@'localhost' IDENTIFIED BY '12345';
+			- GRANT ALL PRIVILEGES ON wp_database.* TO 'svilla-d'@'localhost';
+			- FLUSH PRIVILEGES;
+
+	* PHP
+		- Es un lenguaje de programación. Se utiliza principalmente para
+			desarrollar aplicaciones web dinámicas y sitios web interactivos.
+			PHP se ejecuta en el lado del servidor.
+		- sudo apt install php-cgi php-mysql
+		
+	* Wordpress Continuacion:
+		- cd /var/www/html
+		- cp wp-config-sample.php wp-config.php
+		- nano wp-config.php
+			- define ('DB_NAME', 'wp_database');
+			- define ('DB_USER', 'svilla-d');
+			- define ('DB_PASSWORD', '12345');
+			- define ('DB_HOST', 'localhost');
+			- define ('DB_CHARSET', 'utf8');
+		- habilitar el módulo de lighttpd:
+			- sudo lighty-enable-mod fastcgi
+			- sudo lighty-enable-mod fastcgi-php
+			- sudo service lighttpd force-reload
+		- Acceder en el navegador:
+			- localhost
+				->	svilla-d WP
+				->	wp-svilla-d
+				->	12345
+				->	svilla-d@student.42malaga.com
+			- localhost/wp-admin
+
+	* LiteSpeed:
+		- Es un software de servidor web patentado. Es conocido por su capacidad
+			para ofrecer un rendimiento excepcional y eficiencia, especialmente
+			en entornos de alta carga. 
+		- actualizar el sistema: sudo apt update && sudo apt upgrade
+		- sudo apt install curl
+		- wget -O - https://repo.litespeed.sh | sudo bash
+		- sudo apt update && sudo apt upgrade
+		- sudo apt install openlitespeed
+		- sudo /usr/local/lsws/admin/misc/admpass.sh
+			- admin: svilla-d
+			- pass:  Hola42Malaga
+		- sudo ufw allow 8088/tcp
+		- sudo ufw allow 7080/tcp
+		- sudo ufw reload
+
+SIGNATURE:
+	- maquina apagada
+	- ir a la ubicación del .vdi
+		- cd /System/Volumes/Data/sgoinfre/goinfre/Perso/svilla-d
+	- shasum Born2beroot.vdi
+	- guardar resultado sobre signature.txt
+
+Comandos:
+	sudo reboot
+	sudo -V
+	sudo apt update
+	sudo apt install <program>
+	sudo service <service> status
+	sudo service <service> restart
+	ssh <user>@<ip-server> -p <port>
+	sudo apt update
+	sudo apt upgrade
+
+Preguntas:
+* Debian:
+	- Historia y Comunidad
+	- Estabilidad y Confiabilidad
+	- Gestor de Paquetes: APT (Advanced Package Tool)
+	- Versiones: Stable, testing, unstable, ...
+
+* Rocky:
+	- Origen y Motivación: reemplazo de CentOS Linux 
+	- Centro en Empresas y Servidores
+	- Gestor de Paquetes: YUM (Yellowdog Updater, Modified)
+	- Compatibilidad RHEL
+
+* Maquina Virtual:
+	- Una máquina virtual (VM) es un software que simula una computadora física y
+		permite ejecutar sistemas operativos y aplicaciones como si estuvieran en
+		hardware físico separado. 
+	- Usos:
+		- varios servicores en uno.
+		- Pruebas aisladas
+		- Entrenamientos
+		- Migración simple
+		- Escritorios Virtuales
+* aptitude > apt
+* AppArmor:
+	- Es un módulo de seguridad del kernel Linux que permite al administrador
+		del sistema restringir las capacidades de un programa
+		- apt install -y apparmor-utils apparmor-profiles
+		- aa-status
+		- aa-logprof
+* LVM
+	- Es un gestor de volúmenes lógicos. Proporciona un método para asignar
+		espacio en dispositivos de almacenamiento masivo, que es más flexible
+
+* Interfaz gráfica?
+	- ls /usr/bin/*session
+
+* Servicios:
+	- sudo service ufw status
+	- sudo service ssh status
+
+* Sistema Operativo?
+	- uname -v
+
+* Comprobar grupos:
+	- cat /etc/group
+	- getent group sudo
+	- getent group user42
+
+* Host Information
+	- Nombre:	hostname
+	- IP:		hostname -I
+	- Reemplazar login -> student42:
+		- sudo nano /etc/hostname
+			student42
+		- sudo nano /etc/hosts
+			student42
+	- Reiniciar
+
+* Particiones:
+	- lsblk
+
+* sudo
+	- which sudo
+	- dpkg -s sudo
+
+* Test
+	- sudo apt-get update
+	- sudo apt-get install git
+	- git clone https://github.com/gemartin99/Born2beroot-Tester.git
+	- cd Born2beroot-Tester/
+	- sudo bash Test.sh
+	
