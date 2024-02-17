@@ -3,17 +3,18 @@ SRC_DIR	:= src/
 OBJ_DIR	:= obj/
 INCLUDE	:= include
 LIBS	:= libs
+DEBUG_DIR := pipex.dSYM
 
-CFLAGS 	:= -Wall -Wextra -Werror -I$(INCLUDE)
+CFLAGS 	:= -Wall -Wextra -Werror -g -I$(INCLUDE) -Ilibs/$(INCLUDE)
 LDFLAGS	:= -L./$(LIBS) -L.
-LDLIBS	:= -lft -lftprintf
+LDLIBS	:= -lft
 TARGET	:= pipex
 
 CC 		:= gcc
 AR		:= ar -crs
 RM		:= rm -f
 
-NAME := libftprintf.a
+NAME := libpx.a
 
 # Colors
 RESET   = \033[0m
@@ -26,7 +27,7 @@ CYAN    = \033[36m
 WHITE   = \033[37m
 
 # Files
-SRC_FILES	= pipex.c
+SRC_FILES	= pipex.c pipex_utils.c
 SRC 		= $(addprefix $(SRC_DIR), $(SRC_FILES))
 OBJ 		= $(addprefix $(OBJ_DIR), $(SRC_FILES:.c=.o))
 
@@ -36,9 +37,6 @@ define PRINT_MESSAGE
 	@echo "$1* $2$(RESET)"
 	@echo "$1*********************************************$(RESET)\n"
 endef
-
-.PHONY: all clean fclean re
-
 
 .PHONY: all clean fclean re
 
@@ -52,28 +50,28 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 $(NAME): $(OBJ)
 	$(call PRINT_MESSAGE,$(CYAN),"Compiling library files of $(LIBS)...")
 	@make -C $(LIBS)
-	@cp libs/libft.a .
-	@mv libft.a $(NAME)
 	$(call PRINT_MESSAGE,$(CYAN),"Creating library $@...")
 	$(AR) $(NAME) $(OBJ)
 
 clean: 
-	$(call PRINT_MESSAGE, $(MAGENTA), "Cleaning temporary files...")
-	$(RM) $(TARGET)
+	$(call PRINT_MESSAGE, $(MAGENTA), "Cleaning temporary files of $(TARGET)...")
+	$(RM) -rf $(DEBUG_DIR)
 	$(RM) -rf $(OBJ_DIR)
+	$(RM) $(NAME)
 	@make clean -C $(LIBS)
 
 fclean:
 	$(call PRINT_MESSAGE, $(MAGENTA), "Removing all generated files...")
+	$(RM) -rf $(DEBUG_DIR)
 	$(RM) -rf $(OBJ_DIR)
-	@make fclean -C $(LIBS)
-	$(RM) $(TARGET)
 	$(RM) $(NAME)
+	$(RM) $(TARGET)
+	@make fclean -C $(LIBS)
 
 re: fclean all
 
 $(TARGET): main.c $(NAME)
 	$(call PRINT_MESSAGE, $(GREEN), "Generating executable $(TARGET)...")
-	@$(CC) $(CFLAGS) $(LDFLAGS) -o $(TARGET) $^ $(LDLIBS)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $(TARGET) $^ $(LDLIBS)
 
 #compile main.c gcc -o a.out main.c -L. -lft

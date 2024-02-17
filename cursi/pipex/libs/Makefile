@@ -6,7 +6,7 @@
 #    By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/07 11:03:31 by svilla-d          #+#    #+#              #
-#    Updated: 2024/02/10 19:12:39 by svilla-d         ###   ########.fr        #
+#    Updated: 2024/02/17 19:25:08 by svilla-d         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,8 +17,8 @@ INCLUDE	:= include
 
 CFLAGS 	:= -Wall -Wextra -Werror -I$(INCLUDE)
 LDFLAGS	:= -L.
-LDLIBS	:= -lft
-TARGET	:= a.out
+LDLIBS	:= 
+TARGET	:= test.out
 
 CC 		:= gcc
 AR		:= ar -crs
@@ -74,9 +74,9 @@ $(NAME): $(OBJ)
 	$(AR) $(NAME) $^
 
 clean: 
-	$(call PRINT_MESSAGE, $(MAGENTA), "Cleaning temporary files...")
-	$(RM) $(TARGET)
+	$(call PRINT_MESSAGE, $(MAGENTA), "Cleaning temporary files of $(NAME)...")
 	$(RM) -rf $(OBJ_DIR)
+	$(RM) $(TARGET)
 
 fclean:
 	$(call PRINT_MESSAGE, $(MAGENTA), "Removing all generated files...")
@@ -89,6 +89,6 @@ re: fclean all
 test: tests/test_lib.c $(NAME)
 	$(call PRINT_MESSAGE, $(GREEN), "Generating executable $(TARGET)...")
 	@$(CC) $(CFLAGS) $(LDFLAGS) -o $(TARGET) $^ $(LDLIBS)
-	@./$(TARGET) | cat -e
+	./$(TARGET) | cat -e
 
 #compile main.c gcc -o a.out main.c -L. -lft
