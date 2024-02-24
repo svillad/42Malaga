@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:38:21 by svilla-d          #+#    #+#             */
-/*   Updated: 2023/11/11 12:41:21 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/02/24 19:46:20 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char	*ft_hex_addr(unsigned long long num)
 	return (result);
 }
 
-int	ft_print_addr(unsigned long long ptr)
+int	ft_print_addr(unsigned long long ptr, int fd)
 {
 	int		printed_chars;
 	char	*result;
@@ -57,7 +57,7 @@ int	ft_print_addr(unsigned long long ptr)
 	else
 	{
 		result = ft_hex_addr(ptr);
-		printed_chars += ft_putstr_fd(result, 1);
+		printed_chars += ft_putstr_fd(result, fd);
 		free(result);
 	}
 	return (printed_chars);

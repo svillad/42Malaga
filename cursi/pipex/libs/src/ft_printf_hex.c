@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 11:39:08 by svilla-d          #+#    #+#             */
-/*   Updated: 2023/11/11 12:41:45 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/02/24 20:43:51 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	*ft_hex_char(unsigned int num, const char format)
 	return (result);
 }
 
-int	ft_print_hex(unsigned int num, const char format)
+int	ft_print_hex(unsigned int num, const char format, int fd)
 {
 	int		printed_chars;
 	char	*result;
@@ -61,7 +61,7 @@ int	ft_print_hex(unsigned int num, const char format)
 	else
 	{
 		result = ft_hex_char(num, format);
-		printed_chars += ft_putstr_fd(result, 1);
+		printed_chars += ft_putstr_fd(result, fd);
 		free(result);
 	}
 	return (printed_chars);

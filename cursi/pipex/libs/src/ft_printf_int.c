@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 20:24:56 by svilla-d          #+#    #+#             */
-/*   Updated: 2023/11/11 12:39:56 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/02/24 19:44:47 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	ft_count_digits(unsigned int num)
 	return (count);
 }
 
-int	ft_print_signed(int num)
+int	ft_print_signed(int num, int fd)
 {
 	int		printed_chars;
 	char	*result;
@@ -38,7 +38,7 @@ int	ft_print_signed(int num)
 	else
 	{
 		result = ft_itoa(num);
-		printed_chars += ft_putstr_fd(result, 1);
+		printed_chars += ft_putstr_fd(result, fd);
 		free(result);
 	}
 	return (printed_chars);
@@ -62,7 +62,7 @@ char	*ft_uint_char(unsigned int num)
 	return (result);
 }
 
-int	ft_print_unsigned(unsigned int num)
+int	ft_print_unsigned(unsigned int num, int fd)
 {
 	int		printed_chars;
 	char	*result;
@@ -73,7 +73,7 @@ int	ft_print_unsigned(unsigned int num)
 	else
 	{
 		result = ft_uint_char(num);
-		printed_chars += ft_putstr_fd(result, 1);
+		printed_chars += ft_putstr_fd(result, fd);
 		free(result);
 	}
 	return (printed_chars);

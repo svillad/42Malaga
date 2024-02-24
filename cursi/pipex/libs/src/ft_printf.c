@@ -6,32 +6,43 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 11:42:34 by svilla-d          #+#    #+#             */
-/*   Updated: 2023/11/11 12:40:35 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/02/24 20:43:37 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static int	ft_selection(va_list *args, const char f)
+static int	ft_selection(va_list *args, const char f, int fd)
 {
 	if (f == 'c')
-		return (ft_putchar_fd(va_arg(*args, int), 1));
+		return (ft_putchar_fd(va_arg(*args, int), fd));
 	else if (f == 's')
-		return (ft_putstr_fd(va_arg(*args, char *), 1));
+		return (ft_putstr_fd(va_arg(*args, char *), fd));
 	else if (f == 'p')
-		return (ft_print_addr(va_arg(*args, unsigned long long)));
+		return (ft_print_addr(va_arg(*args, unsigned long long), fd));
 	else if (f == 'd' || f == 'i')
-		return (ft_print_signed(va_arg(*args, int)));
+		return (ft_print_signed(va_arg(*args, int), fd));
 	else if (f == 'u')
-		return (ft_print_unsigned(va_arg(*args, unsigned int)));
+		return (ft_print_unsigned(va_arg(*args, unsigned int), fd));
 	else if (f == 'x' || f == 'X')
-		return (ft_print_hex(va_arg(*args, unsigned int), f));
+		return (ft_print_hex(va_arg(*args, unsigned int), f, fd));
 	else if (f == '%')
-		return (ft_putchar_fd('%', 1));
+		return (ft_putchar_fd('%', fd));
 	return (0);
 }
 
 int	ft_printf(const char *str, ...)
+{
+	int		printed_chars;
+	va_list	args;
+
+	va_start(args, str);
+	printed_chars = ft_fprintf(STDOUT_FILENO, str, args);
+	va_end(args);
+	return (printed_chars);
+}
+
+int	ft_fprintf(int fd, const char *str, ...)
 {
 	int		i;
 	int		printed_chars;
@@ -44,11 +55,11 @@ int	ft_printf(const char *str, ...)
 	{
 		if (str[i] != '%')
 		{
-			ft_putchar_fd(str[i], 1);
+			ft_putchar_fd(str[i], fd);
 			printed_chars++;
 		}
 		else
-			printed_chars += ft_selection(&args, str[++i]);
+			printed_chars += ft_selection(&args, str[++i], fd);
 		i++;
 	}
 	va_end(args);

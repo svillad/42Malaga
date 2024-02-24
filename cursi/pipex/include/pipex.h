@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 18:51:25 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/02/17 20:36:53 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/02/24 20:49:13 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@
 # include <errno.h>
 
 /**
- * @brief This function is responsible for executing the parent process logic in
- *        the pipex program.
+ * @brief This function is responsible for executing the parent process that take
+ *        the data from the pipe, change the output for the outputFile
  * @param argv (char **): Array of strings containing the command-line arguments.
  * @param envp (char **): Array of strings containing the environment variables.
  * @param fd (int *): File descriptors for communication between processes.
@@ -34,8 +34,8 @@
  */
 void	parent_process(char **argv, char **envp, int *fd);
 /**
- * @brief This function is responsible for executing the child process logic in
- *        the pipex program. 
+ * @brief This function is responsible for executing the child process that run
+ *        inside a fork: take the inputFile, put the output inside a pipe
  * @param argv (char **): Array of strings containing the command-line arguments.
  * @param envp (char **): Array of strings containing the environment variables.
  * @param fd (int *): File descriptors for communication between processes.
@@ -45,10 +45,10 @@ void	parent_process(char **argv, char **envp, int *fd);
 void	child_process(char **argv, char **envp, int *fd);
 /**
  * @brief This function is responsible for handling errors in the pipex program.
- * @return void
+ * @return message (const char *) Error message
  * @author Sebastian Villa
  */
-void	error(void);
+void	error(const char *message);
 /**
  * @brief This function is responsible for finding the path of a command in the
  *        environment variables.
@@ -76,6 +76,5 @@ int		get_next_line(char **line);
  * @author Sebastian Villa
  */
 void	execute(char *argv, char **envp);
-void	error2(const char *message);
 
 #endif

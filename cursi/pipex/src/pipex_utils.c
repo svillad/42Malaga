@@ -6,14 +6,22 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 19:02:26 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/02/17 20:37:37 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/02/24 20:36:23 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-/* Function that will look for the path line inside the environment, will
- split and test each command path and then return the right one. */
+void	error(const char *message)
+{
+	if (message == NULL || ft_strlen(message) == 0)
+		perror("\033[31mError");
+	else
+		ft_fprintf(STDERR_FILENO, "\033[31mError: %s\n%s\n", message,
+			strerror(errno));
+	exit(EXIT_FAILURE);
+}
+
 char	*find_path(char *cmd, char **envp)
 {
 	char	**paths;
@@ -43,24 +51,6 @@ char	*find_path(char *cmd, char **envp)
 	return (0);
 }
 
-void	error(void)
-{
-	perror("\033[31mError");
-	exit(EXIT_FAILURE);
-}
-
-void	error2(const char *message)
-{
-	if (message == NULL)
-		perror("\033[31mError");
-	else
-		ft_printf("\033[31mError: %s: %s\n", message, strerror(errno));
-	exit(EXIT_FAILURE);
-}
-
-
-/* Function that take the command and send it to find_path
- before executing it. */
 void	execute(char *argv, char **envp)
 {
 	char	**cmd;
@@ -75,35 +65,8 @@ void	execute(char *argv, char **envp)
 		while (cmd[++i])
 			free(cmd[i]);
 		free(cmd);
-		error();
+		error("Command not found");
 	}
 	if (execve(path, cmd, envp) == -1)
-		error();
-}
-
-int	get_next_line(char **line)
-{
-	char	*buffer;
-	int		i;
-	int		r;
-	char	c;
-
-	i = 0;
-	r = 0;
-	buffer = (char *)malloc(10000);
-	if (!buffer)
-		return (-1);
-	r = read(0, &c, 1);
-	while (r && c != '\n' && c != '\0')
-	{
-		if (c != '\n' && c != '\0')
-			buffer[i] = c;
-		i++;
-		r = read(0, &c, 1);
-	}
-	buffer[i] = '\n';
-	buffer[++i] = '\0';
-	*line = buffer;
-	free(buffer);
-	return (r);
+		error("Could not execute command");
 }
