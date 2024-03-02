@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 12:41:29 by svilla-d          #+#    #+#             */
-/*   Updated: 2023/09/23 13:40:53 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/03/02 15:29:38 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,5 @@ char	*ft_strnstr(const char *s1, const char *s2, size_t n)
 		s1++;
 		i++;
 	}
-	return (0);
+	return (NULL);
 }

@@ -14,7 +14,7 @@ CC 		:= gcc
 AR		:= ar -crs
 RM		:= rm -f
 
-NAME := libpx.a
+NAME := libpipex.a
 
 # Colors
 RESET   = \033[0m

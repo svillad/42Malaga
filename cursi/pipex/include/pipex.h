@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 18:51:25 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/02/24 20:49:13 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/03/02 20:26:35 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,9 @@
 # include <sys/wait.h>
 # include <fcntl.h>
 # include <errno.h>
+# define OK 0
+# define BAD -1
 
-/**
- * @brief This function is responsible for executing the parent process that take
- *        the data from the pipe, change the output for the outputFile
- * @param argv (char **): Array of strings containing the command-line arguments.
- * @param envp (char **): Array of strings containing the environment variables.
- * @param fd (int *): File descriptors for communication between processes.
- * @return void
- * @author Sebastian Villa
- */
-void	parent_process(char **argv, char **envp, int *fd);
 /**
  * @brief This function is responsible for executing the child process that run
  *        inside a fork: take the inputFile, put the output inside a pipe
@@ -44,11 +36,21 @@ void	parent_process(char **argv, char **envp, int *fd);
  */
 void	child_process(char **argv, char **envp, int *fd);
 /**
+ * @brief This function is responsible for executing the parent process that take
+ *        the data from the pipe, change the output for the outputFile
+ * @param argv (char **): Array of strings containing the command-line arguments.
+ * @param envp (char **): Array of strings containing the environment variables.
+ * @param fd (int *): File descriptors for communication between processes.
+ * @return void
+ * @author Sebastian Villa
+ */
+void	parent_process(char **argv, char **envp, int *fd);
+/**
  * @brief This function is responsible for handling errors in the pipex program.
  * @return message (const char *) Error message
  * @author Sebastian Villa
  */
-void	error(const char *message);
+void	ft_error(const char *error, const char *message);
 /**
  * @brief This function is responsible for finding the path of a command in the
  *        environment variables.
@@ -57,7 +59,7 @@ void	error(const char *message);
  * @return A string containing the path of the command if found, otherwise NULL.
  * @author Sebastian Villa
  */
-char	*find_path(char *cmd, char **envp);
+char	*ft_find_cmd_path(char *cmd, char **envp);
 /**
  * @brief This function is responsible for reading the next line from a file
  *        descriptor.
@@ -75,6 +77,7 @@ int		get_next_line(char **line);
  * @return void
  * @author Sebastian Villa
  */
-void	execute(char *argv, char **envp);
+// void	execute(char *path, char **cmd, char **envp);
+void	ft_free(char **ptr);
 
 #endif

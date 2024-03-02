@@ -6,67 +6,59 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 19:02:26 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/02/24 20:36:23 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/03/02 20:45:44 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	error(const char *message)
+void	ft_error(const char *error, const char *message)
 {
 	if (message == NULL || ft_strlen(message) == 0)
-		perror("\033[31mError");
+		perror("Error");
+	else if (error == NULL)
+		ft_fprintf(STDERR_FILENO, "zsh: %s: %s\n", strerror(errno),
+			message);
 	else
-		ft_fprintf(STDERR_FILENO, "\033[31mError: %s\n%s\n", message,
-			strerror(errno));
+		ft_fprintf(STDERR_FILENO, "zsh: %s: %s\n", error, message);
 	exit(EXIT_FAILURE);
 }
 
-char	*find_path(char *cmd, char **envp)
+void	ft_free(char **ptr)
 {
-	char	**paths;
-	char	*path;
-	int		i;
-	char	*part_path;
+	int	i;
 
-	i = 0;
-	while (ft_strnstr(envp[i], "PATH", 4) == 0)
-		i++;
-	paths = ft_split(envp[i] + 5, ':');
-	i = 0;
-	while (paths[i])
-	{
-		part_path = ft_strjoin(paths[i], "/");
-		path = ft_strjoin(part_path, cmd);
-		free(part_path);
-		if (access(path, F_OK) == 0)
-			return (path);
-		free(path);
-		i++;
-	}
 	i = -1;
-	while (paths[++i])
-		free(paths[i]);
-	free(paths);
-	return (0);
+	while (ptr[++i])
+		free(ptr[i]);
+	free(ptr);
 }
 
-void	execute(char *argv, char **envp)
+char	*ft_find_cmd_path(char *cmd, char **envp)
 {
-	char	**cmd;
+	char	**paths;
+	char	*end_path;
+	char	*cmd_path;
 	int		i;
-	char	*path;
 
+	i = 0;
+	end_path = ft_strjoin("/", cmd);
+	while (envp[i] && !ft_strnstr(envp[i], "PATH=", 5))
+		i++;
+	paths = ft_split(envp[i] + 5, ':');
 	i = -1;
-	cmd = ft_split(argv, ' ');
-	path = find_path(cmd[0], envp);
-	if (!path)
+	while (paths[++i])
 	{
-		while (cmd[++i])
-			free(cmd[i]);
-		free(cmd);
-		error("Command not found");
+		cmd_path = ft_strjoin(paths[i], end_path);
+		if (access(cmd_path, X_OK) == OK)
+		{
+			free(end_path);
+			ft_free(paths);
+			return (cmd_path);
+		}
+		free(cmd_path);
 	}
-	if (execve(path, cmd, envp) == -1)
-		error("Could not execute command");
+	free(end_path);
+	ft_free(paths);
+	return (NULL);
 }
