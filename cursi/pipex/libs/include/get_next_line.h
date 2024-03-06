@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 23:32:18 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/02/17 18:50:38 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/03/06 11:54:58 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,11 @@ char	*ft_read_buffer(int fd, char *str);
 char	*ft_new_line(char *str);
 /**
  * @brief Frees the memory allocated for a string and sets its pointer to NULL.
- * @param str (char **): Pointer to the string to free.
+ * @param ptr (char **): Pointer to the string to free.
  * @return NULL to assign to the pointer after freeing the memory.
  * @author Sebastian Villa
  */
-char	*ft_free(char **str);
+char	*ft_free(char **ptr);
 /**
  * @brief Deletes the used line from a string.
  * @param str (char *): String from which to delete the used line.

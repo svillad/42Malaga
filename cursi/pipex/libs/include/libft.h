@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 12:58:36 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/02/10 18:04:40 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/03/06 11:55:51 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,19 @@ char				*ft_strrchr(const char *str, int c);
  * @author Sebastian Villa
  */
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
+/**
+ * @brief Compares two strings of characters.
+ * @param s1 (const char *): The first string of characters to compare.
+ * @param s2 (const char *): The second string of characters to compare.
+ * @return The function returns an integer value indicating the relationship
+ *         between the strings:
+ *         - A value less than zero if `s1` is less than `s2`.
+ *         - Zero if `s1` is equal to `s2`.
+ *         - A value greater than zero if `s1` is greater than `s2`. \n
+ * @ref <string.h>
+ * @author Sebastian Villa
+ */
+int					ft_strcmp(const char *s1, const char *s2);
 /**
  * @brief Searches for the first occurrence of a byte in a memory region.
  * @param ptr (const void *): A pointer to the memory region in which the search

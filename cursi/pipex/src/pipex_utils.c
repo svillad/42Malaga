@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 19:02:26 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/03/06 10:19:06 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/03/07 00:24:34 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,6 @@ int	ft_error(const char *error, const char *message)
 	return (ERROR);
 }
 
-void	ft_free(char **ptr)
-{
-	int	i;
-
-	i = -1;
-	while (ptr[++i])
-		free(ptr[i]);
-	free(ptr);
-}
-
 char	*ft_find_cmd_path(char *cmd, char **envp)
 {
 	char	**paths;
@@ -51,7 +41,7 @@ char	*ft_find_cmd_path(char *cmd, char **envp)
 	while (paths[++i])
 	{
 		cmd_path = ft_strjoin(paths[i], end_path);
-		if (access(cmd_path, F_OK) == OK)
+		if (access(cmd_path, X_OK) == OK)
 		{
 			free(end_path);
 			ft_free(paths);
@@ -76,12 +66,3 @@ void	ft_copy_pipe(int dst[], int src[])
 	dst[WRITE] = src[WRITE];
 }
 
-// static void	print_data(int fd)
-// {
-// 	char	buffer[256];
-// 	ssize_t	bytes_read;
-
-// 	bytes_read = read(fd, buffer, 256);
-// 	while (bytes_read > 0)
-// 		write(STDOUT_FILENO, buffer, bytes_read);
-// }

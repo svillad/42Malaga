@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 23:32:09 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/02/10 19:18:42 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/03/06 12:03:11 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,16 @@ char	*ft_new_line(char *str)
 	return (line);
 }
 
-char	*ft_free(char **str)
+
+char	*ft_free(char **ptr)
 {
-	free(*str);
-	*str = NULL;
+	int	i;
+
+	i = -1;
+	while (ptr[++i])
+		free(ptr[i]);
+	free(ptr);
+	*ptr = NULL;
 	return (NULL);
 }
 

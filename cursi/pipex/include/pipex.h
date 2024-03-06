@@ -6,13 +6,14 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 18:51:25 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/03/06 10:13:20 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/03/06 20:01:35 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
 
+# include "get_next_line.h"
 # include "ft_printf.h"
 # include "libft.h"
 # include <errno.h>
@@ -27,6 +28,9 @@
 # define ERROR -1
 # define READ 0
 # define WRITE 1
+# define IN 0
+# define OUT 1
+# define LIMITER 2
 
 /**
  * @brief This function is responsible for handling errors in the pipex program.
@@ -55,7 +59,7 @@ char	*ft_find_cmd_path(char *cmd, char **envp);
  * for the array itself.
  * @param ptr (char **): Pointer to the array of strings to free.
  */
-void	ft_free(char **ptr);
+// void	ft_free(char **ptr);
 /**
  * @brief This function performs the pipelining process.
  * This function sets up a pipeline using the commands specified in `cmds`, with
