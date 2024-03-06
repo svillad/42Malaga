@@ -6,13 +6,13 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 19:02:26 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/03/02 20:45:44 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/03/06 10:19:06 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	ft_error(const char *error, const char *message)
+int	ft_error(const char *error, const char *message)
 {
 	if (message == NULL || ft_strlen(message) == 0)
 		perror("Error");
@@ -22,6 +22,7 @@ void	ft_error(const char *error, const char *message)
 	else
 		ft_fprintf(STDERR_FILENO, "zsh: %s: %s\n", error, message);
 	exit(EXIT_FAILURE);
+	return (ERROR);
 }
 
 void	ft_free(char **ptr)
@@ -50,7 +51,7 @@ char	*ft_find_cmd_path(char *cmd, char **envp)
 	while (paths[++i])
 	{
 		cmd_path = ft_strjoin(paths[i], end_path);
-		if (access(cmd_path, X_OK) == OK)
+		if (access(cmd_path, F_OK) == OK)
 		{
 			free(end_path);
 			ft_free(paths);
@@ -62,3 +63,25 @@ char	*ft_find_cmd_path(char *cmd, char **envp)
 	ft_free(paths);
 	return (NULL);
 }
+
+void	ft_close_pipe(int pipe_fd[])
+{
+	close(pipe_fd[READ]);
+	close(pipe_fd[WRITE]);
+}
+
+void	ft_copy_pipe(int dst[], int src[])
+{
+	dst[READ] = src[READ];
+	dst[WRITE] = src[WRITE];
+}
+
+// static void	print_data(int fd)
+// {
+// 	char	buffer[256];
+// 	ssize_t	bytes_read;
+
+// 	bytes_read = read(fd, buffer, 256);
+// 	while (bytes_read > 0)
+// 		write(STDOUT_FILENO, buffer, bytes_read);
+// }

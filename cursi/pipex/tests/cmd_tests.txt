@@ -19,3 +19,35 @@ END
 
 ./pipex tests/file3 "tr '[:lower:]' '[:upper:]'" "grep PIPEX" output
 <tests/file3 tr '[:lower:]' '[:upper:]' | grep PIPEX >outfile 
+
+
+Bonus
+./pipex tests/file2 "sort" "uniq" "wc" output
+<tests/file2 sort | uniq | wc >outfile
+
+./pipex tests/file2 "sort" "wc" output
+<tests/file2 sort | wc >outfile
+
+./pipex tests/file2 "uniq" "wc" output
+<tests/file2 uniq | wc >outfile
+
+./pipex tests/file2 "uniq" output
+<tests/file2 uniq >outfile
+
+./pipex tests/file2 "uniq" "sort -r" output
+<tests/file2 uniq | sort -r >outfile
+
+./pipex tests/file2 "1" "2" "3" output
+<tests/file2 1 | 2 | 3 >outfile
+
+./pipex tests/file2 "" "sort" output
+<tests/file2 | sort >outfile
+
+./pipex tests/file2 "uniq" "" output
+<tests/file2 uniq | >outfile
+
+./pipex tests/file2 "uniq" " " "sort" output
+<tests/file2 uniq | | sort >outfile
+
+./pipex tests/file2 output
+<tests/file2 >outfile

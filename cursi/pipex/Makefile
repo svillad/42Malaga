@@ -5,7 +5,8 @@ INCLUDE	:= include
 LIBS	:= libs
 DEBUG_DIR := pipex.dSYM
 
-CFLAGS 	:= -Wall -Wextra -Werror -g -I$(INCLUDE) -Ilibs/$(INCLUDE)
+CFLAGS_FILE := obj/.cflags.txt
+CFLAGS 	:= -Wall -Wextra -Werror -I$(INCLUDE) -Ilibs/$(INCLUDE)
 LDFLAGS	:= -L./$(LIBS) -L.
 LDLIBS	:= -lft
 TARGET	:= pipex
@@ -38,7 +39,7 @@ define PRINT_MESSAGE
 	@echo "$1*********************************************$(RESET)\n"
 endef
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re bonus FORCE
 
 all: $(TARGET)
 	$(call PRINT_MESSAGE, $(GREEN), "Successful!!!")
@@ -70,8 +71,20 @@ fclean:
 
 re: fclean all
 
-$(TARGET): main.c $(NAME)
+$(TARGET): main.c $(NAME) $(CFLAGS_FILE)
 	$(call PRINT_MESSAGE, $(GREEN), "Generating executable $(TARGET)...")
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $(TARGET) $^ $(LDLIBS)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $(TARGET) main.c libpipex.a $(LDLIBS)
+	
+bonus: CFLAGS += -DBONUS
+bonus: $(TARGET)
+	$(call PRINT_MESSAGE, $(GREEN), "Successful!!!")
+	
+$(CFLAGS_FILE): FORCE
+	@echo "$(CFLAGS)" | cmp -s - $@ || echo "$(CFLAGS)" > $@
+
+FORCE:
+# bonus: main.c $(NAME)
+# 	$(call PRINT_MESSAGE, $(GREEN), "Generating executable $(TARGET)...")
+# 	$(CC) $(CFLAGS) $(LDFLAGS) -o $(TARGET) $^ $(LDLIBS)
 
 #compile main.c gcc -o a.out main.c -L. -lft

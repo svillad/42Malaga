@@ -6,54 +6,42 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 18:51:25 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/03/02 20:26:35 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/03/06 10:13:20 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
 
-# include "libft.h"
 # include "ft_printf.h"
-# include <stdlib.h>
-# include <unistd.h>
-# include <string.h>
-# include <stdio.h>
-# include <sys/wait.h>
-# include <fcntl.h>
+# include "libft.h"
 # include <errno.h>
+# include <fcntl.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <string.h>
+# include <sys/wait.h>
+# include <unistd.h>
+
 # define OK 0
-# define BAD -1
+# define ERROR -1
+# define READ 0
+# define WRITE 1
 
 /**
- * @brief This function is responsible for executing the child process that run
- *        inside a fork: take the inputFile, put the output inside a pipe
- * @param argv (char **): Array of strings containing the command-line arguments.
- * @param envp (char **): Array of strings containing the environment variables.
- * @param fd (int *): File descriptors for communication between processes.
- * @return void
- * @author Sebastian Villa
- */
-void	child_process(char **argv, char **envp, int *fd);
-/**
- * @brief This function is responsible for executing the parent process that take
- *        the data from the pipe, change the output for the outputFile
- * @param argv (char **): Array of strings containing the command-line arguments.
- * @param envp (char **): Array of strings containing the environment variables.
- * @param fd (int *): File descriptors for communication between processes.
- * @return void
- * @author Sebastian Villa
- */
-void	parent_process(char **argv, char **envp, int *fd);
-/**
  * @brief This function is responsible for handling errors in the pipex program.
- * @return message (const char *) Error message
+ * @param error (const char *): error type.
+ * @param message (const char *): error message.
+ * @return (integer with ERROR value);
  * @author Sebastian Villa
  */
-void	ft_error(const char *error, const char *message);
+int		ft_error(const char *error, const char *message);
 /**
  * @brief This function is responsible for finding the path of a command in the
- *        environment variables.
+ *        environment variables. This function searches for the executable file
+ * corresponding to the given command in the directories specified by the PATH
+ * environment variable. If the command is found, its absolute path is returned;
+ * otherwise, NULL is returned.
  * @param cmd (char *): Command to find the path for.
  * @param envp (char **): Array of strings containing the environment variables.
  * @return A string containing the path of the command if found, otherwise NULL.
@@ -61,23 +49,39 @@ void	ft_error(const char *error, const char *message);
  */
 char	*ft_find_cmd_path(char *cmd, char **envp);
 /**
- * @brief This function is responsible for reading the next line from a file
- *        descriptor.
- * @param line (char **): Pointer to a string where the read line will be stored.
- * @return 1 if a line has been read successfully, 0 if the end of the file has
- *         been reached, -1 on error.
- * @author Sebastian Villa
+ * @brief This function frees memory allocated for an array of strings.
+ * This function iterates through the array of strings pointed to by `ptr` and
+ * frees the memory allocated for each string. It then frees the memory allocated
+ * for the array itself.
+ * @param ptr (char **): Pointer to the array of strings to free.
  */
-int		get_next_line(char **line);
-/**
- * @brief This function is responsible for executing a command with the given
- *        arguments.
- * @param argv (char *): Command to execute.
- * @param envp (char **): Array of strings containing the environment variables.
- * @return void
- * @author Sebastian Villa
- */
-// void	execute(char *path, char **cmd, char **envp);
 void	ft_free(char **ptr);
-
+/**
+ * @brief This function performs the pipelining process.
+ * This function sets up a pipeline using the commands specified in `cmds`, with
+ * input redirected from `files[0]` and output redirected to `files[1]`. The
+ * `envp` parameter provides the environment variables for the commands. The
+ * number of commands is specified by `n`.
+ * @param n (int): Number of commands in the pipeline.
+ * @param cmds (char **): Array of strings containing the commands to execute.
+ * @param files (char **): Array of strings specifying input and output files.
+ * @param envp (char **): Array of strings containing the environment variables.
+ * @return Returns 0 upon successful execution; otherwise,returns -1.
+ */
+int		pipex(int n, char **cmds, char **files, char **envp);
+/**
+ * @brief This function closes both ends of a pipe.
+ * This function closes both the read and write ends of the pipe specified by
+ * `pipe_fd`.
+ * @param pipe_fd (int[]): Array containing file descriptors for the pipe.
+ */
+void	ft_close_pipe(int pipe_fd[]);
+/**
+ * @brief This function copies the contents of one pipe to another.
+ * This function copies the file descriptors of one pipe (`src`) to another pipe
+ * (`dst`).
+ * @param dst (int[]): Destination array to copy file descriptors to.
+ * @param src (int[]): Source array to copy file descriptors from.
+ */
+void	ft_copy_pipe(int dst[], int src[]);
 #endif
