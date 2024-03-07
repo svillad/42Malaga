@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 19:02:15 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/03/07 17:35:05 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/03/07 17:44:55 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,11 @@ static int	first_process(char **files, char **cmd, char **envp, int next[])
 	return (OK);
 }
 
-static int	middle_process(char **cmd, char **envp, int prev[], int next[])
+static int	middle_process(char **cmd, char **envp, int prev[])
 {
 	pid_t	pid;
 	int		status;
+	int		next[2];
 
 	if (pipe(next) == ERROR)
 		return (ft_error(NULL, "failed to create pipeline"));
@@ -109,28 +110,26 @@ static int	last_process(char **files, char **cmd, char **envp, int prev[])
 
 int	pipex(int n, char **cmds, char **files, char **envp)
 {
-	int		i;
-	int		prev[2];
-	int		next[2];
 	pid_t	pid;
+	int		i;
+	int		pipe_fd[2];
 	int		status;
 	int		final_status;
 
-	if (pipe(prev) == ERROR || pipe(next) == ERROR)
+	if (pipe(pipe_fd) == ERROR)
 		return (ft_error(NULL, "failed to create pipeline"));
 	pid = fork();
 	if (pid == 0)
-		first_process(files, &cmds[0], envp, next);
+		first_process(files, &cmds[0], envp, pipe_fd);
 	waitpid(pid, &status, 0);
 	final_status = status;
-	close(next[WRITE]);
-	ft_copy_pipe(prev, next);
+	close(pipe_fd[WRITE]);
 	i = 0;
 	while (++i < n - 1)
-		final_status += middle_process(&cmds[i], envp, prev, next);
+		final_status += middle_process(&cmds[i], envp, pipe_fd);
 	pid = fork();
 	if (pid == 0)
-		last_process(files, &cmds[n - 1], envp, prev);
+		last_process(files, &cmds[n - 1], envp, pipe_fd);
 	waitpid(pid, &status, 0);
 	final_status += status;
 	return (final_status);
