@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 19:02:15 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/03/07 00:44:28 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/03/07 11:45:34 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,14 @@ static int	execute_command(char **cmd, char **envp)
 	path = ft_find_cmd_path(command[0], envp);
 	if (!path)
 	{
-		ft_error("command not found", cmd[0]);
 		ft_free(command);
+		ft_error("command not found", cmd[0]);
 		return (ERROR);
 	}
 	if (execve(path, command, envp) == ERROR)
 	{		
-		ft_error("could not execute command", cmd[0]);
 		ft_free(command);
-		exit(EXIT_FAILURE);
+		ft_error("could not execute command", cmd[0]);
 		return (ERROR);
 	}
 	ft_free(command);
@@ -51,30 +50,82 @@ static int	execute_command(char **cmd, char **envp)
 	return (OK);
 }
 
-int here_doc(int next[], char **files) {
-    char buffer[BUFFER_SIZE];
-	char *input = "";
-    ssize_t bytes_read = 0;
-
-    while (1) {
-        ft_putstr_fd("heredoc> ", STDOUT_FILENO);
-        while(buffer[bytes_read - 1] != '\n')
-            bytes_read = read(STDIN_FILENO, buffer, BUFFER_SIZE);
-        if (strncmp(buffer, files[LIMITER], strlen(files[LIMITER])) == 0) {
-            break;
-        }
-		input = ft_strjoin(input, buffer);
-		bytes_read = 0;
-    }
-	if (write(next[WRITE], input, ft_strlen(input)) == -1) {
-	    return ft_error(NULL, "pipex: write");
-	}
-    return 1;
+void	ft_free_str(char *str)
+{
+	if(!str)
+		free(str);
 }
 
-static int	first_process(char **files, char **cmd, char **envp, int next[])
+int read_input(int temp[], char **files, char *msg)
 {
-	printf("0) CMD:%s\n", cmd[0]);
+	char buffer[BUFFER_SIZE];
+	char *input;
+	char *temp_input;
+    ssize_t bytes_read = 0;
+
+	input = NULL;
+    while (1) {
+        ft_putstr_fd(msg, STDOUT_FILENO);
+		bytes_read = read(STDIN_FILENO, buffer, BUFFER_SIZE);
+        if (bytes_read == -1) {
+			ft_free_str(input);
+            ft_error(NULL, "could not read data");
+            return ERROR;
+        }
+        if (bytes_read == 0 || strncmp(buffer, files[LIM], strlen(files[LIM])) == 0) {
+            break;
+        }
+		if (input)
+		{
+			temp_input = ft_strdup(input);
+			ft_free_str(input);
+			input = ft_strjoin(temp_input, buffer);
+			ft_free_str(temp_input);
+		} else {
+			input = ft_strdup(buffer);
+		}
+    }
+	if (write(temp[WRITE], input, ft_strlen(input)) == -1) {
+		ft_free_str(input);
+	    return ft_error(NULL, "pipex: temp write");
+	}
+	ft_free_str(input);
+	exit(EXIT_SUCCESS);
+    return OK;
+}
+
+static int here_doc(int n, char **files, char **cmd, char **envp, int next[])
+{
+    pid_t pid;
+	int temp[2];
+	char *msg;
+
+	msg = "heredoc> ";
+    if (pipe(temp) == ERROR) {
+		return (ft_error(NULL, "failed to create pipeline"));
+	}
+	if ((pid = fork()) == ERROR) {
+		return (ft_error(NULL, "failed to fork"));
+	} else if (pid == 0) {
+		if (n > 1)
+			msg = "pipe heredoc> ";
+		read_input(temp, files, msg);
+	}
+	waitpid(pid, NULL, 0);
+	close(temp[WRITE]);
+	close(next[READ]);
+	dup2(temp[READ], STDIN_FILENO);
+	dup2(next[WRITE], STDOUT_FILENO);
+	close(temp[READ]);
+	close(next[WRITE]);
+	if (ft_strlen(cmd[0]) < 1)
+		return (ft_error(NULL, "command cannot be empty"));
+	execute_command(cmd, envp);
+	return (OK);
+}
+
+static int	first_process(int n, char **files, char **cmd, char **envp, int next[])
+{
 	int	infile;
 	
 	if (files[IN])
@@ -87,23 +138,18 @@ static int	first_process(char **files, char **cmd, char **envp, int next[])
 		dup2(next[WRITE], STDOUT_FILENO);
 		close(infile); 
 		if (ft_strlen(cmd[0]) < 1)
-			cmd[0] = "cat";		
+			cmd[0] = "cat";
 		execute_command(cmd, envp);
 	}
 	else
 	{	
-		// print_data(next[READ]);
-		close(next[READ]);
-		here_doc(next, files);
-		// execute_command(cmd, envp);
+		here_doc(n, files, cmd, envp, next);
 	}
 	return 0;
 }
 
 static int	middle_process(char **cmd, char **envp, int prev[], int next[])
 {
-	printf(" *) CMD:%s\n", cmd[0]);
-
 	close(prev[WRITE]);
 	close(next[READ]);
 	dup2(prev[READ], STDIN_FILENO);
@@ -118,10 +164,12 @@ static int	middle_process(char **cmd, char **envp, int prev[], int next[])
 
 static int	last_process(char **files, char **cmd, char **envp, int prev[])
 {
-	// printf("%d) CMD:%s\n", i, cmd[0]);
 	int	outfile;
 
-	outfile = open(files[OUT], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (files[IN])
+		outfile = open(files[OUT], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	else
+		outfile = open(files[OUT], O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (outfile == ERROR)
 		return (ft_error(NULL, files[OUT]));
     dup2(outfile, STDOUT_FILENO);
@@ -145,7 +193,7 @@ int pipex(int n, char **cmds, char **files, char **envp) {
     if ((pid = fork()) == ERROR) {
         return (ft_error(NULL, "failed to fork"));
     } else if (pid == 0) {
-        first_process(files, &cmds[0], envp, next);
+        first_process(n, files, &cmds[0], envp, next);
     }
 	waitpid(pid, NULL, 0);
 	close(next[WRITE]);

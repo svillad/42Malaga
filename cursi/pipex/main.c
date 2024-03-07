@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 19:01:39 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/03/07 00:34:54 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/03/07 11:26:25 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		files[IN] = NULL;
 		files[OUT] = argv[argc - 1];
-		files[LIMITER] = argv[2];
+		files[LIM] = argv[2];
 		commands = &argv[3];
 		n = argc - 4;
 		if (argc == 4)
@@ -43,7 +43,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		files[IN] = argv[1];
 		files [OUT] = argv[argc - 1];
-		files[LIMITER] = NULL;
+		files[LIM] = NULL;
 		commands = &argv[2];
 		n = argc - 3;
 		if (argc == 3)

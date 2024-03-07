@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 23:29:47 by svilla-d          #+#    #+#             */
-/*   Updated: 2023/12/14 19:45:09 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/03/07 00:45:39 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <unistd.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 5
+#  define BUFFER_SIZE 1024
 # endif
 
 char	*get_next_line(int fd);

@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 18:51:25 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/03/06 20:01:35 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/03/07 11:27:53 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # define WRITE 1
 # define IN 0
 # define OUT 1
-# define LIMITER 2
+# define LIM 2
 
 /**
  * @brief This function is responsible for handling errors in the pipex program.
