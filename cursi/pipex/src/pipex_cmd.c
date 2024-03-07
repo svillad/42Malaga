@@ -6,11 +6,23 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 13:09:08 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/03/07 13:15:23 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/03/07 16:02:15 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+char	*ft_free_doble_ptr(char **ptr)
+{
+	int	i;
+
+	i = -1;
+	while (ptr[++i])
+		free(ptr[i]);
+	free(ptr);
+	*ptr = NULL;
+	return (NULL);
+}
 
 static char	*find_cmd_path(char *cmd, char **envp)
 {
@@ -31,13 +43,13 @@ static char	*find_cmd_path(char *cmd, char **envp)
 		if (access(cmd_path, X_OK) == OK)
 		{
 			free(end_path);
-			ft_free(paths);
+			ft_free_doble_ptr(paths);
 			return (cmd_path);
 		}
 		free(cmd_path);
 	}
 	free(end_path);
-	ft_free(paths);
+	ft_free_doble_ptr(paths);
 	return (NULL);
 }
 
@@ -55,17 +67,17 @@ int	ft_execute_command(char **cmd, char **envp)
 	path = find_cmd_path(command[0], envp);
 	if (!path)
 	{
-		ft_free(command);
+		ft_free_doble_ptr(command);
 		ft_error("command not found", cmd[0]);
 		return (ERROR);
 	}
 	if (execve(path, command, envp) == ERROR)
 	{
-		ft_free(command);
+		ft_free_doble_ptr(command);
 		ft_error("could not execute command", cmd[0]);
 		return (ERROR);
 	}
-	ft_free(command);
+	ft_free_doble_ptr(command);
 	exit(EXIT_SUCCESS);
 	return (OK);
 }

@@ -1,6 +1,4 @@
-wc -w << END | tail -n 1 >> output
-Este es un ejemplo de texto que contiene algunas palabras repetidas. Palabra Uno Palabra Dos Palabra Tres Uno Dos Tres
-END
+TEST Part 1:
 
 ./pipex tests/file2 "uniq" "wc -l" output
 <tests/file2 uniq | wc -l >outfile
@@ -8,9 +6,15 @@ END
 ./pipex tests/file2 "sort" "uniq" output
 <tests/file2 sort | uniq >outfile
 
+Error arguments:
+./pipex tests/file2 "sort" output
+./pipex tests/file2 "sort" "uniq" "wc" output
+
+Error cmds:
 ./pipex tests/file2 "sor" "uni" output
 <tests/file2 sor | uni >outfile
 
+Error infile:
 ./pipex tests/file0 "uniq" "wc -l" output
 <tests/file0 uniq | wc -l >outfile
 
@@ -20,6 +24,14 @@ END
 ./pipex tests/file3 "tr '[:lower:]' '[:upper:]'" "grep PIPEX" output
 <tests/file3 tr '[:lower:]' '[:upper:]' | grep PIPEX >outfile 
 
+Error outfile:
+chmod 000 output
+chmod 000 outfile
+./pipex tests/file2 "sort" "uniq" output
+<tests/file2 sort | uniq >outfile
+
+chmod 644 output
+chmod 644 outfile
 
 Bonus
 ./pipex tests/file2 "sort" "uniq" "wc" output
@@ -62,4 +74,4 @@ sort << END | uniq >> output
 sor << END | uni >> output
 
 ./pipex here_doc END sort uniq wc output
-sort << END | uniq | wc >> output
+sort << END | uniq | wc | wc >> output
