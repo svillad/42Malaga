@@ -28,7 +28,7 @@ CYAN    = \033[36m
 WHITE   = \033[37m
 
 # Files
-SRC_FILES	= pipex.c pipex_utils.c
+SRC_FILES	= pipex.c pipex_cmd.c pipex_utils.c
 SRC 		= $(addprefix $(SRC_DIR), $(SRC_FILES))
 OBJ 		= $(addprefix $(OBJ_DIR), $(SRC_FILES:.c=.o))
 

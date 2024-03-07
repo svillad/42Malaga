@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 18:51:25 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/03/07 11:27:53 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/03/07 13:20:43 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 # define IN 0
 # define OUT 1
 # define LIM 2
+# define MSG 3
 
 /**
  * @brief This function is responsible for handling errors in the pipex program.
@@ -41,25 +42,13 @@
  */
 int		ft_error(const char *error, const char *message);
 /**
- * @brief This function is responsible for finding the path of a command in the
- *        environment variables. This function searches for the executable file
- * corresponding to the given command in the directories specified by the PATH
- * environment variable. If the command is found, its absolute path is returned;
- * otherwise, NULL is returned.
- * @param cmd (char *): Command to find the path for.
+ * @brief This function executes a command with given arguments and environment
+ * 		variables.
+ * @param cmd (char **): Array of strings containing the commands.
  * @param envp (char **): Array of strings containing the environment variables.
- * @return A string containing the path of the command if found, otherwise NULL.
- * @author Sebastian Villa
+ * @return Returns 0 upon successful execution; otherwise, returns -1.
  */
-char	*ft_find_cmd_path(char *cmd, char **envp);
-/**
- * @brief This function frees memory allocated for an array of strings.
- * This function iterates through the array of strings pointed to by `ptr` and
- * frees the memory allocated for each string. It then frees the memory allocated
- * for the array itself.
- * @param ptr (char **): Pointer to the array of strings to free.
- */
-// void	ft_free(char **ptr);
+int		ft_execute_command(char **cmd, char **envp);
 /**
  * @brief This function performs the pipelining process.
  * This function sets up a pipeline using the commands specified in `cmds`, with
@@ -74,12 +63,12 @@ char	*ft_find_cmd_path(char *cmd, char **envp);
  */
 int		pipex(int n, char **cmds, char **files, char **envp);
 /**
- * @brief This function closes both ends of a pipe.
- * This function closes both the read and write ends of the pipe specified by
- * `pipe_fd`.
- * @param pipe_fd (int[]): Array containing file descriptors for the pipe.
+ * @brief This function copies the contents of one pipe to another.
+ * This function copies the file descriptors of one pipe (`src`) to another pipe
+ * (`dst`).
+ * @param dst (int[]): Destination array to copy file descriptors to.
+ * @param src (int[]): Source array to copy file descriptors from.
  */
-void	ft_close_pipe(int pipe_fd[]);
 /**
  * @brief This function copies the contents of one pipe to another.
  * This function copies the file descriptors of one pipe (`src`) to another pipe
@@ -88,4 +77,17 @@ void	ft_close_pipe(int pipe_fd[]);
  * @param src (int[]): Source array to copy file descriptors from.
  */
 void	ft_copy_pipe(int dst[], int src[]);
+/**
+ * @brief This function frees memory allocated for a string.
+ * @param str (char *): String to free memory for.
+ */
+void	ft_free_str(char *str);
+/**
+ * @brief This function reads from standard input and stores it in a buffer.
+ * @param temp (int[]): Array representing file descriptors for communication.
+ * @param files (char **): Array of strings specifying input and output files.
+ * @param input (char *): Buffer to store the input read from standard input.
+ */
+void	ft_read_stdin(int temp[], char **files, char *input);
+
 #endif

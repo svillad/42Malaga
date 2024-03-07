@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 19:02:26 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/03/07 11:07:22 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/03/07 13:13:11 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,44 +25,50 @@ int	ft_error(const char *error, const char *message)
 	return (ERROR);
 }
 
-char	*ft_find_cmd_path(char *cmd, char **envp)
-{
-	char	**paths;
-	char	*end_path;
-	char	*cmd_path;
-	int		i;
-
-	i = 0;
-	end_path = ft_strjoin("/", cmd);
-	while (envp[i] && !ft_strnstr(envp[i], "PATH=", 5))
-		i++;
-	paths = ft_split(envp[i] + 5, ':');
-	i = -1;
-	while (paths[++i])
-	{
-		cmd_path = ft_strjoin(paths[i], end_path);
-		if (access(cmd_path, X_OK) == OK)
-		{
-			free(end_path);
-			ft_free(paths);
-			return (cmd_path);
-		}
-		free(cmd_path);
-	}
-	free(end_path);
-	ft_free(paths);
-	return (NULL);
-}
-
-void	ft_close_pipe(int pipe_fd[])
-{
-	close(pipe_fd[READ]);
-	close(pipe_fd[WRITE]);
-}
-
 void	ft_copy_pipe(int dst[], int src[])
 {
 	dst[READ] = src[READ];
 	dst[WRITE] = src[WRITE];
 }
 
+void	ft_free_str(char *str)
+{
+	if (!str)
+		free(str);
+}
+
+void	ft_read_stdin(int temp[], char **files, char *input)
+{
+	char	buffer[BUFFER_SIZE];
+	char	*temp_input;
+	ssize_t	bytes;
+
+	input = NULL;
+	while (1)
+	{
+		ft_putstr_fd(files[MSG], STDOUT_FILENO);
+		bytes = read(STDIN_FILENO, buffer, BUFFER_SIZE);
+		if (bytes == ERROR)
+		{
+			ft_free_str(input);
+			ft_error(NULL, "could not read data");
+		}
+		if (bytes == 0 || strncmp(buffer, files[LIM], strlen(files[LIM])) == OK)
+			break ;
+		if (input)
+		{
+			temp_input = ft_strdup(input);
+			ft_free_str(input);
+			input = ft_strjoin(temp_input, buffer);
+			ft_free_str(temp_input);
+		}
+		else
+			input = ft_strdup(buffer);
+	}
+	if (write(temp[WRITE], input, ft_strlen(input)) == ERROR)
+	{
+		ft_free_str(input);
+		ft_error(NULL, "pipex: temp write");
+	}
+	exit(EXIT_SUCCESS);
+}

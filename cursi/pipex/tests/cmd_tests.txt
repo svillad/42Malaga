@@ -51,3 +51,15 @@ Bonus
 
 ./pipex tests/file2 output
 <tests/file2 >outfile
+
+./pipex here_doc END sort output
+sort << END >> output
+
+./pipex here_doc END sort uniq output
+sort << END | uniq >> output
+
+./pipex here_doc END sor uni output
+sor << END | uni >> output
+
+./pipex here_doc END sort uniq wc output
+sort << END | uniq | wc >> output
