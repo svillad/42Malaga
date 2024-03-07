@@ -33,7 +33,7 @@ chmod 000 outfile
 chmod 644 output
 chmod 644 outfile
 
-Bonus
+TEST Bonus:
 ./pipex tests/file2 "sort" "uniq" "wc" output
 <tests/file2 sort | uniq | wc >outfile
 
@@ -62,16 +62,16 @@ Bonus
 <tests/file2 uniq | | sort >outfile
 
 ./pipex tests/file2 output
-<tests/file2 >outfile
+<tests/file2 > outfile
 
 ./pipex here_doc END sort output
-sort << END >> output
+sort << END >> outfile
 
 ./pipex here_doc END sort uniq output
-sort << END | uniq >> output
+sort << END | uniq >> outfile
 
 ./pipex here_doc END sor uni output
-sor << END | uni >> output
+sor << END | uni >> outfile
 
 ./pipex here_doc END sort uniq wc output
-sort << END | uniq | wc | wc >> output
+sort << END | uniq | wc >> outfile

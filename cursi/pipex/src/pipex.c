@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 19:02:15 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/03/07 13:13:38 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/03/07 17:35:05 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,7 @@ static int	here_doc(char **files, char **cmd, char **envp, int next[])
 	if (pipe(temp) == ERROR)
 		return (ft_error(NULL, "failed to create pipeline"));
 	pid = fork();
-	if (pid == ERROR)
-		return (ft_error(NULL, "failed to fork"));
-	else if (pid == 0)
+	if (pid == 0)
 		ft_read_stdin(temp, files, input);
 	waitpid(pid, NULL, 0);
 	close(temp[WRITE]);
@@ -65,13 +63,12 @@ static int	first_process(char **files, char **cmd, char **envp, int next[])
 static int	middle_process(char **cmd, char **envp, int prev[], int next[])
 {
 	pid_t	pid;
+	int		status;
 
 	if (pipe(next) == ERROR)
 		return (ft_error(NULL, "failed to create pipeline"));
 	pid = fork();
-	if (pid == ERROR)
-		return (ft_error(NULL, "failed to fork"));
-	else if (pid == 0)
+	if (pid == 0)
 	{
 		close(prev[WRITE]);
 		close(next[READ]);
@@ -83,10 +80,10 @@ static int	middle_process(char **cmd, char **envp, int prev[], int next[])
 			return (ft_error(NULL, "command cannot be empty"));
 		ft_execute_command(cmd, envp);
 	}
-	waitpid(pid, NULL, 0);
 	close(next[WRITE]);
+	waitpid(pid, &status, 0);
 	ft_copy_pipe(prev, next);
-	return (OK);
+	return (status);
 }
 
 static int	last_process(char **files, char **cmd, char **envp, int prev[])
@@ -116,25 +113,25 @@ int	pipex(int n, char **cmds, char **files, char **envp)
 	int		prev[2];
 	int		next[2];
 	pid_t	pid;
+	int		status;
+	int		final_status;
 
 	if (pipe(prev) == ERROR || pipe(next) == ERROR)
 		return (ft_error(NULL, "failed to create pipeline"));
 	pid = fork();
-	if (pid == ERROR)
-		return (ft_error(NULL, "failed to fork"));
-	else if (pid == 0)
+	if (pid == 0)
 		first_process(files, &cmds[0], envp, next);
-	waitpid(pid, NULL, 0);
+	waitpid(pid, &status, 0);
+	final_status = status;
 	close(next[WRITE]);
 	ft_copy_pipe(prev, next);
 	i = 0;
 	while (++i < n - 1)
-		middle_process(&cmds[i], envp, prev, next);
+		final_status += middle_process(&cmds[i], envp, prev, next);
 	pid = fork();
-	if (pid == ERROR)
-		return (ft_error(NULL, "failed to fork"));
-	else if (pid == 0)
+	if (pid == 0)
 		last_process(files, &cmds[n - 1], envp, prev);
-	waitpid(pid, NULL, 0);
-	return (OK);
+	waitpid(pid, &status, 0);
+	final_status += status;
+	return (final_status);
 }
