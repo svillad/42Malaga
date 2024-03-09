@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 19:02:15 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/03/07 17:44:55 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/03/09 15:40:56 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,12 @@ static int	first_process(char **files, char **cmd, char **envp, int next[])
 	if (files[IN])
 	{
 		infile = open(files[IN], O_RDONLY);
-		if (infile == ERROR) 
+		if (infile == ERROR)
 			return (ft_error(NULL, files[IN]));
 		close(next[READ]);
 		dup2(infile, STDIN_FILENO);
 		dup2(next[WRITE], STDOUT_FILENO);
-		close(infile); 
+		close(infile);
 		if (ft_strlen(cmd[0]) < 1)
 			cmd[0] = "cat";
 		ft_execute_command(cmd, envp);
@@ -78,7 +78,7 @@ static int	middle_process(char **cmd, char **envp, int prev[])
 		close(prev[READ]);
 		close(next[WRITE]);
 		if (ft_strlen(cmd[0]) < 1)
-			return (ft_error(NULL, "command cannot be empty"));
+			cmd[0] = " ";
 		ft_execute_command(cmd, envp);
 	}
 	close(next[WRITE]);
@@ -132,5 +132,7 @@ int	pipex(int n, char **cmds, char **files, char **envp)
 		last_process(files, &cmds[n - 1], envp, pipe_fd);
 	waitpid(pid, &status, 0);
 	final_status += status;
-	return (final_status);
+	if (final_status != 0)
+		return (ERROR);
+	return (OK);
 }

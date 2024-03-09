@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 13:09:08 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/03/07 17:25:39 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/03/09 15:49:29 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,9 @@ int	ft_execute_command(char **cmd, char **envp)
 	char	*path;
 
 	command = ft_split(cmd[0], ' ');
-	if (!command)
+	if (!command[0])
 	{
-		ft_error("command is empty", cmd[0]);
+		ft_error("parse error", "command cannot be empty");
 		return (ERROR);
 	}
 	path = find_cmd_path(command[0], envp);

@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 19:01:39 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/03/07 13:48:51 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/03/09 15:22:54 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	run_here_doc(int argc, char **argv, char **envp)
 
 	def_cmd = "cat";
 	if (argc < 4)
-		return (ft_error("Invalid argument", "number of arguments is incorrect\n"
+		return (ft_error("Invalid argument", "number arguments is incorrect\n"
 				"Ex2: ./pipex here_doc LIM <cmds> <file>"));
 	files[IN] = NULL;
 	files[OUT] = argv[argc - 1];
@@ -81,7 +81,7 @@ int	run_file_in(int argc, char **argv, char **envp)
 int	main(int argc, char **argv, char **envp)
 {
 	if (argc < 3)
-		return (ft_error("Invalid argument", "number of arguments is incorrect\n"
+		return (ft_error("Invalid argument", "number arguments is incorrect\n"
 				"Ex1: ./pipex <file1> <cmds> <file2>\n"
 				"Ex2: ./pipex here_doc LIM <cmds> <file>"));
 	if (ft_strnstr(argv[1], "here_doc", 8))
@@ -97,7 +97,7 @@ int	main(int argc, char **argv, char **envp)
 	char	*files[2];
 
 	if (argc != 5)
-		return (ft_error("Invalid argument", "number of arguments is incorrect\n"
+		return (ft_error("Invalid argument", "number arguments is incorrect\n"
 				"Ex: ./pipex <file1> <cmd1> <cmd2> <file2>"));
 	files[0] = argv[1];
 	files [1] = argv[argc - 1];
