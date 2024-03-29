@@ -6,7 +6,7 @@
 #    By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/07 11:03:31 by svilla-d          #+#    #+#              #
-#    Updated: 2024/03/29 19:29:12 by svilla-d         ###   ########.fr        #
+#    Updated: 2024/03/30 00:18:00 by svilla-d         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -84,14 +84,14 @@ endef
 .PHONY: all clean fclean re tests
 
 all: $(NAME)
-	$(call PRINT_MESSAGE, $(GREEN), "Successful building!!!")
-
+	$(call PRINT_MESSAGE,$(GREEN),"Successful building!!!")
+	
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 	@mkdir -p $(dir $@)
 	@dir=$$(dirname $<); \
-    if [ "$$dir" != "$$(cat $(LAST_DIR_FILE))" ]; then \
+    if [ ! -f "$(LAST_DIR_FILE)" ] || [ "$$dir" != "$$(cat $(LAST_DIR_FILE))" ]; then \
     	echo "$(BLUE)\n*********************************************"; \
-		echo "* Compiling $$dir"; \
+		echo "* Compiling libs/$$dir"; \
 		echo "*********************************************$(RESET)\n"; \
     	echo "$$dir" > $(LAST_DIR_FILE); \
     fi
@@ -100,16 +100,16 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 $(NAME): $(OBJ)
 	$(call PRINT_MESSAGE,$(CYAN),"Creating library $@...")
 	$(AR) $(NAME) $^
-	$(RM) $(LAST_DIR_FILE)
+	@$(RM) $(LAST_DIR_FILE)
 
 clean: 
-	$(call PRINT_MESSAGE, $(MAGENTA), "Cleaning temporary files of $(NAME)...")
+	$(call PRINT_MESSAGE,$(MAGENTA),"Cleaning temporary files of $(NAME)...")
 	$(RM) -rf $(OBJ_DIR)
 	$(RM) $(TEST_OUT)
 	$(RM) $(OUTPUT_FILE)
 
 fclean:
-	$(call PRINT_MESSAGE, $(MAGENTA), "Removing all generated files...")
+	$(call PRINT_MESSAGE,$(MAGENTA),"Removing all generated files...")
 	$(RM) -rf $(OBJ_DIR)
 	$(RM) $(TEST_OUT)
 	$(RM) $(OUTPUT_FILE)
@@ -119,7 +119,7 @@ re: fclean all
 
 $(TEST_NAMES): %: $(TEST_DIR)%.c $(NAME)
 	@$(CC) $(CFLAGS) $(LDFLAGS) -o $@.out $^ $(LDLIBS)
-	$(call PRINT_MESSAGE, $(GREEN), "Generating executable $(@).out...")
+	$(call PRINT_MESSAGE,$(GREEN),"Generating executable $(@).out...")
 	@./$@.out | cat -e
 
 tests: $(TEST_NAMES)
