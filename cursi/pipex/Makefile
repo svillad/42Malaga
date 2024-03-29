@@ -6,7 +6,7 @@ LIBS	:= libs
 DEBUG_DIR := pipex.dSYM
 
 CFLAGS_FILE := obj/.cflags.txt
-CFLAGS 	:= -Wall -Wextra -Werror -I$(INCLUDE) -Ilibs/$(INCLUDE)
+CFLAGS 	:= -Wall -Wextra -Werror -g -fsanitize=address -I$(INCLUDE) -Ilibs/$(INCLUDE)
 LDFLAGS	:= -L./$(LIBS) -L.
 LDLIBS	:= -lft
 TARGET	:= pipex
