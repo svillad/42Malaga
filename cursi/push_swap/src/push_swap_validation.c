@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 00:07:59 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/03/30 00:44:06 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/03/30 20:43:45 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,9 @@ int	are_digits(const char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (!ft_isdigit(str[i]))
+		if (!(ft_isdigit(str[i])
+				|| (str[i] == '-' && str[i + 1] && ft_isdigit(str[i + 1]))
+				|| (str[i] == '+' && str[i + 1] && ft_isdigit(str[i + 1]))))
 			return (FALSE);
 		i++;
 	}
@@ -53,7 +55,7 @@ void	validate_duplicates(int argc, char **argv)
 
 	numbers = (int *)malloc(argc * sizeof(int));
 	if (numbers == NULL)
-        ft_simple_error();
+		ft_simple_error();
 	i = -1;
 	while (++i < argc - 1)
 	{
@@ -62,9 +64,13 @@ void	validate_duplicates(int argc, char **argv)
 		while (++j < i)
 		{
 			if (numbers[j] == numbers[i])
+			{
+				free(numbers);
 				ft_simple_error();
+			}
 		}
 	}
+	free(numbers);
 }
 
 void	validate_input(int argc, char **argv)

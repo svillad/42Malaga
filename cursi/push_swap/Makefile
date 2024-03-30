@@ -6,7 +6,7 @@
 #    By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/07 11:03:31 by svilla-d          #+#    #+#              #
-#    Updated: 2024/03/30 00:38:31 by svilla-d         ###   ########.fr        #
+#    Updated: 2024/03/30 17:13:45 by svilla-d         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ CYAN    = \033[36m
 WHITE   = \033[37m
 
 # Files
-SRC_FILES	= push_swap_validation.c push_swap_utils.c
+SRC_FILES	= push_swap_validation.c push_swap_utils.c stack_operations.c
 SRC 		= $(addprefix $(SRC_DIR), $(SRC_FILES))
 OBJ 		= $(addprefix $(OBJ_DIR), $(SRC_FILES:.c=.o))
 
@@ -78,7 +78,7 @@ clean:
 	$(RM) -rf $(DEBUG_DIR)
 	$(RM) -rf $(OBJ_DIR)
 	$(RM) $(NAME)
-	@make clean -C $(LIBS)
+	@make fclean -C $(LIBS)
 
 fclean:
 	$(call PRINT_MESSAGE,$(MAGENTA),"Removing all generated files...")
