@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:02:45 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/03/31 18:41:19 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/04/01 01:05:55 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,25 +23,45 @@
 
 typedef struct s_node
 {
+	char			*name;
 	int				value;
 	int				index;
 	int				position;
 	struct s_node	*next;
-	struct s_node	*prev;
 }					t_node;
 
 void				validate_input(int argc, char **argv);
 void				ft_simple_error(void);
 int					*parse_input(int argc, char **argv);
-t_node				*init_stack(int *numbers, int size);
 void				ft_free_stack(t_node *head);
-void				ft_print_stack(char *name, t_node *head);
+
+t_node				*find_min_node(t_node *head);
+
+//stack
+int					get_stack_len(t_node *head);
+t_node				*init_stack(int *numbers, int size);
+void				print_stack(t_node *head);
+
+// node
+t_node				*create_node(t_node *head, t_node node);
+void				print_node(t_node *node);
+
+void				set_stack_indexes(t_node *head);
+
+void				swap_positions(t_node **node1, t_node **node2);
+void				calculate_position(t_node *head);
+t_node				*get_penultimate_node(t_node *head);
+t_node				*get_last_node(t_node *head);
+
+void				swap(t_node **head);
+void				double_swap(t_node **a, t_node **b);
+void				rotate(t_node **head);
+void				double_rotate(t_node **a, t_node **b);
+void				reverse_rotate(t_node **head);
+void				double_reverse_rotate(t_node **a, t_node **b);
+void				push(t_node **dst, t_node **src);
 
 void				push_swap(t_node **a, t_node **b);
-
-void				swap_a(t_node **a);
-void				swap_b(t_node **a);
-void				swap_ab(t_node **a, t_node **b);
 
 void				push_a(t_node **a, t_node **b);
 void				push_b(t_node **a, t_node **b);
