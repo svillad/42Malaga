@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 19:52:58 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/04/01 00:48:27 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/04/01 13:36:13 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,26 +27,37 @@ void	reverse_rotate_op(t_node **head)
 	calculate_position(*head);
 }
 
-void	reverse_rotate(t_node **head)
+void	rra(t_node **head)
 {
 	if (head == NULL || *head == NULL)
 	{
-		ft_printf("rr-\n");
+		ft_printf("rra\n");
 		return ;
 	}
 	reverse_rotate_op(head);
-	ft_printf("rr%s\n", (*head)->name);
+	ft_printf("rra\n");
 }
 
-void	double_reverse_rotate(t_node **a, t_node **b)
+void	rrb(t_node **head)
 {
-	if (a == NULL || *a == NULL || (*a)->next == NULL)
+	if (head == NULL || *head == NULL)
+	{
+		ft_printf("rrb\n");
+		return ;
+	}
+	reverse_rotate_op(head);
+	ft_printf("rrb\n");
+}
+
+void	rrr(t_node **a, t_node **b)
+{
+	if (a == NULL || *a == NULL)
 	{
 		ft_printf("rrr\n");
 		return ;
 	}
 	reverse_rotate_op(a);
-	if (b == NULL || *b == NULL || (*b)->next == NULL)
+	if (b == NULL || *b == NULL)
 	{
 		ft_printf("rrr\n");
 		return ;

@@ -6,10 +6,9 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 00:19:35 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/04/01 01:10:26 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/04/01 14:08:44 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "push_swap.h"
 
@@ -23,7 +22,6 @@ t_node	*create_node(t_node *head, t_node node)
 		ft_free_stack(head);
 		ft_simple_error();
 	}
-	new_node->name = node.name;
 	new_node->value = node.value;
 	new_node->index = node.index;
 	new_node->position = node.position;
@@ -36,9 +34,9 @@ void	print_node(t_node *node)
 	if (node == NULL)
 		ft_printf(" NULL ->\tNULL\n");
 	if (node->next != NULL)
-		ft_printf(" [%d|%d|%s]: %d ->\t%d\n", node->position, node->index,
-			node->name, node->value, node->next->value);
+		ft_printf(" [%d|%d]: %d ->\t%d\n", node->position, node->index,
+			node->value, node->next->value);
 	else
-		ft_printf(" [%d|%d|%s]: %d ->\tNULL\n", node->position, node->index,
-			node->name, node->value);
+		ft_printf(" [%d|%d]: %d ->\tNULL\n", node->position, node->index,
+			node->value);
 }

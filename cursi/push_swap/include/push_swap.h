@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:02:45 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/04/01 01:05:55 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/04/01 14:23:46 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 
 typedef struct s_node
 {
-	char			*name;
 	int				value;
 	int				index;
 	int				position;
@@ -31,47 +30,40 @@ typedef struct s_node
 }					t_node;
 
 void				validate_input(int argc, char **argv);
+
 void				ft_simple_error(void);
 int					*parse_input(int argc, char **argv);
+
 void				ft_free_stack(t_node *head);
-
 t_node				*find_min_node(t_node *head);
+void				set_stack_indexes(t_node *head);
 
-//stack
-int					get_stack_len(t_node *head);
-t_node				*init_stack(int *numbers, int size);
-void				print_stack(t_node *head);
-
-// node
 t_node				*create_node(t_node *head, t_node node);
 void				print_node(t_node *node);
-
-void				set_stack_indexes(t_node *head);
 
 void				swap_positions(t_node **node1, t_node **node2);
 void				calculate_position(t_node *head);
 t_node				*get_penultimate_node(t_node *head);
 t_node				*get_last_node(t_node *head);
 
-void				swap(t_node **head);
-void				double_swap(t_node **a, t_node **b);
-void				rotate(t_node **head);
-void				double_rotate(t_node **a, t_node **b);
-void				reverse_rotate(t_node **head);
-void				double_reverse_rotate(t_node **a, t_node **b);
-void				push(t_node **dst, t_node **src);
+t_node				*init_stack(int *numbers, int size);
+int					get_stack_len(t_node *head);
+void				print_stack(char *name, t_node *head);
+void				print_stacks(t_node *a, t_node *b);
+int					is_stack_ordered(t_node *a, t_node *b);
 
-void				push_swap(t_node **a, t_node **b);
+void				sa(t_node **head);
+void				sb(t_node **head);
+void				ss(t_node **a, t_node **b);
 
-void				push_a(t_node **a, t_node **b);
-void				push_b(t_node **a, t_node **b);
+void				ra(t_node **head);
+void				rb(t_node **head);
+void				rr(t_node **a, t_node **b);
 
-void				rotate_a(t_node **a);
-void				rotate_b(t_node **b);
-void				rotate_ab(t_node **a, t_node **b);
+void				rra(t_node **head);
+void				rrb(t_node **head);
+void				rrr(t_node **a, t_node **b);
 
-void				reverse_rotate_a(t_node **a);
-void				reverse_rotate_b(t_node **b);
-void				reverse_rotate_ab(t_node **a, int b);
-
+void				pa(t_node **dst, t_node **src);
+void				pb(t_node **dst, t_node **src);
 #endif

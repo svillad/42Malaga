@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 00:29:20 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/04/01 00:22:26 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/04/01 14:07:59 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,3 @@ int	*parse_input(int argc, char **argv)
 		numbers[i] = ft_atoi(argv[i + 1]);
 	return (numbers);
 }
-

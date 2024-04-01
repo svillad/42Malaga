@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 19:52:58 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/04/01 01:27:10 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/04/01 14:08:48 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,6 @@ void	push_op(t_node **dst, t_node **src)
 	if (src == NULL || *src == NULL)
 		return ;
 	temp = *src;
-	if (ft_strncmp((*src)->name, "a", 1) == 0)
-		temp->name = "b";
-	else
-		temp->name = "a";
 	(*src) = (*src)->next;
 	if (*dst != NULL)
 		temp->next = (*dst);
@@ -35,13 +31,24 @@ void	push_op(t_node **dst, t_node **src)
 	calculate_position(*src);
 }
 
-void	push(t_node **dst, t_node **src)
+void	pa(t_node **dst, t_node **src)
 {
 	if (src == NULL || *src == NULL)
-    {
-	    ft_printf("p%s\n", (*dst)->name);
+	{
+		ft_printf("pa\n");
 		return ;
-    }
+	}
 	push_op(dst, src);
-	ft_printf("p%s\n", (*dst)->name);
+	ft_printf("pa\n");
+}
+
+void	pb(t_node **dst, t_node **src)
+{
+	if (src == NULL || *src == NULL)
+	{
+		ft_printf("pb\n");
+		return ;
+	}
+	push_op(dst, src);
+	ft_printf("pb\n");
 }

@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 19:52:58 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/04/01 00:49:59 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/04/01 14:10:02 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,26 +25,37 @@ void	swap_op(t_node **head)
 	swap_positions(head, &(*head)->next);
 }
 
-void	swap(t_node **head)
+void	sa(t_node **head)
 {
 	if (head == NULL || *head == NULL)
-    {
-	    ft_printf("s-\n");
+	{
+		ft_printf("sa\n");
 		return ;
-    }
+	}
 	swap_op(head);
-	ft_printf("s%s\n", (*head)->name);
+	ft_printf("sa\n");
 }
 
-void	double_swap(t_node **a, t_node **b)
+void	sb(t_node **head)
 {
-	if (a == NULL || *a == NULL || (*a)->next == NULL)
+	if (head == NULL || *head == NULL)
+	{
+		ft_printf("sb\n");
+		return ;
+	}
+	swap_op(head);
+	ft_printf("sb\n");
+}
+
+void	ss(t_node **a, t_node **b)
+{
+	if (a == NULL || *a == NULL)
 	{
 		ft_printf("ss\n");
 		return ;
 	}
 	swap_op(a);
-	if (b == NULL || *b == NULL || (*b)->next == NULL)
+	if (b == NULL || *b == NULL)
 	{
 		ft_printf("ss\n");
 		return ;
