@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 19:52:58 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/04/01 14:10:02 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/04/06 17:01:35 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	swap_op(t_node **head)
 	(*head)->next = (*head)->next->next;
 	temp->next = (*head);
 	(*head) = temp;
-	swap_positions(head, &(*head)->next);
+	calculate_positions(*head);
 }
 
 void	sa(t_node **head)

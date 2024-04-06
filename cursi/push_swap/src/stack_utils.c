@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 17:18:46 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/04/01 00:35:22 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/04/06 14:53:26 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,16 +49,16 @@ void	set_stack_indexes(t_node *head)
 {
 	t_node	*current;
 	t_node	*min_node;
-	int		min_index;
+	int		index;
 
 	current = head;
-	min_index = 0;
+	index = 0;
 	while (current != NULL)
 	{
 		min_node = find_min_node(head);
 		if (min_node != NULL)
-			min_node->index = min_index;
+			min_node->index = index;
 		current = current->next;
-		min_index++;
+		index++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:02:45 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/04/01 14:23:46 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/04/06 17:58:34 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef struct s_node
 	int				value;
 	int				index;
 	int				position;
+	int				cost;
 	struct s_node	*next;
 }					t_node;
 
@@ -34,15 +35,12 @@ void				validate_input(int argc, char **argv);
 void				ft_simple_error(void);
 int					*parse_input(int argc, char **argv);
 
-void				ft_free_stack(t_node *head);
-t_node				*find_min_node(t_node *head);
-void				set_stack_indexes(t_node *head);
+void				sort(t_node **a, t_node **b);
 
 t_node				*create_node(t_node *head, t_node node);
 void				print_node(t_node *node);
 
-void				swap_positions(t_node **node1, t_node **node2);
-void				calculate_position(t_node *head);
+void				calculate_positions(t_node *head);
 t_node				*get_penultimate_node(t_node *head);
 t_node				*get_last_node(t_node *head);
 
@@ -51,6 +49,10 @@ int					get_stack_len(t_node *head);
 void				print_stack(char *name, t_node *head);
 void				print_stacks(t_node *a, t_node *b);
 int					is_stack_ordered(t_node *a, t_node *b);
+
+void				ft_free_stack(t_node *head);
+t_node				*find_min_node(t_node *head);
+void				set_stack_indexes(t_node *head);
 
 void				sa(t_node **head);
 void				sb(t_node **head);

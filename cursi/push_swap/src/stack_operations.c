@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 17:18:46 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/04/01 14:23:38 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/04/06 17:33:57 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ t_node	*init_stack(int *numbers, int size)
 		prev_node = new_node;
 	}
 	set_stack_indexes(head);
+	calculate_positions(head);
 	return (head);
 }
 
@@ -45,7 +46,7 @@ int	get_stack_len(t_node *head)
 
 	if (head == NULL)
 		return (0);
-	len = 0;
+	len = 1;
 	current = head;
 	while (current->next != NULL)
 	{
@@ -68,12 +69,12 @@ void	print_stack(char *name, t_node *head)
 	current = head;
 	while (current != NULL)
 	{
-		ft_printf("[%d|%d]:\t%d\n", current->position, current->index,
-			current->value);
+		ft_printf("[%d|%d|%d]:\t%d\n", current->position, current->index,
+			current->cost, current->value);
 		current = current->next;
 	}
 	ft_printf("\t-\n");
-	ft_printf("Stack\t%s\n", name);
+	ft_printf("Stack\t%s(%d)\n", name, get_stack_len(head));
 }
 
 void	print_stacks(t_node *a, t_node *b)
@@ -87,22 +88,22 @@ void	print_stacks(t_node *a, t_node *b)
 	{
 		if (current_a != NULL)
 		{
-			ft_printf("[%d|%d]:\t%d", current_a->position, current_a->index,
-				current_a->value);
+			ft_printf("[%d|%d|%d]: %d", current_a->position, current_a->index,
+				current_a->cost, current_a->value);
 			current_a = current_a->next;
 		}
 		else
 			ft_printf("\t");
 		if (current_b != NULL)
 		{
-			ft_printf("\t%d  :[%d|%d]", current_b->value, current_b->position,
-				current_b->index);
+			ft_printf("\t%d :[%d|%d|%d]", current_b->value, current_b->position,
+				current_b->index, current_b->cost);
 			current_b = current_b->next;
 		}
 		ft_printf("\n");
 	}
-	ft_printf("\t-\t-\n");
-	ft_printf("Stacks\ta\tb\n");
+	ft_printf("\t -\t-\n");
+	ft_printf("Stacks\t a(%d)\tb(%d)\n", get_stack_len(a), get_stack_len(b));
 }
 
 int	is_stack_ordered(t_node *a, t_node *b)
@@ -116,7 +117,7 @@ int	is_stack_ordered(t_node *a, t_node *b)
 	{
 		if (current->index != current->position)
 			return (FALSE);
-		current = current->next; 
+		current = current->next;
 	}
 	return (TRUE);
 }

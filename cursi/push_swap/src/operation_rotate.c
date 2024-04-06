@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 19:52:58 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/04/01 13:35:44 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/04/06 14:39:06 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	rotate_op(t_node **head)
 	(*head) = (*head)->next;
 	temp->next = NULL;
 	last_node->next = temp;
-	calculate_position(*head);
+	calculate_positions(*head);
 }
 
 void	ra(t_node **head)

@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 19:52:58 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/04/01 14:08:48 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/04/06 18:08:18 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ void	push_op(t_node **dst, t_node **src)
 	else
 		temp->next = NULL;
 	(*dst) = temp;
-	calculate_position(*dst);
-	calculate_position(*src);
+	calculate_positions(*dst);
+	calculate_positions(*src);
 }
 
 void	pa(t_node **dst, t_node **src)

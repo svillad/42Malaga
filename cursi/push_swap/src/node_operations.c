@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 00:19:35 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/04/01 14:08:44 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/04/06 16:31:52 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ void	print_node(t_node *node)
 	if (node == NULL)
 		ft_printf(" NULL ->\tNULL\n");
 	if (node->next != NULL)
-		ft_printf(" [%d|%d]: %d ->\t%d\n", node->position, node->index,
-			node->value, node->next->value);
+		ft_printf(" [%d|%d|%d]: %d ->\t%d\n", node->position, node->index,
+			node->cost, node->value, node->next->value);
 	else
-		ft_printf(" [%d|%d]: %d ->\tNULL\n", node->position, node->index,
-			node->value);
+		ft_printf(" [%d|%d|%d]: %d ->\tNULL\n", node->position, node->index,
+			node->cost, node->value);
 }
