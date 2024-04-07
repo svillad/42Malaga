@@ -6,7 +6,7 @@
 #    By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/07 11:03:31 by svilla-d          #+#    #+#              #
-#    Updated: 2024/04/06 18:01:03 by svilla-d         ###   ########.fr        #
+#    Updated: 2024/04/07 22:07:14 by svilla-d         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,7 +43,7 @@ WHITE   = \033[37m
 SRC_FILES	:= push_swap_validation.c push_swap_utils.c \
 			stack_operations.c stack_utils.c \
 			node_operations.c \
-			sort_operations.c \
+			sort_operations.c sort_utils.c\
 			operation_swap.c operation_rotate.c operation_reverse_rotate.c operation_utils.c operation_push.c
 SRC 		= $(addprefix $(SRC_DIR), $(SRC_FILES))
 OBJ 		= $(addprefix $(OBJ_DIR), $(SRC_FILES:.c=.o))

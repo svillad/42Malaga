@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 00:40:04 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/04/06 18:00:33 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/04/07 23:03:44 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,56 +22,8 @@ int	main(int argc, char **argv)
 	numbers = parse_input(argc, argv);
 	a = init_stack(numbers, argc - 1);
 	b = NULL;
-	
-	// ft_printf("Ordered: %d\n",is_stack_ordered(a, b));
-	// print_stacks(a, b);
-	// sa(&a);
-	// print_stacks(a, b);
-	// rr(&a, &b);
-	// print_stacks(a, b);
-	// rra(&a);
-	// print_stacks(a, b);
-	// ft_printf("Ordered: %d\n",is_stack_ordered(a, b));
-	// pb(&b, &a);
-	// print_stacks(a, b);
-	// pb(&b, &a);
-	// print_stacks(a, b);
-	// pb(&b, &a);
-	// print_stacks(a, b);
-	// pb(&b, &a);
-	// print_stacks(a, b);
-	// pb(&b, &a);
-	// print_stacks(a, b);
-	// pb(&b, &a);
-	// print_stacks(a, b);
-	// pb(&b, &a);
-	// print_stacks(a, b);
-	// pb(&b, &a);
-	// print_stacks(a, b);
-	// pb(&b, &a);
-	// print_stacks(a, b);
-	// free(numbers);
-	// ft_free_stack(a);
-	// ft_printf("Ordered: %d\n",is_stack_ordered(a, b));
 	sort(&a, &b);
-
+	free(numbers);
+	ft_free_stack(a);
 	return (0);
 }
-
-
-/** reglas:
- * 1) al pasar un nuevo "el mayor/el menor":
- * 	- ponerlo arriba del anterior mayor
- *  - si es el menor rotar al final
- * 
- * 2) al pasar un num que no sea "el mayor/el menor":
- * 	- buscar su posición manualmente
- * 
- * 3) Stack de 3 elementos:
- * 	- caso 1: 1, 2, 3 ordenado
- * 	- caso 2: 1, 3, 2 -> rra, sa
- *	- caso 3: 2, 1, 3 -> sa
- *	- caso 4: 2, 3, 1 -> rra
- *	- caso 5: 3, 1, 2 -> ra
- *	- caso 6: 3, 2, 1 -> sa, rra
-*/

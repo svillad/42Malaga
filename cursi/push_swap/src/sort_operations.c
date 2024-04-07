@@ -6,73 +6,97 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 18:03:13 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/04/06 19:37:31 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/04/07 23:04:14 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-t_node	*search_prev_node(int index, t_node *head)
+void	operate(t_node **a, t_node **b, t_node *node[])
+{
+	if (node[B] == NULL)
+		move_node_to_top(a, node, A);
+	else if (node[A]->cost >= 0 && node[B]->cost >= 0)
+		move_both_positive(a, b, node);
+	else if (node[A]->cost <= 0 && node[B]->cost <= 0)
+		move_both_negative(a, b, node);
+	else if (node[A]->cost >= 0 && node[B]->cost <= 0)
+		move_pos_and_neg(a, b, node);
+	else if (node[A]->cost <= 0 && node[B]->cost >= 0)
+		move_pos_and_neg(a, b, node);
+	pb(b, a);
+}
+
+int	calculate_operation_cost(t_node *a, t_node *b)
+{
+	if (b == NULL)
+	{
+		if (a->cost >= 0)
+			return (a->cost);
+		else
+			return (a->cost * -1);
+	}
+	if (a->cost >= 0 && b->cost >= 0)
+	{
+		if (a->cost > b->cost)
+			return (a->cost);
+		else
+			return (b->cost);
+	}
+	if (a->cost <= 0 && b->cost <= 0)
+	{
+		if (a->cost < b->cost)
+			return (a->cost * -1);
+		else
+			return (b->cost * -1);
+	}
+	if (a->cost >= 0 && b->cost <= 0)
+		return (a->cost + b->cost * -1);
+	return (a->cost * -1 + b->cost);
+}
+
+t_node	*find_adjacent_node(int index, t_node *head)
 {
 	t_node	*current;
 	t_node	*node;
 
 	current = head;
-	node = head;
-	while (current->next != NULL)
+	node = NULL;
+	while (current != NULL)
 	{
-		if (current->index < index && current->index > node->index)
+		if (current->index < index && (node == NULL
+				|| current->index > node->index))
 			node = current;
 		current = current->next;
 	}
-	return node;
-}
-
-void	calculate_next(t_node *a, t_node *b)
-{
-	t_node	*current;
-	int		total_cost;
-	int		min_cost;
-	t_node	*node;
-
-	total_cost = 0;
-	min_cost = 0;
-	current = a;
-	while (current != NULL)
-	{
-		print_node(current);
-		node = search_prev_node(current->index, b);
-		ft_printf(" prev:");
-		print_node(node);
-		current = current->next;
-		ft_printf("\n");
-
-	}
-}
-
-void	next_move(t_node **a, t_node **b)
-{
-	int	x;
-
-	x = 1;
-	while (x != 0)
-	{
-		scanf("%d", &x);
-		calculate_next(*a, *b);
-	}
+	return (node);
 }
 
 void	sort(t_node **a, t_node **b)
 {
-	print_stacks(*a, *b);
-	if (get_stack_len(*a) <= 3)
-		ft_printf("<3\n");
-	else
+	t_node	*current_node[2];
+	t_node	*operation_node[2];
+	int		min_cost;
+	int		cost;
+
+	while (*a != NULL)
 	{
-		pb(b, a);
-		if (get_stack_len(*a) > 3)
-			pb(b, a);
+		min_cost = -1;
+		current_node[A] = *a;
+		while (current_node[A] != NULL)
+		{
+			current_node[B] = find_adjacent_node(current_node[A]->index, *b);
+			cost = calculate_operation_cost(current_node[A], current_node[B]);
+			if (min_cost == -1 || cost < min_cost)
+			{
+				min_cost = cost;
+				operation_node[A] = current_node[A];
+				operation_node[B] = current_node[B];
+			}
+			current_node[A] = current_node[A]->next;
+		}
+		operate(a, b, operation_node);
 	}
-	print_stacks(*a, *b);
-	next_move(a, b);
+	sort_stack(b);
+	flush_stack(a, b);
 }
