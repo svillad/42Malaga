@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 17:18:46 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/04/07 23:01:48 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/04/11 19:23:34 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	ft_free_stack(t_node *head)
 	}
 }
 
-t_node	*find_min_node(t_node *head)
+t_node	*find_min_node_without_index(t_node *head)
 {
 	t_node	*current;
 	t_node	*min_node;
@@ -55,7 +55,7 @@ void	set_stack_indexes(t_node *head)
 	index = 0;
 	while (current != NULL)
 	{
-		min_node = find_min_node(head);
+		min_node = find_min_node_without_index(head);
 		if (min_node != NULL)
 			min_node->index = index;
 		current = current->next;
@@ -63,24 +63,13 @@ void	set_stack_indexes(t_node *head)
 	}
 }
 
-void	flush_stack(t_node **dst, t_node **src)
-{
-	t_node	*current;
-
-	current = *src;
-	while (*src != NULL)
-	{
-		pa(dst, src);
-		if (current->next != NULL)
-			current = current->next;
-	}
-}
-
-void	sort_stack(t_node **head)
+void	sort_descending(t_node **head)
 {
 	t_node	*current;
 	t_node	*max_node;
 
+	if (head == NULL || *head == NULL)
+		return ;
 	current = *head;
 	max_node = *head;
 	while (current != NULL)
@@ -90,7 +79,36 @@ void	sort_stack(t_node **head)
 		current = current->next;
 	}
 	while (max_node->cost > 0)
+	{
 		rb(head);
+	}
 	while (max_node->cost < 0)
+	{
 		rrb(head);
+	}
+}
+
+void	sort_ascending(t_node **head)
+{
+	t_node	*current;
+	t_node	*min_node;
+
+	if (head == NULL || *head == NULL)
+		return ;
+	current = *head;
+	min_node = *head;
+	while (current != NULL)
+	{
+		if (current->index < min_node->index)
+			min_node = current;
+		current = current->next;
+	}
+	while (min_node->cost > 0)
+	{
+		ra(head);
+	}
+	while (min_node->cost < 0)
+	{
+		rra(head);
+	}
 }

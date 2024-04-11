@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 17:18:46 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/04/06 17:33:57 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/04/11 19:09:25 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	print_stack(char *name, t_node *head)
 	current = head;
 	while (current != NULL)
 	{
-		ft_printf("[%d|%d|%d]:\t%d\n", current->position, current->index,
+		ft_printf("[%d|%d|%d]: %d\n", current->position, current->index,
 			current->cost, current->value);
 		current = current->next;
 	}

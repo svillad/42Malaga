@@ -6,11 +6,17 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 00:29:20 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/04/01 14:07:59 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/04/11 19:54:26 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+
+void	ft_error_with_message(char *error)
+{
+	ft_fprintf(STDERR_FILENO, "Error: %s", error);
+	exit(EXIT_FAILURE);
+}
 
 void	ft_simple_error(void)
 {
@@ -18,16 +24,62 @@ void	ft_simple_error(void)
 	exit(EXIT_FAILURE);
 }
 
-int	*parse_input(int argc, char **argv)
+int	*parse_input(int argc, char **argv, int *size)
 {
-	int	i;
-	int	*numbers;
+	int		i;
+	char	*input;
+	char	**args;
+	int		*numbers;
 
-	numbers = (int *)malloc((argc - 1) * sizeof(int));
+	if (argc > 2)
+		input = ft_join_args(argc, argv);
+	else
+		input = argv[1];
+	args = ft_split(input, ' ');
+	*size = ft_count_words(input, ' ');
+	if (argc > 2)
+		free(input);
+	numbers = (int *)malloc((*size) * sizeof(int));
 	if (numbers == NULL)
 		ft_simple_error();
 	i = -1;
-	while (++i < argc - 1)
-		numbers[i] = ft_atoi(argv[i + 1]);
+	while (++i < *size)
+		numbers[i] = ft_atoi(args[i]);
 	return (numbers);
+}
+
+char	*ft_strcat(char *s1, char *s2)
+{
+	char	*result;
+
+	result = ft_strjoin(s1, s2);
+	if (result == NULL)
+	{
+		if (s1 != NULL)
+			free(s1);
+		ft_simple_error();
+	}
+	return (result);
+}
+
+char	*ft_join_args(int argc, char **argv)
+{
+	char	*input;
+	char	*temp;
+	int		i;
+
+	input = ft_strdup("");
+	if (input == NULL)
+		ft_simple_error();
+	i = 0;
+	while (++i < argc)
+	{
+		temp = ft_strcat(input, argv[i]);
+		free(input);
+		input = temp;
+		temp = ft_strcat(input, " ");
+		free(input);
+		input = temp;
+	}
+	return (input);
 }
