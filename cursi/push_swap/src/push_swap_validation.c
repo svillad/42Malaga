@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 00:07:59 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/04/11 19:56:57 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/04/12 12:19:51 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,16 @@
 void	validate_quantity(int argc, char **argv)
 {
 	char	*input;
+	int		i;
 
 	if (argc < 2)
 		ft_simple_error();
+	i = 0;
+	while (++i < argc)
+	{
+		if (ft_strlen(argv[i]) == 0)
+			ft_simple_error();
+	}
 	input = ft_join_args(argc, argv);
 	if (ft_strlen(input) <= 1)
 		ft_simple_error();
@@ -109,5 +116,5 @@ void	validate_input(int argc, char **argv)
 	free(input);
 	validate_types(n, args);
 	validate_duplicates(n, args);
-	free(args);
+	ft_free_double_ptr(args);
 }

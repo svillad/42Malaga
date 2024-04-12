@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 18:51:25 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/04/11 17:27:19 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/04/12 12:59:55 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,5 +101,15 @@ void	ft_read_stdin(int temp[], char **files, char *input);
  * @return Returns 0 upon successful execution, otherwise returns an error code.
  */
 int		pipex(int argc, char **argv, char **envp);
+
+/**
+ * @brief Frees memory allocated for a double pointer array.
+ * This function frees memory allocated for a double pointer array
+ * (array of strings). It iterates through the array and frees each individual
+ * string, then frees the array itself.
+ * @param ptr The double pointer array to be freed.
+ * @return Returns NULL after freeing the memory.
+ */
+char	*ft_free_double_ptr(char **ptr);
 
 #endif

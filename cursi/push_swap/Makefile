@@ -6,7 +6,7 @@
 #    By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/07 11:03:31 by svilla-d          #+#    #+#              #
-#    Updated: 2024/04/11 20:47:35 by svilla-d         ###   ########.fr        #
+#    Updated: 2024/04/12 12:16:11 by svilla-d         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,10 +15,11 @@ SRC_DIR	:= src/
 OBJ_DIR	:= obj/
 INCLUDE	:= include
 LIBS	:= libs
-DEBUG_DIR := push_swap.dSYM
+DEBUG_DIR := *.dSYM
 LAST_DIR_FILE := obj/.last_dir
 
 TARGET	:= push_swap
+BONUS	:= checker
 CFLAGS 	:= -Wall -Wextra -Werror -g -fsanitize=address -I$(INCLUDE) -Ilibs/$(INCLUDE)
 LDFLAGS	:= -L./$(LIBS) -L.
 LDLIBS	:= -lft
@@ -91,6 +92,7 @@ fclean:
 	$(RM) -rf $(OBJ_DIR)
 	$(RM) $(NAME)
 	$(RM) $(TARGET)
+	$(RM) $(BONUS)
 	@make fclean -C $(LIBS)
 
 re: fclean all
@@ -98,5 +100,9 @@ re: fclean all
 $(TARGET): src/main.c $(NAME)
 	$(call PRINT_MESSAGE,$(GREEN),"Generating executable $(TARGET)...")
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $(TARGET) src/main.c $(NAME) $(LDLIBS)
+
+bonus: src/bonus.c $(NAME) $(TARGET)
+	$(call PRINT_MESSAGE,$(GREEN),"Generating executable $(BONUS)...")
+	$(CC) $(CFLAGS) $(LDFLAGS) -o checker src/bonus.c $(NAME) $(LDLIBS)
 
 #compile main.c gcc -o a.out main.c -L. -lft

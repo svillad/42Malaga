@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 00:29:20 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/04/11 19:54:26 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/04/12 11:32:18 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,20 @@ int	*parse_input(int argc, char **argv, int *size)
 	if (argc > 2)
 		input = ft_join_args(argc, argv);
 	else
-		input = argv[1];
+		input = ft_strdup(argv[1]);
 	args = ft_split(input, ' ');
 	*size = ft_count_words(input, ' ');
-	if (argc > 2)
-		free(input);
+	free(input);
 	numbers = (int *)malloc((*size) * sizeof(int));
 	if (numbers == NULL)
+	{
+		ft_free_double_ptr(args);
 		ft_simple_error();
+	}
 	i = -1;
 	while (++i < *size)
 		numbers[i] = ft_atoi(args[i]);
+	ft_free_double_ptr(args);
 	return (numbers);
 }
 
