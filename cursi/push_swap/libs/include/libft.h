@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 12:58:36 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/03/29 18:50:59 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/04/12 14:34:33 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,14 @@ int					ft_isascii(int c);
  * @author Sebastian Villa
  */
 int					ft_isprint(int c);
+/**
+ * @brief Checks if a string consists only of whitespace characters.
+ * This function checks if a string consists only of whitespace characters,
+ * including spaces, tabs, newlines, and carriage returns.
+ * @param str The string to be checked.
+ * @return 1 if the string consists only of whitespace characters, otherwise 0.
+ */
+int					ft_is_str_empty(const char *str);
 /**
  * @brief Converts a lowercase character to uppercase.
  * @param c (int): The character to convert to uppercase.

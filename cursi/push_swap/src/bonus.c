@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 23:29:05 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/04/12 13:48:55 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/04/12 23:44:42 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char	*ft_read_operations(int *size)
 	while (1)
 	{
 		line = get_next_line(STDIN_FILENO);
-		if (!line || (line && ft_strlen(line) == 1 && line[0] == '\n'))
+		if (!line)
 			break ;
 		if (line)
 		{

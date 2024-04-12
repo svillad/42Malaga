@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_swap_validation.c                             :+:      :+:    :+:   */
+/*   validations.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 00:07:59 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/04/12 12:19:51 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/04/12 23:49:57 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	validate_quantity(int argc, char **argv)
+char	*validate_quantity(int argc, char **argv)
 {
 	char	*input;
 	int		i;
@@ -22,41 +22,36 @@ void	validate_quantity(int argc, char **argv)
 	i = 0;
 	while (++i < argc)
 	{
-		if (ft_strlen(argv[i]) == 0)
+		if (ft_is_str_empty(argv[i]))
 			ft_simple_error();
 	}
-	input = ft_join_args(argc, argv);
-	if (ft_strlen(input) <= 1)
+	if (argc > 2)
+		input = ft_join_args(argc, argv);
+	else
+		input = ft_strdup(argv[1]);
+	if (ft_strlen(input) < 1)
+	{
+		free(input);
 		ft_simple_error();
+	}
+	return (input);
 }
 
-int	are_digits(const char *str)
+void	validate_multiple_args(int argc, char **argv)
 {
-	int	i;
-	int	is_negative;
-	int	is_positive;
+	int		size;
+	int		i;
 
-	i = -1;
-	while (str[++i])
+	if (argc > 2)
 	{
-		is_negative = str[i] == '-';
-		is_positive = str[i] == '+';
-		if (i < (int)ft_strlen(str) - 1)
+		i = 0;
+		while (++i < argc)
 		{
-			is_negative = is_negative && str[i + 1] && ft_isdigit(str[i + 1]);
-			is_positive = is_positive && str[i + 1] && ft_isdigit(str[i + 1]);
+			size = ft_count_words(argv[i], ' ');
+			if (size > 1)
+				ft_simple_error();
 		}
-		if (i > 0)
-		{
-			is_negative = is_negative && str[i - 1] && str[i - 1] == ' ';
-			is_positive = is_positive && str[i - 1] && str[i - 1] == ' ';
-		}
-		if ((is_negative || is_positive) && ft_strlen(str) <= 1)
-			return (FALSE);
-		if (!(ft_isdigit(str[i]) || is_negative || is_positive))
-			return (FALSE);
 	}
-	return (TRUE);
 }
 
 void	validate_types(int n, char **args)
@@ -109,11 +104,11 @@ void	validate_input(int argc, char **argv)
 	char	**args;
 	char	*input;
 
-	validate_quantity(argc, argv);
-	input = ft_join_args(argc, argv);
+	input = validate_quantity(argc, argv);
 	args = ft_split(input, ' ');
 	n = ft_count_words(input, ' ');
 	free(input);
+	validate_multiple_args(argc, argv);
 	validate_types(n, args);
 	validate_duplicates(n, args);
 	ft_free_double_ptr(args);

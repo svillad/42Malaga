@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:02:45 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/04/12 13:31:12 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/04/12 23:49:40 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,14 @@ typedef struct s_node
  * @param argv An array of strings representing the command-line arguments.
  */
 void				validate_input(int argc, char **argv);
+/**
+ * @brief Checks if a string consists only of digits.
+ * This function checks if a string consists only of digit characters (0-9) or 
+ * signs (+ and -).
+ * @param str The string to be checked.
+ * @return 1 if the string consists only of digits, otherwise 0.
+ */
+int					are_digits(const char *str);
 
 // moves
 /**

@@ -6,7 +6,7 @@
 #    By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/07 11:03:31 by svilla-d          #+#    #+#              #
-#    Updated: 2024/04/12 12:16:11 by svilla-d         ###   ########.fr        #
+#    Updated: 2024/04/12 23:26:42 by svilla-d         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,7 @@ CYAN    = \033[36m
 WHITE   = \033[37m
 
 # Files
-SRC_FILES	:= push_swap_validation.c push_swap_utils.c \
+SRC_FILES	:= validations.c validations_utils.c push_swap_utils.c \
 			stack_operations.c stack_utils.c \
 			node_operations.c \
 			sort_operations.c sort_utils.c \

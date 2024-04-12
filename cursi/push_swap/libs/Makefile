@@ -6,7 +6,7 @@
 #    By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/07 11:03:31 by svilla-d          #+#    #+#              #
-#    Updated: 2024/03/30 00:18:00 by svilla-d         ###   ########.fr        #
+#    Updated: 2024/04/12 14:33:14 by svilla-d         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,7 +43,7 @@ GET_NEXT_LINE_DIR	:= get_next_line/
 PIPEX_DIR			:= pipex/
 
 # Source files
-LIBFT_FILES := ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c ft_isprint.c ft_toupper.c ft_tolower.c \
+LIBFT_FILES := ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c ft_isprint.c ft_isstrempty.c ft_toupper.c ft_tolower.c \
             ft_strlen.c ft_strchr.c ft_strrchr.c ft_strncmp.c ft_strcmp.c ft_memchr.c ft_memcmp.c ft_strnstr.c ft_atoi.c \
             ft_memset.c ft_bzero.c ft_memcpy.c ft_memmove.c ft_strlcpy.c ft_strlcat.c \
             ft_calloc.c ft_strdup.c \
