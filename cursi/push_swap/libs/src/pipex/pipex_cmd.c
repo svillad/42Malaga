@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 13:09:08 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/03/29 21:46:40 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/04/13 17:54:09 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,13 @@ char	*ft_free_double_ptr(char **ptr)
 {
 	int	i;
 
-	i = -1;
-	while (ptr[++i])
-		free(ptr[i]);
-	free(ptr);
-	*ptr = NULL;
+	if (ptr != NULL)
+	{
+		i = -1;
+		while (ptr[++i] != NULL)
+			free(ptr[i]);
+		free(ptr);
+	}
 	return (NULL);
 }
 

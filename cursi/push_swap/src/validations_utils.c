@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 00:07:59 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/04/12 23:50:08 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/04/13 16:54:33 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,17 @@ int	are_digits(const char *str)
 			return (FALSE);
 	}
 	return (TRUE);
+}
+
+int	are_duplicates(int *numbers, int current_index)
+{
+	int	j;
+
+	j = -1;
+	while (++j < current_index)
+	{
+		if (numbers[j] == numbers[current_index])
+			return (TRUE);
+	}
+	return (FALSE);
 }

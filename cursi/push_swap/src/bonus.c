@@ -6,36 +6,37 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 23:29:05 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/04/12 23:44:42 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/04/13 19:05:25 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	validate_operation(char *operation, char *operations)
+void	validate_operation(char *line, char *operations)
 {
-	if (ft_strcmp(operation, "sa\n") == OK)
+	if (ft_strcmp(line, "sa\n") == OK)
 		return ;
-	else if (ft_strcmp(operation, "sb\n") == OK)
+	else if (ft_strcmp(line, "sb\n") == OK)
 		return ;
-	else if (ft_strcmp(operation, "ss\n") == OK)
+	else if (ft_strcmp(line, "ss\n") == OK)
 		return ;
-	else if (ft_strcmp(operation, "ra\n") == OK)
+	else if (ft_strcmp(line, "ra\n") == OK)
 		return ;
-	else if (ft_strcmp(operation, "rb\n") == OK)
+	else if (ft_strcmp(line, "rb\n") == OK)
 		return ;
-	else if (ft_strcmp(operation, "rr\n") == OK)
+	else if (ft_strcmp(line, "rr\n") == OK)
 		return ;
-	else if (ft_strcmp(operation, "rra\n") == OK)
+	else if (ft_strcmp(line, "rra\n") == OK)
 		return ;
-	else if (ft_strcmp(operation, "rrb\n") == OK)
+	else if (ft_strcmp(line, "rrb\n") == OK)
 		return ;
-	else if (ft_strcmp(operation, "rrr\n") == OK)
+	else if (ft_strcmp(line, "rrr\n") == OK)
 		return ;
-	else if (ft_strcmp(operation, "pa\n") == OK)
+	else if (ft_strcmp(line, "pa\n") == OK)
 		return ;
-	else if (ft_strcmp(operation, "pb\n") == OK)
+	else if (ft_strcmp(line, "pb\n") == OK)
 		return ;
+	free(line);
 	free(operations);
 	ft_simple_error();
 }
@@ -103,9 +104,9 @@ void	process(t_node **a, t_node **b, char *operations)
 
 int	main(int argc, char **argv)
 {
-	int		*numbers;
 	t_node	*a;
 	t_node	*b;
+	int		*numbers;
 	int		size;
 	char	*operations;
 
@@ -123,5 +124,6 @@ int	main(int argc, char **argv)
 		ft_printf("KO\n");
 	free(numbers);
 	free(operations);
+	ft_free_stack(a);
 	return (OK);
 }

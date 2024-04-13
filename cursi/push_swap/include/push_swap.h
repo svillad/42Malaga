@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:02:45 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/04/12 23:49:40 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/04/13 19:17:16 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,16 @@ void				validate_input(int argc, char **argv);
  * @return 1 if the string consists only of digits, otherwise 0.
  */
 int					are_digits(const char *str);
+/**
+ * @brief Checks if there are duplicates in an array up to a specified index.
+ * This function checks if there are any duplicate elements in an array up to a
+ * specified index.
+ * @param numbers An array of integers to be checked for duplicates.
+ * @param current_index The index up to which the array should be checked for
+ * duplicates.
+ * @return 1 if there are duplicates, otherwise 0.
+ */
+int					are_duplicates(int *numbers, int current_index);
 
 // moves
 /**

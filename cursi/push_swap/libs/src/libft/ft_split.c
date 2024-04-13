@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 15:53:28 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/03/29 18:34:28 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/04/13 19:18:46 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,12 @@ static char	**ft_allocate_memory(const char *s, char c)
 
 static void	*ft_free_memory(char **result, int i)
 {
-	while (i > 0)
-		free(result[--i]);
-	free(result);
+	if (result != NULL)
+	{
+		while (i > 0 && result[--i] != NULL)
+			free(result[i]);
+		free(result);
+	}
 	return (NULL);
 }
 
