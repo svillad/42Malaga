@@ -6,24 +6,28 @@
 #    By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/02 20:50:36 by svilla-d          #+#    #+#              #
-#    Updated: 2024/05/02 20:53:50 by svilla-d         ###   ########.fr        #
+#    Updated: 2024/05/04 17:34:29 by svilla-d         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Settings
+USER 	:= svilla-d
 SRC_DIR	:= src/
 OBJ_DIR	:= obj/
 INCLUDE	:= include
 LIBS	:= libs
+GRAPH_LIBS 	  := MLX42
+GRAPH_INCLUDE := MLX42/include/MLX42
 DEBUG_DIR := *.dSYM
 LAST_DIR_FILE := obj/.last_dir
 
 TARGET	:= so_long
 BONUS	:= checker
+
 # CFLAGS 	:= -Wall -Wextra -Werror -g -fsanitize=address -I$(INCLUDE) -Ilibs/$(INCLUDE)
-CFLAGS 	:= -Wall -Wextra -Werror -I$(INCLUDE) -Ilibs/$(INCLUDE) -I/opt/X11/include -Imlx
-LDFLAGS	:= -L./$(LIBS) -L.
-MLX_FLAGS = -Lmlx -lmlx -L/usr/X11/lib -lXext -lX11 -framework OpenGL -framework AppKit
+CFLAGS 	:= -Wall -Wextra -Werror -I$(INCLUDE) -Ilibs/$(INCLUDE) -I$(GRAPH_INCLUDE)
+LDFLAGS	:= -L./$(LIBS) -L. -L./$(GRAPH_LIBS)
+MLX_FLAGS = -lmlx42 -framework Cocoa -framework OpenGL -framework IOKit -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib/"
 LDLIBS	:= -lft
 
 CC 		:= gcc
@@ -72,6 +76,7 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 
 $(NAME): $(OBJ)
 	@make -C $(LIBS)
+	@make -C $(GRAPH_LIBS)
 	$(call PRINT_MESSAGE,$(CYAN),"Creating library $@...")
 	$(AR) $(NAME) $(OBJ)
 	@$(RM) $(LAST_DIR_FILE)
@@ -82,6 +87,7 @@ clean:
 	$(RM) -rf $(OBJ_DIR)
 	$(RM) $(NAME)
 	@make fclean -C $(LIBS)
+	@make fclean -C $(GRAPH_LIBS)
 
 fclean:
 	$(call PRINT_MESSAGE,$(MAGENTA),"Removing all generated files...")
@@ -91,6 +97,7 @@ fclean:
 	$(RM) $(TARGET)
 	$(RM) $(BONUS)
 	@make fclean -C $(LIBS)
+	@make fclean -C $(GRAPH_LIBS)
 
 re: fclean all
 
