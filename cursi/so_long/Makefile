@@ -6,7 +6,7 @@
 #    By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/02 20:50:36 by svilla-d          #+#    #+#              #
-#    Updated: 2024/05/04 19:51:47 by svilla-d         ###   ########.fr        #
+#    Updated: 2024/05/17 00:11:02 by svilla-d         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,7 @@ CYAN    = \033[36m
 WHITE   = \033[37m
 
 # Files
-SRC_FILES	:= test.c
+SRC_FILES	:= test.c map.c utils.c validations.c
 SRC 		= $(addprefix $(SRC_DIR), $(SRC_FILES))
 OBJ 		= $(addprefix $(OBJ_DIR), $(SRC_FILES:.c=.o))
 

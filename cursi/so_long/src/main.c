@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/17 00:40:17 by svilla-d          #+#    #+#             */
+/*   Updated: 2024/05/17 00:46:22 by svilla-d         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 // -----------------------------------------------------------------------------
 // Codam Coding College, Amsterdam @ 2022-2023 by W2Wizard.
 // See README in the root project for more information.
@@ -7,6 +19,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "MLX42.h"
+#include "so_long.h"
 
 #define WIDTH 512
 #define HEIGHT 512
@@ -58,6 +71,13 @@ void ft_hook(void* param)
 
 int32_t main(void)
 {
+	char *name = "maps/map1.ber";
+	t_map map;
+	map.name = name;
+	init_map(&map);
+	read_map(&map);
+	validate_map(&map);
+
 	mlx_t* mlx;
 
 	// Gotta error check this stuff
