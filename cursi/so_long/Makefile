@@ -6,7 +6,7 @@
 #    By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/02 20:50:36 by svilla-d          #+#    #+#              #
-#    Updated: 2024/05/20 13:25:17 by svilla-d         ###   ########.fr        #
+#    Updated: 2024/05/20 16:41:42 by svilla-d         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,15 +14,18 @@
 USER 	:= svilla-d
 SRC_DIR	:= src/
 OBJ_DIR	:= obj/
+BONUS_DIR	  := bonus/
+BONUS_OBJ_DIR := bonus_obj/
 INCLUDE	:= include
 LIBS	:= libs
 GRAPH_LIBS 	  := MLX42
 GRAPH_INCLUDE := MLX42/include/MLX42
 DEBUG_DIR := *.dSYM
 LAST_DIR_FILE := obj/.last_dir
+LAST_BONUS_DIR_FILE := bonus_obj/.last_dir
 
 TARGET	:= so_long
-BONUS	:= so_long
+BONUS	:= so_long_bonus
 
 # CFLAGS 	:= -Wall -Wextra -Werror -g -fsanitize=address -I$(INCLUDE) -Ilibs/$(INCLUDE)
 CFLAGS 	:= -Wall -Wextra -Werror -I$(INCLUDE) -Ilibs/$(INCLUDE) -I$(GRAPH_INCLUDE)
@@ -36,6 +39,7 @@ AR		:= ar -crs
 RM		:= rm -f
 
 NAME := libsolong.a
+BONUS_NAME := libsolong_bonus.a
 
 # Colors
 RESET   = \033[0m
@@ -49,8 +53,10 @@ WHITE   = \033[37m
 
 # Files
 SRC_FILES	:= map.c utils.c validations.c game.c player.c coin.c path.c move.c
-SRC 		= $(addprefix $(SRC_DIR), $(SRC_FILES))
 OBJ 		= $(addprefix $(OBJ_DIR), $(SRC_FILES:.c=.o))
+
+BONUS_FILES	:= map.c utils.c validations.c enemy.c game.c player.c coin.c path.c move.c
+BONUS_OBJ	= $(addprefix $(BONUS_OBJ_DIR), $(BONUS_FILES:.c=.o))
 
 # Message
 define PRINT_MESSAGE
@@ -64,6 +70,10 @@ endef
 all: $(TARGET)
 	$(call PRINT_MESSAGE,$(GREEN),"Successful building!!!")
 
+bonus: $(BONUS)
+	$(call PRINT_MESSAGE,$(GREEN),"Successful building!!!")
+
+# General Part
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 	@mkdir -p $(dir $@)
 	@dir=$$(dirname $<); \
@@ -81,12 +91,33 @@ $(NAME): $(OBJ)
 	$(call PRINT_MESSAGE,$(CYAN),"Creating library $@...")
 	$(AR) $(NAME) $(OBJ)
 	@$(RM) $(LAST_DIR_FILE)
+
+# Bonus Part
+$(BONUS_OBJ_DIR)%.o: $(BONUS_DIR)%.c
+	@mkdir -p $(dir $@)
+	@dir=$$(dirname $<); \
+    if [ ! -f "$(LAST_BONUS_DIR_FILE)" ] || [ "$$dir" != "$$(cat $(LAST_BONUS_DIR_FILE))" ]; then \
+    	echo "$(BLUE)\n*********************************************"; \
+		echo "* Compiling $$dir"; \
+		echo "*********************************************$(RESET)\n"; \
+    	echo "$$dir" > $(LAST_BONUS_DIR_FILE); \
+    fi
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(BONUS_NAME): $(BONUS_OBJ)
+	@make -C $(LIBS)
+	@make -C $(GRAPH_LIBS)
+	$(call PRINT_MESSAGE,$(CYAN),"Creating library $@...")
+	$(AR) $(BONUS_NAME) $(BONUS_OBJ)
+	@$(RM) $(LAST_BONUS_DIR_FILE)
 	
 clean: 
 	$(call PRINT_MESSAGE,$(MAGENTA),"Cleaning temporary files of $(TARGET)...")
 	$(RM) -rf $(DEBUG_DIR)
 	$(RM) -rf $(OBJ_DIR)
+	$(RM) -rf $(BONUS_OBJ_DIR)
 	$(RM) $(NAME)
+	$(RM) $(BONUS_NAME)
 	@make fclean -C $(LIBS)
 	@make fclean -C $(GRAPH_LIBS)
 
@@ -94,7 +125,9 @@ fclean:
 	$(call PRINT_MESSAGE,$(MAGENTA),"Removing all generated files...")
 	$(RM) -rf $(DEBUG_DIR)
 	$(RM) -rf $(OBJ_DIR)
+	$(RM) -rf $(BONUS_OBJ_DIR)
 	$(RM) $(NAME)
+	$(RM) $(BONUS_NAME)
 	$(RM) $(TARGET)
 	$(RM) $(BONUS)
 	@make fclean -C $(LIBS)
@@ -106,8 +139,8 @@ $(TARGET): src/main.c $(NAME)
 	$(call PRINT_MESSAGE,$(GREEN),"Generating executable $(TARGET)...")
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $(TARGET) src/main.c $(NAME) $(LDLIBS) $(MLX_FLAGS)
 
-bonus: src/bonus.c $(NAME) $(TARGET)
+$(BONUS): bonus/main.c $(BONUS_NAME) 
 	$(call PRINT_MESSAGE,$(GREEN),"Generating executable $(BONUS)...")
-	$(CC) $(CFLAGS) $(LDFLAGS) -o checker src/bonus.c $(NAME) $(LDLIBS) $(MLX_FLAGS)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $(BONUS) bonus/main.c $(BONUS_NAME) $(LDLIBS) $(MLX_FLAGS)
 
 #compile main.c gcc -o a.out main.c -L. -lft

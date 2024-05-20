@@ -6,11 +6,11 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 10:27:35 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/05/20 18:30:35 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/05/20 18:29:50 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "so_long_bonus.h"
 
 void	move_player(t_game *game, int x, int y, t_player_action action)
 {
@@ -20,7 +20,7 @@ void	move_player(t_game *game, int x, int y, t_player_action action)
 		update_direction(game, action);
 		if (action == FIGHT)
 			perform_fight_action(game, &x, &y);
-		if (handle_map_interaction(game, x, y) == false)
+		if (handle_map_interaction(game, x, y, action) == false)
 			return ;
 		update_player_position(game, x, y, action);
 		if (action != STOP)
@@ -51,6 +51,8 @@ char	*generate_player_filename(int i, t_player_action action)
 		ft_strlcat(filename, "S", size);
 	else if (action == FIGHT)
 		ft_strlcat(filename, "F", size);
+	else if (action == DIED)
+		ft_strlcat(filename, "X", size);
 	n = ft_itoa(i + 1);
 	ft_strlcat(filename, n, size);
 	ft_strlcat(filename, ".png", size);
@@ -88,6 +90,7 @@ void	load_player_sprites(t_game *game)
 	load_action_images(game, LEFT);
 	load_action_images(game, RIGHT);
 	load_action_images(game, FIGHT);
+	load_action_images(game, DIED);
 	game->player.img = game->player.sprites[STOP][0];
 	game->player.img->instances[0].x = WIDTH * game->player.x;
 	game->player.img->instances[0].y = HEIGHT * game->player.y;

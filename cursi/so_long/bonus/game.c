@@ -6,11 +6,11 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 10:26:53 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/05/20 18:25:20 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/05/20 18:52:15 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "so_long_bonus.h"
 
 void	init_parameters(t_game *game)
 {
@@ -19,6 +19,7 @@ void	init_parameters(t_game *game)
 
 	game->moves = 0;
 	game->total_coins = 0;
+	game->total_enemies = 0;
 	game->collected_coins = 0;
 	i = -1;
 	while (++i < game->map.height)
@@ -28,6 +29,8 @@ void	init_parameters(t_game *game)
 		{
 			if (game->map.value[i][j] == 'C')
 				game->total_coins++;
+			if (game->map.value[i][j] == 'M')
+				game->total_enemies++;
 			if (game->map.value[i][j] == 'P')
 			{
 				game->player.y = i;
@@ -49,10 +52,14 @@ void	load_images(t_game *game)
 	game->exit.texture = mlx_load_png("./textures/kamehouse.png");
 	game->exit.img = mlx_texture_to_image(game->mlx, game->exit.texture);
 	load_coins(game);
+	load_enemies(game);
 }
 
-void	draw_map(int i, int j, int *n_coin, t_game *game)
+void	draw_map(int i, int j, t_game *game)
 {
+	static int	n_coin = 0;
+	static int	n_enemy = 0;
+
 	mlx_image_to_window(game->mlx, game->bg.img, WIDTH * j, HEIGHT * i);
 	if (game->map.value[i][j] == '1')
 	{
@@ -61,9 +68,15 @@ void	draw_map(int i, int j, int *n_coin, t_game *game)
 	}
 	else if (game->map.value[i][j] == 'C')
 	{
-		mlx_image_to_window(game->mlx, game->coin[*n_coin].img, WIDTH * j,
+		mlx_image_to_window(game->mlx, game->coin[n_coin].img, WIDTH * j,
 			HEIGHT * i);
-		(*n_coin)++;
+		n_coin++;
+	}
+	else if (game->map.value[i][j] == 'M')
+	{
+		mlx_image_to_window(game->mlx, game->enemy[n_enemy].img, WIDTH * j,
+			HEIGHT * i);
+		n_enemy++;
 	}
 	else if (game->map.value[i][j] == 'E')
 	{
@@ -99,20 +112,18 @@ void	load_game(t_game *game)
 {
 	int	i;
 	int	j;
-	int	n_coin;
 
 	game->mlx = mlx_init(WIDTH * game->map.width, HEIGHT * game->map.height,
 			"so_long", false);
 	if (!game->mlx)
 		ft_error_map(&game->map, "could not load mlx");
 	load_images(game);
-	n_coin = 0;
 	i = -1;
 	while (++i < game->map.height)
 	{
 		j = -1;
 		while (++j < game->map.width)
-			draw_map(i, j, &n_coin, game);
+			draw_map(i, j, game);
 	}
 	i = -1;
 	load_player_sprites(game);

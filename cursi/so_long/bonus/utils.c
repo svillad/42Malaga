@@ -6,11 +6,11 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 00:40:31 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/05/20 18:51:19 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/05/20 18:52:21 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "so_long_bonus.h"
 
 void	animation(void *param)
 {
@@ -57,6 +57,7 @@ void	end_game(t_game *game)
 	{
 		delete_player(game);
 		delete_all_coins(game);
+		delete_all_enemies(game);
 		mlx_delete_image(game->mlx, game->bg.img);
 		mlx_delete_texture(game->bg.texture);
 		j = -1;

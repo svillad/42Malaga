@@ -6,11 +6,11 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 00:40:17 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/05/20 18:40:08 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/05/20 18:17:44 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "so_long_bonus.h"
 
 void	play_game(t_game *game)
 {

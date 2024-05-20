@@ -6,11 +6,11 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 12:35:08 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/05/20 18:29:09 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/05/20 17:25:37 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "so_long_bonus.h"
 
 void	update_direction(t_game *game, t_player_action action)
 {
@@ -30,7 +30,7 @@ void	perform_fight_action(t_game *game, int *x, int *y)
 		*x = 1;
 }
 
-bool	handle_map_interaction(t_game *game, int x, int y)
+bool	handle_map_interaction(t_game *game, int x, int y, t_player_action act)
 {
 	int	py;
 	int	px;
@@ -41,6 +41,17 @@ bool	handle_map_interaction(t_game *game, int x, int y)
 		return (false);
 	if (game->map.value[py + y][px + x] == 'C')
 		delete_coin(game, px + x, py + y);
+	if (game->map.value[py + y][px + x] == 'M')
+	{
+		if (act == FIGHT)
+			delete_enemy(game, px + x, py + y);
+		else
+		{
+			game->player.is_alive = false;
+			ft_printf("I'm sorry, you've been defeated\n");
+			ft_printf("* Have you tried using SPACE? *\n");
+		}
+	}
 	if (game->map.value[py][px] != 'E')
 		game->map.value[py][px] = '0';
 	if (game->map.value[py + y][px + x] != 'E')
@@ -62,6 +73,8 @@ void	update_player_position(t_game *game, int x, int y, t_player_action act)
 		game->player.current_sprite = -1;
 	game->player.current_sprite++;
 	sprite = game->player.current_sprite;
+	if (!game->player.is_alive)
+		act = DIED;
 	if (act != FIGHT)
 		game->player.img = game->player.sprites[act][sprite];
 	else
