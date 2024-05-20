@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 12:58:36 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/04/12 14:34:33 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/05/20 13:17:15 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,6 @@ int					ft_toupper(int c);
 /**
  * @brief Converts an uppercase character to lowercase.
  * @param c (int): The character to convert to lowercase.
-
  * @return The function returns the character converted to lowercase if `c` is an
  *         uppercase letter. If `c` is not an uppercase letter, it returns the
  *         same character unchanged.
@@ -167,8 +166,7 @@ int					ft_strcmp(const char *s1, const char *s2);
  * @param value (int): The byte to search for in the memory region.
  * @param num (size_t): The number of bytes to search.
  * @return The function returns a pointer to the first byte with the `value`
- *         value found in the memory region pointed to by `ptr`,
-	or a null pointer
+ *         value found in the memory region pointed to by `ptr`,or a null pointer
  *         if `value` is not found in the region. \n
  * @ref <string.h>
  * @author Sebastian Villa
@@ -193,8 +191,7 @@ int					ft_memcmp(const void *s1, const void *s2, size_t n);
  * @param s1 (const char *): The string in which the search will be performed.
  * @param s2 (const char *): The substring to search for in `s1`.
  * @param n (size_t): The maximum number of characters to examine in `s1`.
-
-* @return  The function returns a pointer to the first occurrence of `s2` in `s1`
+ * @return The function returns a pointer to the first occurrence of `s2` in `s1`
  *         within the first `n` characters of `s1`,
 	or a null pointer if `s2` is not
  *         found in the search region.
@@ -218,8 +215,7 @@ int					ft_atoi(const char *str);
  * @param ptr (void *): A pointer to the memory block to be filled.
  * @param value (int): The value with which the memory block will be filled.
  * @param n (size_t): The number of bytes to fill with the specified value.
-
-* @return  The function returns a pointer to the `ptr` memory block after filling
+ * @return  The function returns a pointer to the ptr memory block after filling
  * 			it.
  * @ref <string.h>
  * @author Sebastian Villa
@@ -309,6 +305,16 @@ void				*ft_calloc(size_t count, size_t size);
  * @author Sebastian Villa
  */
 char				*ft_strdup(const char *src);
+/**
+ * @brief Duplicates a string of characters to a new memory location.
+ * @param src (const char *): The string of characters to duplicate.
+ * @param n (int):allocate memory size.
+ * @return A pointer to the new duplicated string, or NULL if memory allocation
+ *         fails.
+ * @ref <string.h>
+ * @author Sebastian Villa
+ */
+char				*ft_strndup(const char *src, int n);
 /**
  * @brief Creates a new string of characters (substring) from the given string.
  * @param s The original string.

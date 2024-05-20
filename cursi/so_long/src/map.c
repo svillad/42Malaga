@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 00:40:21 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/05/17 00:45:18 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/05/20 11:43:02 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,14 @@ void	add_line(t_map *map, const char *line)
 			ft_error_map(map, "could not allocate memory");
 		i = -1;
 		while (++i < map->height)
-			new_lines[i] = map->map[i];
-		if (map->map)
-			free(map->map);
-		map->map = new_lines;
+			new_lines[i] = map->value[i];
+		if (map->value)
+			free(map->value);
+		map->value = new_lines;
 		map->capacity = new_capacity;
 	}
-	map->map[map->height] = ft_strdup(line);
-	if (map->map[map->height] == NULL)
+	map->value[map->height] = ft_strtrim(line, "\n");
+	if (map->value[map->height] == NULL)
 		ft_error_map(map, "could not allocate memory");
 	map->height++;
 }
@@ -62,39 +62,34 @@ void	print_map(t_map *map)
 	i = -1;
 	ft_printf("h:%d w:%d c:%d\n", map->height, map->width, map->capacity);
 	while (++i < map->height)
-		ft_printf("%s\n", map->map[i]);
+		ft_printf("%s\n", map->value[i]);
 	ft_printf("\n");
 }
 
-void	init_map(t_map *map)
-{
-	map->map = NULL;
-	map->height = 0;
-	map->width = 0;
-	map->capacity = 0;
-}
-
-void	read_map(t_map *map)
+void	read_map(t_map *map, char *path)
 {
 	int		fd;
 	char	*line;
 
+	map->value = NULL;
+	map->name = path;
+	map->height = 0;
+	map->width = 0;
+	map->capacity = 0;
 	check_extension(map);
 	fd = open(map->name, O_RDONLY);
 	if (fd < 0)
-		ft_error_map(map, "could not open the file");
+		ft_error_map(NULL, "could not open the file");
 	while (TRUE)
 	{
 		line = get_next_line(fd);
 		if (!line)
 			break ;
-		if (line[ft_strlen(line) - 1] == '\n')
-			line[ft_strlen(line) - 1] = '\0';
 		map->width = ft_strlen(line);
 		add_line(map, line);
 		if (line)
 			free(line);
 	}
 	close(fd);
-	print_map(map);
+	validate_map(map);
 }

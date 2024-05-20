@@ -6,7 +6,7 @@
 #    By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/02 20:50:36 by svilla-d          #+#    #+#              #
-#    Updated: 2024/05/17 00:11:02 by svilla-d         ###   ########.fr        #
+#    Updated: 2024/05/20 13:25:17 by svilla-d         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ DEBUG_DIR := *.dSYM
 LAST_DIR_FILE := obj/.last_dir
 
 TARGET	:= so_long
-BONUS	:= checker
+BONUS	:= so_long
 
 # CFLAGS 	:= -Wall -Wextra -Werror -g -fsanitize=address -I$(INCLUDE) -Ilibs/$(INCLUDE)
 CFLAGS 	:= -Wall -Wextra -Werror -I$(INCLUDE) -Ilibs/$(INCLUDE) -I$(GRAPH_INCLUDE)
@@ -48,7 +48,7 @@ CYAN    = \033[36m
 WHITE   = \033[37m
 
 # Files
-SRC_FILES	:= test.c map.c utils.c validations.c
+SRC_FILES	:= map.c utils.c validations.c game.c player.c coin.c path.c move.c
 SRC 		= $(addprefix $(SRC_DIR), $(SRC_FILES))
 OBJ 		= $(addprefix $(OBJ_DIR), $(SRC_FILES:.c=.o))
 

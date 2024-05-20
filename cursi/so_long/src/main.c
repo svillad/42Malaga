@@ -6,103 +6,33 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 00:40:17 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/05/17 00:46:22 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/05/20 12:01:54 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// -----------------------------------------------------------------------------
-// Codam Coding College, Amsterdam @ 2022-2023 by W2Wizard.
-// See README in the root project for more information.
-// -----------------------------------------------------------------------------
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include "MLX42.h"
 #include "so_long.h"
 
-#define WIDTH 512
-#define HEIGHT 512
-
-static mlx_image_t* image;
-
-// -----------------------------------------------------------------------------
-
-int32_t ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a)
+void	play_game(t_game *game)
 {
-    return (r << 24 | g << 16 | b << 8 | a);
+	mlx_key_hook(game->mlx, key_press_event, game);
+	mlx_loop_hook(game->mlx, animation, game);
+	mlx_loop(game->mlx);
 }
 
-void ft_randomize(void* param)
+int	main(int argc, char **argv)
 {
-	(void)param;
-	for (uint32_t i = 0; i < image->width; ++i)
+	t_game	game;
+
+	if (argc != 2)
 	{
-		for (uint32_t y = 0; y < image->height; ++y)
-		{
-			uint32_t color = ft_pixel(
-				rand() % 0xFF, // R
-				rand() % 0xFF, // G
-				rand() % 0xFF, // B
-				rand() % 0xFF  // A
-			);
-			mlx_put_pixel(image, i, y, color);
-		}
+		ft_error_map(NULL, "number arguments is incorrect");
+		return (0);
 	}
-}
-
-void ft_hook(void* param)
-{
-	mlx_t* mlx = param;
-
-	if (mlx_is_key_down(mlx, MLX_KEY_ESCAPE))
-		mlx_close_window(mlx);
-	if (mlx_is_key_down(mlx, MLX_KEY_UP))
-		image->instances[0].y -= 5;
-	if (mlx_is_key_down(mlx, MLX_KEY_DOWN))
-		image->instances[0].y += 5;
-	if (mlx_is_key_down(mlx, MLX_KEY_LEFT))
-		image->instances[0].x -= 5;
-	if (mlx_is_key_down(mlx, MLX_KEY_RIGHT))
-		image->instances[0].x += 5;
-}
-
-// -----------------------------------------------------------------------------
-
-int32_t main(void)
-{
-	char *name = "maps/map1.ber";
-	t_map map;
-	map.name = name;
-	init_map(&map);
-	read_map(&map);
-	validate_map(&map);
-
-	mlx_t* mlx;
-
-	// Gotta error check this stuff
-	if (!(mlx = mlx_init(WIDTH, HEIGHT, "MLX42", true)))
-	{
-		puts(mlx_strerror(mlx_errno));
-		return(EXIT_FAILURE);
-	}
-	if (!(image = mlx_new_image(mlx, 128, 128)))
-	{
-		mlx_close_window(mlx);
-		puts(mlx_strerror(mlx_errno));
-		return(EXIT_FAILURE);
-	}
-	if (mlx_image_to_window(mlx, image, 0, 0) == -1)
-	{
-		mlx_close_window(mlx);
-		puts(mlx_strerror(mlx_errno));
-		return(EXIT_FAILURE);
-	}
-	
-	mlx_loop_hook(mlx, ft_randomize, mlx);
-	mlx_loop_hook(mlx, ft_hook, mlx);
-
-	mlx_loop(mlx);
-	mlx_terminate(mlx);
+	read_map(&game.map, argv[1]);
+	init_parameters(&game);
+	validate_path(&game);
+	load_game(&game);
+	play_game(&game);
+	end_game(&game);
 	return (EXIT_SUCCESS);
 }
