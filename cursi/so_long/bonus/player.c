@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 10:27:35 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/05/20 18:29:50 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/05/20 19:57:43 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,10 @@
 
 void	move_player(t_game *game, int x, int y, t_player_action action)
 {
+	char				*moves;
+	static mlx_image_t	*text1 = NULL;
+	static mlx_image_t	*text2 = NULL;
+
 	if (game->player.is_alive)
 	{
 		game->player.time = 0;
@@ -26,7 +30,12 @@ void	move_player(t_game *game, int x, int y, t_player_action action)
 		if (action != STOP)
 		{
 			game->moves++;
-			ft_printf("%d\n", game->moves);
+			moves = ft_itoa(game->moves);
+			mlx_delete_image(game->mlx, text1);
+			mlx_delete_image(game->mlx, text2);
+			text1 = mlx_put_string(game->mlx, "Moves: ", 0, 0);
+			text2 = mlx_put_string(game->mlx, moves, 70, 0);
+			free(moves);
 		}
 		check_game_status(game, action);
 	}

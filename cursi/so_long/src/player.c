@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 10:27:35 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/05/20 18:30:35 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/05/20 19:41:22 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,19 @@
 
 void	move_player(t_game *game, int x, int y, t_player_action action)
 {
-	if (game->player.is_alive)
+	game->player.time = 0;
+	update_direction(game, action);
+	if (action == FIGHT)
+		perform_fight_action(game, &x, &y);
+	if (handle_map_interaction(game, x, y) == false)
+		return ;
+	update_player_position(game, x, y, action);
+	if (action != STOP)
 	{
-		game->player.time = 0;
-		update_direction(game, action);
-		if (action == FIGHT)
-			perform_fight_action(game, &x, &y);
-		if (handle_map_interaction(game, x, y) == false)
-			return ;
-		update_player_position(game, x, y, action);
-		if (action != STOP)
-		{
-			game->moves++;
-			ft_printf("%d\n", game->moves);
-		}
-		check_game_status(game, action);
+		game->moves++;
+		ft_printf("%d\n", game->moves);
 	}
+	check_game_status(game, action);
 }
 
 char	*generate_player_filename(int i, t_player_action action)

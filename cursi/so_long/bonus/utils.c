@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 00:40:31 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/05/20 18:52:21 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/05/20 19:49:48 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	animation(void *param)
 
 	game = param;
 	game->player.time++;
-	if (!game->player.is_alive)
+	if (game->win || !game->player.is_alive)
 	{
 		if (game->player.time == 100)
 			mlx_close_window(game->mlx);

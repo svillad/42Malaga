@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 13:02:18 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/05/20 18:42:52 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/05/20 19:38:46 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ typedef struct s_game
 	int				total_coins;
 	int				collected_coins;
 	int				moves;
+	bool			win;
 	mlx_t			*mlx;
 }					t_game;
 //	map functions

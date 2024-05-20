@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 10:26:53 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/05/20 18:25:20 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/05/20 19:43:01 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	init_parameters(t_game *game)
 	int	i;
 	int	j;
 
+	game->win = false;
 	game->moves = 0;
 	game->total_coins = 0;
 	game->collected_coins = 0;
@@ -77,21 +78,24 @@ void	key_press_event(mlx_key_data_t keycode, void *param)
 	mlx_t	*mlx;
 
 	game = param;
-	mlx = game->mlx;
-	if (keycode.action == MLX_PRESS)
+	if (!game->win)
 	{
-		if (keycode.key == MLX_KEY_ESCAPE)
-			mlx_close_window(mlx);
-		else if (keycode.key == MLX_KEY_UP || keycode.key == MLX_KEY_W)
-			move_player(game, 0, -1, UP);
-		else if (keycode.key == MLX_KEY_DOWN || keycode.key == MLX_KEY_S)
-			move_player(game, 0, +1, DOWN);
-		else if (keycode.key == MLX_KEY_LEFT || keycode.key == MLX_KEY_A)
-			move_player(game, -1, 0, LEFT);
-		else if (keycode.key == MLX_KEY_RIGHT || keycode.key == MLX_KEY_D)
-			move_player(game, +1, 0, RIGHT);
-		else if (keycode.key == MLX_KEY_SPACE)
-			move_player(game, 0, 0, FIGHT);
+		mlx = game->mlx;
+		if (keycode.action == MLX_PRESS)
+		{
+			if (keycode.key == MLX_KEY_ESCAPE)
+				mlx_close_window(mlx);
+			else if (keycode.key == MLX_KEY_UP || keycode.key == MLX_KEY_W)
+				move_player(game, 0, -1, UP);
+			else if (keycode.key == MLX_KEY_DOWN || keycode.key == MLX_KEY_S)
+				move_player(game, 0, +1, DOWN);
+			else if (keycode.key == MLX_KEY_LEFT || keycode.key == MLX_KEY_A)
+				move_player(game, -1, 0, LEFT);
+			else if (keycode.key == MLX_KEY_RIGHT || keycode.key == MLX_KEY_D)
+				move_player(game, +1, 0, RIGHT);
+			else if (keycode.key == MLX_KEY_SPACE)
+				move_player(game, 0, 0, FIGHT);
+		}
 	}
 }
 
