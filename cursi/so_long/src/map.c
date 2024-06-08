@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 00:40:21 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/05/20 11:43:02 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/06/08 20:07:25 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	read_map(t_map *map, char *path)
 	char	*line;
 
 	map->value = NULL;
-	map->name = path;
+	map->name = ft_strdup(path);
 	map->height = 0;
 	map->width = 0;
 	map->capacity = 0;

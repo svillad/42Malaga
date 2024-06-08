@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 00:40:31 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/05/20 19:49:48 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/06/08 20:06:34 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ void	free_map(t_map *map)
 	}
 	if (map->value)
 		free(map->value);
+	if (map->name)
+		free(map->name);
 	map->value = NULL;
 	map->height = 0;
 	map->width = 0;
@@ -70,6 +72,7 @@ void	end_game(t_game *game)
 		mlx_delete_texture(game->exit.texture);
 		free_map(&game->map);
 	}
+	mlx_terminate(game->mlx);
 }
 
 void	ft_error_map(t_map *map, const char *message)
