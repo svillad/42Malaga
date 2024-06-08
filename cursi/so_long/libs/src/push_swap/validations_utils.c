@@ -25,13 +25,13 @@ int	are_digits(const char *str)
 		is_positive = str[i] == '+';
 		if (i < (int)ft_strlen(str) - 1)
 		{
-			is_negative = is_negative && str[i + 1] && ft_isdigit(str[i + 1]);
-			is_positive = is_positive && str[i + 1] && ft_isdigit(str[i + 1]);
+			is_negative *= ft_isdigit(str[i + 1]);
+			is_positive *= ft_isdigit(str[i + 1]);
 		}
 		if (i > 0)
 		{
-			is_negative = is_negative && str[i - 1] && str[i - 1] == ' ';
-			is_positive = is_positive && str[i - 1] && str[i - 1] == ' ';
+			is_negative *= str[i - 1] == ' ';
+			is_positive *= str[i - 1] == ' ';
 		}
 		if ((is_negative || is_positive) && ft_strlen(str) <= 1)
 			return (FALSE);
