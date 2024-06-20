@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 19:02:26 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/03/07 15:39:04 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/06/19 11:35:27 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	ft_read_stdin(int temp[], char **files, char *input)
 	{
 		ft_putstr_fd(files[MSG], STDOUT_FILENO);
 		line = get_next_line(STDIN_FILENO);
-		if (line && strncmp(line, files[LIM], strlen(files[LIM])) == OK)
+		if (line && ft_strncmp(line, files[LIM], strlen(files[LIM])) == OK)
 			break ;
 		if (line && input)
 		{

@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 13:02:18 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/05/20 19:38:46 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/06/20 12:38:55 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ void				read_map(t_map *map, char *path);
 //	utils functions
 void				animation(void *param);
 void				ft_error_map(t_map *map, const char *message);
+void				ft_error_game(t_game *game, const char *message);
 void				end_game(t_game *game);
 //	validation functions
 void				validate_map(t_map *map);

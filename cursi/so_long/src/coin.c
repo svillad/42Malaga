@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 11:17:18 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/05/20 15:12:23 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/06/20 13:41:44 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,26 @@ char	*generate_coin_filename(void)
 	return (filename);
 }
 
+void	load_simple_coin(t_game *game, int c, int i, int j)
+{
+	char	*filename;
+
+	filename = generate_coin_filename();
+	game->coin[c].texture = mlx_load_png(filename);
+	if (!game->coin[c].texture)
+		ft_error_game(game, "could not load texture");
+	game->coin[c].img = mlx_texture_to_image(game->mlx,
+			game->coin[c].texture);
+	game->coin[c].x = j;
+	game->coin[c].y = i;
+	c++;
+	free(filename);
+}
+
 void	load_coins(t_game *game)
 {
 	int		i;
 	int		j;
-	char	*filename;
 	int		c;
 
 	i = -1;
@@ -41,16 +56,7 @@ void	load_coins(t_game *game)
 		while (++j < game->map.width)
 		{
 			if (game->map.value[i][j] == 'C')
-			{
-				filename = generate_coin_filename();
-				game->coin[c].texture = mlx_load_png(filename);
-				game->coin[c].img = mlx_texture_to_image(game->mlx,
-						game->coin[c].texture);
-				game->coin[c].x = j;
-				game->coin[c].y = i;
-				c++;
-				free(filename);
-			}
+				load_simple_coin(game, c, i, j);
 		}
 	}
 }

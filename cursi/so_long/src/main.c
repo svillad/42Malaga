@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 00:40:17 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/05/20 18:40:08 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/06/20 13:34:35 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,28 @@ void	play_game(t_game *game)
 	mlx_loop(game->mlx);
 }
 
+void	init_game(t_game *game)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	while (++i < ACTIONS)
+	{
+		j = -1;
+		while (++j < PLAYER_SPRITES)
+			game->player.texture[i][j] = NULL;
+	}
+	i = -1;
+	while (++i < 100)
+		game->coin[i].texture = NULL;
+	i = -1;
+	while (++i < 2)
+		game->wall[i].texture = NULL;
+	game->bg.texture = NULL;
+	game->exit.texture = NULL;
+}
+
 int	main(int argc, char **argv)
 {
 	t_game	game;
@@ -28,6 +50,7 @@ int	main(int argc, char **argv)
 		ft_error_map(NULL, "number arguments is incorrect");
 		return (0);
 	}
+	init_game(&game);
 	read_map(&game.map, argv[1]);
 	init_parameters(&game);
 	validate_path(&game);

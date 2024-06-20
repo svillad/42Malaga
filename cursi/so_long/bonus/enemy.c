@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 11:17:18 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/05/20 18:51:37 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/06/20 13:45:35 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,26 @@ char	*generate_enemy_filename(void)
 	return (filename);
 }
 
+void	load_simple_enemy(t_game *game, int c, int i, int j)
+{
+	char	*filename;
+
+	filename = generate_enemy_filename();
+	game->enemy[c].texture = mlx_load_png(filename);
+	if (!game->enemy[c].texture)
+		ft_error_game(game, "could not load texture");
+	game->enemy[c].img = mlx_texture_to_image(game->mlx,
+			game->enemy[c].texture);
+	game->enemy[c].x = j;
+	game->enemy[c].y = i;
+	c++;
+	free(filename);
+}
+
 void	load_enemies(t_game *game)
 {
 	int		i;
 	int		j;
-	char	*filename;
 	int		c;
 
 	i = -1;
@@ -41,16 +56,7 @@ void	load_enemies(t_game *game)
 		while (++j < game->map.width)
 		{
 			if (game->map.value[i][j] == 'M')
-			{
-				filename = generate_enemy_filename();
-				game->enemy[c].texture = mlx_load_png(filename);
-				game->enemy[c].img = mlx_texture_to_image(game->mlx,
-						game->enemy[c].texture);
-				game->enemy[c].x = j;
-				game->enemy[c].y = i;
-				c++;
-				free(filename);
-			}
+				load_simple_enemy(game, c, i, j);
 		}
 	}
 }

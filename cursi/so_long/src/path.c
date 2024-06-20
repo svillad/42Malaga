@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 10:27:08 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/05/20 11:54:28 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/06/19 11:30:01 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	**copy_map(t_game *game)
 	char	**copy_map;
 	int		i;
 
-	copy_map = (char **)malloc(sizeof(char *) * game->map.height + 1);
+	copy_map = (char **)malloc(sizeof(char *) * (game->map.height + 1));
 	if (!copy_map)
 		return (NULL);
 	i = -1;

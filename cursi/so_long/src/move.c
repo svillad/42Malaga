@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 12:35:08 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/05/20 19:55:44 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/06/20 13:35:04 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ void	check_game_status(t_game *game, t_player_action act)
 			ft_printf("Congrats! You have won in %d moves 🏆\n", game->moves);
 			game->win = true;
 			splash = mlx_load_png("./textures/dragon.png");
+			if (!splash)
+				ft_error_game(game, "could not load texture");
 			i = mlx_texture_to_image(game->mlx, splash);
 			mlx_image_to_window(game->mlx, i, game->map.width * WIDTH / 2 - 100,
 				game->map.height * HEIGHT / 2 - 82);

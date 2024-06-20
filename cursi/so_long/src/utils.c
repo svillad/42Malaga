@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 00:40:31 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/06/08 20:06:44 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/06/20 13:35:58 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,16 +59,19 @@ void	end_game(t_game *game)
 	{
 		delete_player(game);
 		delete_all_coins(game);
+		if (game->bg.texture != NULL)
+			mlx_delete_texture(game->bg.texture);
 		mlx_delete_image(game->mlx, game->bg.img);
-		mlx_delete_texture(game->bg.texture);
 		j = -1;
 		while (++j < 2)
 		{
+			if (game->wall[j].texture != NULL)
+				mlx_delete_texture(game->wall[j].texture);
 			mlx_delete_image(game->mlx, game->wall[j].img);
-			mlx_delete_texture(game->wall[j].texture);
 		}
+		if (game->exit.texture != NULL)
+			mlx_delete_texture(game->exit.texture);
 		mlx_delete_image(game->mlx, game->exit.img);
-		mlx_delete_texture(game->exit.texture);
 		free_map(&game->map);
 	}
 	mlx_terminate(game->mlx);
@@ -81,5 +84,14 @@ void	ft_error_map(t_map *map, const char *message)
 		ft_fprintf(STDERR_FILENO, "► %s\n", message);
 	if (map && map->value)
 		free_map(map);
+	exit(EXIT_FAILURE);
+}
+
+void	ft_error_game(t_game *game, const char *message)
+{
+	ft_fprintf(STDERR_FILENO, "❌Error❌\n");
+	if (message != NULL && ft_strlen(message) != 0)
+		ft_fprintf(STDERR_FILENO, "► %s\n", message);
+	end_game(game);
 	exit(EXIT_FAILURE);
 }

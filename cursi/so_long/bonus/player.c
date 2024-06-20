@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 10:27:35 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/05/20 19:57:43 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/06/20 13:37:09 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ void	load_action_images(t_game *game, t_player_action action)
 	{
 		filename = generate_player_filename(i, action);
 		game->player.texture[action][i] = mlx_load_png(filename);
+		if (!game->player.texture[action][i])
+			ft_error_game(game, "could not load texture");
 		game->player.sprites[action][i] = mlx_texture_to_image(game->mlx,
 				game->player.texture[action][i]);
 		mlx_image_to_window(game->mlx, game->player.sprites[action][i], -WIDTH,
@@ -116,8 +118,11 @@ void	delete_player(t_game *game)
 		j = -1;
 		while (++j < PLAYER_SPRITES)
 		{
-			mlx_delete_image(game->mlx, game->player.sprites[i][j]);
-			mlx_delete_texture(game->player.texture[i][j]);
+			if (game->player.texture[i][j] != NULL)
+			{
+				mlx_delete_image(game->mlx, game->player.sprites[i][j]);
+				mlx_delete_texture(game->player.texture[i][j]);
+			}
 		}
 	}
 }
