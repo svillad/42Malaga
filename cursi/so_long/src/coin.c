@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 11:17:18 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/06/22 16:03:33 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/06/22 20:15:27 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,10 @@ void	load_coins(t_game *game)
 		while (++j < game->map.width)
 		{
 			if (game->map.value[i][j] == 'C')
+			{
 				load_simple_coin(game, c, i, j);
+				c++;
+			}
 		}
 	}
 }
