@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 10:26:53 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/06/20 13:36:58 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/06/22 16:03:03 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,19 +46,19 @@ void	load_images(t_game *game)
 	srand(getpid());
 	game->bg.texture = mlx_load_png("./textures/bg.png");
 	if (!game->bg.texture)
-		ft_error_game(game, "could not load texture");
+		ft_error_game(game, "could not load image: background");
 	game->bg.img = mlx_texture_to_image(game->mlx, game->bg.texture);
 	game->wall[0].texture = mlx_load_png("./textures/rock.png");
 	if (!game->wall[0].texture)
-		ft_error_game(game, "could not load texture");
+		ft_error_game(game, "could not load image: wall (rock)");
 	game->wall[0].img = mlx_texture_to_image(game->mlx, game->wall[0].texture);
 	game->wall[1].texture = mlx_load_png("./textures/tree.png");
 	if (!game->wall[1].texture)
-		ft_error_game(game, "could not load texture");
+		ft_error_game(game, "could not load image: wall (tree)");
 	game->wall[1].img = mlx_texture_to_image(game->mlx, game->wall[1].texture);
 	game->exit.texture = mlx_load_png("./textures/kamehouse.png");
 	if (!game->exit.texture)
-		ft_error_game(game, "could not load texture");
+		ft_error_game(game, "could not load image: exit");
 	game->exit.img = mlx_texture_to_image(game->mlx, game->exit.texture);
 	load_coins(game);
 	load_enemies(game);

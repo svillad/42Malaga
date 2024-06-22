@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 12:35:08 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/06/20 13:35:04 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/06/22 16:08:57 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,16 +89,14 @@ void	check_game_status(t_game *game, t_player_action act)
 			game->win = true;
 			splash = mlx_load_png("./textures/dragon.png");
 			if (!splash)
-				ft_error_game(game, "could not load texture");
+				ft_error_game(game, "could not load image: splash");
 			i = mlx_texture_to_image(game->mlx, splash);
 			mlx_image_to_window(game->mlx, i, game->map.width * WIDTH / 2 - 100,
 				game->map.height * HEIGHT / 2 - 82);
 			mlx_delete_texture(splash);
 		}
 		else
-		{
 			ft_printf("You must collect all the dragon balls (%d/%d)\n",
 				game->collected_coins, game->total_coins);
-		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 10:27:35 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/06/20 13:35:34 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/06/22 16:04:25 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	load_action_images(t_game *game, t_player_action action)
 		filename = generate_player_filename(i, action);
 		game->player.texture[action][i] = mlx_load_png(filename);
 		if (!game->player.texture[action][i])
-			ft_error_game(game, "could not load texture");
+			ft_error_game(game, "could not load image: player");
 		game->player.sprites[action][i] = mlx_texture_to_image(game->mlx,
 				game->player.texture[action][i]);
 		mlx_image_to_window(game->mlx, game->player.sprites[action][i], -WIDTH,

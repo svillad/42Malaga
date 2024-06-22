@@ -6,7 +6,7 @@
 #    By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/02 20:50:36 by svilla-d          #+#    #+#              #
-#    Updated: 2024/06/01 18:53:50 by svilla-d         ###   ########.fr        #
+#    Updated: 2024/06/22 16:14:53 by svilla-d         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,7 +61,8 @@ WHITE   = \033[37m
 SRC_FILES	:= map.c utils.c validations.c game.c player.c coin.c path.c move.c
 OBJ 		= $(addprefix $(OBJ_DIR), $(SRC_FILES:.c=.o))
 
-BONUS_FILES	:= map.c utils.c validations.c enemy.c game.c player.c coin.c path.c move.c
+BONUS_FILES	:= map_bonus.c utils_bonus.c validations_bonus.c enemy_bonus.c \
+				game_bonus.c player_bonus.c coin_bonus.c path_bonus.c move_bonus.c
 BONUS_OBJ	= $(addprefix $(BONUS_OBJ_DIR), $(BONUS_FILES:.c=.o))
 
 # Message
@@ -145,8 +146,8 @@ $(TARGET): src/main.c $(NAME)
 	$(call PRINT_MESSAGE,$(GREEN),"Generating executable $(TARGET)...")
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $(TARGET) src/main.c $(NAME) $(LDLIBS) $(MLX_FLAGS)
 
-$(BONUS): bonus/main.c $(BONUS_NAME) 
+$(BONUS): bonus/main_bonus.c $(BONUS_NAME) 
 	$(call PRINT_MESSAGE,$(GREEN),"Generating executable $(BONUS)...")
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $(BONUS) bonus/main.c $(BONUS_NAME) $(LDLIBS) $(MLX_FLAGS)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $(BONUS) bonus/main_bonus.c $(BONUS_NAME) $(LDLIBS) $(MLX_FLAGS)
 
 #compile main.c gcc -o a.out main.c -L. -lft

@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 11:17:18 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/06/20 13:41:44 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/06/22 16:03:33 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	load_simple_coin(t_game *game, int c, int i, int j)
 	filename = generate_coin_filename();
 	game->coin[c].texture = mlx_load_png(filename);
 	if (!game->coin[c].texture)
-		ft_error_game(game, "could not load texture");
+		ft_error_game(game, "could not load image: coin");
 	game->coin[c].img = mlx_texture_to_image(game->mlx,
 			game->coin[c].texture);
 	game->coin[c].x = j;
