@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 00:40:31 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/06/20 13:35:58 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/06/24 18:23:50 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	animation(void *param)
 	game->player.time++;
 	if (game->win)
 	{
-		if (game->player.time == 200)
+		if (game->player.time == 100)
 			mlx_close_window(game->mlx);
 		return ;
 	}

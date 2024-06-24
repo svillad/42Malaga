@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 13:02:18 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/06/20 12:38:55 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/06/24 18:22:49 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@
 # include "ft_printf.h"
 # include "push_swap.h"
 
-# define WIDTH 48
-# define HEIGHT 48
-# define ANIMATION_TIME 60
+# define WIDTH 96
+# define HEIGHT 96
+# define ANIMATION_TIME 30
 # define ACTIONS 6
 # define PLAYER_SPRITES 4
 # define COINS_TYPES 7
