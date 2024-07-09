@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 14:44:54 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/07/08 22:24:42 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/07/09 09:51:24 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	ft_error_philo(t_table *table, const char *message)
 	if (message != NULL && ft_strlen(message) != 0)
 		printf("► %s\n", message);
 	if (table)
-		exit(EXIT_FAILURE);
+		free_table(table);
 	exit(EXIT_FAILURE);
 }
 

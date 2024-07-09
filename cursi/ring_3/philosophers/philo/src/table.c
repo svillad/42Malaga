@@ -6,11 +6,36 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 17:46:28 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/07/08 22:23:48 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/07/09 12:43:48 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	free_table(t_table *table)
+{
+	int	i;
+
+	if (table->forks != NULL)
+		free(table->forks);
+	if (table->mutex != NULL)
+	{
+		if (table->mutex->die != NULL)
+			free(table->mutex->die);
+		if (table->mutex->forks != NULL)
+			free(table->mutex->forks);
+		if (table->mutex->print != NULL)
+			free(table->mutex->print);
+		free(table->mutex);
+	}
+	if (table->philosophers != NULL)
+	{
+		i = -1;
+		while (++i < table->seats)
+			free(table->philosophers[i]);
+		free(table->philosophers);
+	}
+}
 
 static void	init_to_zero(t_table *table)
 {
@@ -20,7 +45,7 @@ static void	init_to_zero(t_table *table)
 	table->time_to_sleep = 0;
 	table->num_meals = 0;
 	table->dead = 0;
-	table->forks_locked = NULL;
+	table->forks = NULL;
 	table->philosophers = NULL;
 	table->mutex = NULL;
 }
@@ -38,12 +63,12 @@ static void	parse_arguments(char **argv, t_table *table)
 	else
 		table->num_meals = UNSET;
 	table->dead = FALSE;
-	table->forks_locked = (int *)malloc(table->seats * sizeof(int));
-	if (!table->forks_locked)
-		ft_error_philo(table, "failed to allocate memory: forks_locked");
+	table->forks = (int *)malloc(table->seats * sizeof(int));
+	if (!table->forks)
+		ft_error_philo(table, "failed to allocate memory: forks");
 	i = -1;
 	while (++i < table->seats)
-		table->forks_locked[i] = 0;
+		table->forks[i] = UNLOCK;
 }
 
 t_table	*init_table(char **argv)

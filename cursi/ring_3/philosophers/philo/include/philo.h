@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 14:12:35 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/07/08 23:34:40 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/07/09 12:44:07 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,9 @@ typedef enum msg_ids
 
 typedef struct s_mutex
 {
-	pthread_mutex_t	*forks;
 	pthread_mutex_t	*die;
+	pthread_mutex_t	*eat;
+	pthread_mutex_t	*forks;
 	pthread_mutex_t	*print;
 }					t_mutex;
 
@@ -76,7 +77,7 @@ typedef struct s_table
 	int				time_to_sleep;
 	int				num_meals;
 	int				dead;
-	int				*forks_locked;
+	int				*forks;
 	t_philo			**philosophers;
 	t_mutex			*mutex;
 }					t_table;
@@ -90,7 +91,9 @@ typedef struct s_args
 void				validate_arguments(int argc, char **argv);
 
 t_table				*init_table(char **argv);
+void				free_table(t_table *table);
 t_mutex				*init_mutex(t_table *table);
+void				delete_mutex(t_table *table);
 t_philo				**init_philosophers(t_table *table);
 
 void				picking_forks(t_philo *philo, t_table *table);
@@ -101,7 +104,7 @@ int					ft_atoi(const char *str);
 void				print_time(t_philo *philo, t_msg_ids nb, t_table *table);
 long long int		time_milliseconds(void);
 
-int					all_finished(t_table *table);
+int					all_philosophers_finished(t_table *table);
 void				*dying_routine(void *arg);
 void				pausing_philo(t_table *table, long long int sleep);
 void				eating(t_philo *philo, t_table *table);

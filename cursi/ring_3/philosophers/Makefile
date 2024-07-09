@@ -6,7 +6,7 @@
 #    By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/07 14:11:56 by svilla-d          #+#    #+#              #
-#    Updated: 2024/07/08 11:07:55 by svilla-d         ###   ########.fr        #
+#    Updated: 2024/07/09 12:47:02 by svilla-d         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ SRC_DIR			:= $(DIR)/src/
 OBJ_DIR			:= $(DIR)/obj/
 INCLUDE			:= $(DIR)/include
 LAST_DIR_FILE	:= $(DIR)/obj/.last_dir
+DEBUG_DIR 		:= $(DIR)/*.dSYM
 TARGET			:= $(DIR)/philo
 
 BONUS_DIR		:= philo_bonus
@@ -28,13 +29,13 @@ BONUS_SRC_DIR	:= $(BONUS_DIR)/src/
 BONUS_OBJ_DIR	:= $(BONUS_DIR)/obj/
 BONUS_INCLUDE	:= $(BONUS_DIR)/include/
 BONUS_LAST_DIR_FILE := $(BONUS_DIR)/obj/.last_dir
+BONUS_DEBUG_DIR	:= $(BONUS_DIR)/*.dSYM
 BONUS_TARGET	:= $(BONUS_DIR)/philo_bonus
 
-DEBUG_DIR := *.dSYM
 
 # CFLAGS 	:= -Wall -Wextra -Werror -g -fsanitize=address -I$(INCLUDE) -Ilibs/$(INCLUDE)
-CFLAGS 	:= -Wall -Wextra -Werror -I$(INCLUDE) -g -fsanitize=address
-LDFLAGS	:= -L.
+CFLAGS 	:= -Wall -Wextra -Werror -I$(INCLUDE) -pthread -g -fsanitize=address
+LDFLAGS	:= -L. -lpthread
 CC 		:= gcc
 AR		:= ar -crs
 RM		:= rm -f
@@ -107,17 +108,19 @@ $(BONUS_NAME): $(BONUS_OBJ)
 	
 clean: 
 	$(call PRINT_MESSAGE,$(MAGENTA),"Cleaning temporary files of $(TARGET)...")
-	$(RM) -rf $(DEBUG_DIR)
-	$(RM) -rf $(OBJ_DIR)
-	$(RM) -rf $(BONUS_OBJ_DIR)
+	$(RM) -r $(DEBUG_DIR)
+	$(RM) -r $(BONUS_DEBUG_DIR)
+	$(RM) -r $(OBJ_DIR)
+	$(RM) -r $(BONUS_OBJ_DIR)
 	$(RM) $(NAME)
 	$(RM) $(BONUS_NAME)
 
 fclean:
 	$(call PRINT_MESSAGE,$(MAGENTA),"Removing all generated files...")
-	$(RM) -rf $(DEBUG_DIR)
-	$(RM) -rf $(OBJ_DIR)
-	$(RM) -rf $(BONUS_OBJ_DIR)
+	$(RM) -r $(DEBUG_DIR)
+	$(RM) -r $(BONUS_DEBUG_DIR)
+	$(RM) -r $(OBJ_DIR)
+	$(RM) -r $(BONUS_OBJ_DIR)
 	$(RM) $(NAME)
 	$(RM) $(BONUS_NAME)
 	$(RM) $(TARGET)

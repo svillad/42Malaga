@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 16:40:53 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/07/08 22:25:08 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/07/09 11:16:16 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	validate_arguments(int argc, char **argv)
 	i = -1;
 	while (++i < argc - 1)
 	{
-		if (ft_atoi(argv[i + 1]) < 0)
+		if (ft_atoi(argv[i + 1]) <= 0)
 		{
 			if (!error)
 				printf("❌ Error ❌\n");

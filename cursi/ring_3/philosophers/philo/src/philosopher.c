@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 14:42:57 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/07/08 23:34:10 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/07/09 11:41:50 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	*routine(void *arg)
 		else
 			break ;
 	}
+	free(args);
 	return (NULL);
 }
 
@@ -76,8 +77,7 @@ t_philo	*create_philosopher(int i, t_table *table)
 	philosopher->last_meal = 0;
 	args = (t_args *)malloc(sizeof(t_args));
 	if (!args)
-		ft_error_philo(table,
-			"failed to allocate memory for routine arguments");
+		ft_error_philo(table, "failed to allocate memory for arguments");
 	args->philo = philosopher;
 	args->table = table;
 	if (pthread_create(&philosopher->threads, NULL, &routine, args) != 0)
