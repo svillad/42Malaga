@@ -6,102 +6,90 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 14:42:57 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/07/09 11:41:50 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/07/09 18:49:44 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-long long int	time_to_think(t_philo *philo, t_table *table)
-{
-	long long int	time_to_think;
-
-	time_to_think = (table->time_to_die - (time_milliseconds()
-				- philo->last_meal) - table->time_to_eat) / table->seats;
-	if (time_to_think < 0)
-		time_to_think = 0;
-	return (time_to_think);
-}
-
-void	start_routine(t_args *args)
+static void	start_routine(t_philo *p)
 {
 	pthread_t	t_died;
 
-	if (pthread_create(&t_died, NULL, &dying_routine, args) != 0)
-		ft_error_philo(args->table, "failed to create thread dying");
+	if (pthread_create(&t_died, NULL, &dying_routine, p) != 0)
+		ft_error_philo(p, "failed to create thread dying");
 	if (pthread_detach(t_died) != 0)
-		ft_error_philo(args->table, "failed to detach thread dying");
+		ft_error_philo(p, "failed to detach thread dying");
 }
 
 void	*routine(void *arg)
 {
-	t_args		*args;
+	t_philo	*p;
 
-	args = (t_args *)arg;
-	start_routine(args);
-	while (!args->table->dead)
+	p = (t_philo *)arg;
+	start_routine(p);
+	while (!p->table->dead)
 	{
-		if (args->philo->finished == FALSE)
-			picking_forks(args->philo, args->table);
-		if (args->philo->finished == FALSE && args->table->dead == FALSE)
+		if (p->finished == FALSE)
+			picking_forks(p);
+		if (p->finished == FALSE && p->table->dead == FALSE)
 		{
-			print_time(args->philo, SLEEPING, args->table);
-			pausing_philo(args->table, args->table->time_to_sleep);
+			print_time(p, SLEEPING);
+			pausing_philo(p, p->table->time_to_sleep);
 		}
-		if (args->philo->finished == FALSE && args->table->dead == FALSE)
+		if (p->finished == FALSE && p->table->dead == FALSE)
 		{
-			print_time(args->philo, THINKING, args->table);
-			pausing_philo(args->table, time_to_think(args->philo, args->table));
+			print_time(p, THINKING);
+			pausing_philo(p, time_to_think(p));
 		}
 		else
 			break ;
 	}
-	free(args);
 	return (NULL);
 }
 
-t_philo	*create_philosopher(int i, t_table *table)
+int	all_philosophers_finished(t_philo *philos)
 {
-	t_philo	*philosopher;
-	t_args	*args;
+	int	i;
+	int	finished;
 
-	philosopher = (t_philo *)malloc(sizeof(t_philo));
-	philosopher->id = i + 1;
-	philosopher->fork_left = i;
-	philosopher->fork_right = i;
-	if (table->seats != 1)
-		philosopher->fork_right = (i + 1) % table->seats;
-	philosopher->meals = 0;
-	philosopher->finished = FALSE;
-	philosopher->num_meals = table->num_meals;
-	philosopher->last_meal = 0;
-	args = (t_args *)malloc(sizeof(t_args));
-	if (!args)
-		ft_error_philo(table, "failed to allocate memory for arguments");
-	args->philo = philosopher;
-	args->table = table;
-	if (pthread_create(&philosopher->threads, NULL, &routine, args) != 0)
-		ft_error_philo(table, "failed to create thread philosopher");
-	return (philosopher);
+	finished = TRUE;
+	i = -1;
+	while (++i < philos->table->seats)
+		if (philos[i].finished != TRUE)
+			finished = FALSE;
+	return (finished);
 }
 
-t_philo	**init_philosophers(t_table *table)
+static void	load_philo_info(int i, t_philo *p)
 {
-	int		i;
-	t_philo	**philosophers;
+	p->id = i + 1;
+	p->fork_left = i;
+	p->fork_right = i;
+	if (p->table->seats != 1)
+		p->fork_right = (i + 1) % p->table->seats;
+	p->meals = 0;
+	p->finished = FALSE;
+	p->num_meals = p->table->num_meals;
+	p->last_meal = 0;
+}
 
-	philosophers = (t_philo **)malloc(table->seats * sizeof(t_philo *));
-	if (!philosophers)
-		ft_error_philo(table, "failed to allocate memory");
+void	init_philosophers(t_philo *philos, t_table *table)
+{
+	int	i;
+
 	i = -1;
 	while (++i < table->seats)
-		philosophers[i] = NULL;
+	{
+		philos[i].table = table;
+		load_philo_info(i, &philos[i]);
+	}
 	i = -1;
-	while (++i < table->seats)
-		philosophers[i] = create_philosopher(i, table);
+	while (++i < philos->table->seats)
+		if (pthread_create(&philos[i].threads, NULL, &routine, &philos[i]) != 0)
+			ft_error_philo(philos, "Failed to create thread philosopher");
 	i = -1;
-	while (++i < table->seats)
-		if (pthread_join(philosophers[i]->threads, NULL) != 0)
-			ft_error_philo(table, "failed to join thread philosopher");
-	return (philosophers);
+	while (++i < philos->table->seats)
+		if (pthread_join(philos[i].threads, NULL) != 0)
+			ft_error_philo(philos, "Failed to join thread philosopher");
 }

@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 14:12:35 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/07/09 12:44:07 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/07/09 18:48:10 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,18 @@ typedef struct s_mutex
 	pthread_mutex_t	*print;
 }					t_mutex;
 
+typedef struct s_table
+{
+	int				seats;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				num_meals;
+	int				dead;
+	int				*forks;
+	t_mutex			*mutex;
+}					t_table;
+
 typedef struct s_philo
 {
 	int				id;
@@ -67,47 +79,40 @@ typedef struct s_philo
 	int				finished;
 	long long int	last_meal;
 	pthread_t		threads;
+	t_table			*table;
 }					t_philo;
 
-typedef struct s_table
-{
-	int				seats;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
-	int				num_meals;
-	int				dead;
-	int				*forks;
-	t_philo			**philosophers;
-	t_mutex			*mutex;
-}					t_table;
-
-typedef struct s_args
-{
-	t_philo			*philo;
-	t_table			*table;
-}					t_args;
-
-void				validate_arguments(int argc, char **argv);
-
-t_table				*init_table(char **argv);
-void				free_table(t_table *table);
-t_mutex				*init_mutex(t_table *table);
-void				delete_mutex(t_table *table);
-t_philo				**init_philosophers(t_table *table);
-
-void				picking_forks(t_philo *philo, t_table *table);
-
-void				ft_error_philo(t_table *table, const char *message);
-size_t				ft_strlen(const char *str);
-int					ft_atoi(const char *str);
-void				print_time(t_philo *philo, t_msg_ids nb, t_table *table);
-long long int		time_milliseconds(void);
-
-int					all_philosophers_finished(t_table *table);
+// actions
+long long int		time_to_think(t_philo *p);
 void				*dying_routine(void *arg);
-void				pausing_philo(t_table *table, long long int sleep);
-void				eating(t_philo *philo, t_table *table);
-long long int		time_to_think(t_philo *philo, t_table *table);
+void				pausing_philo(t_philo *p, long long int sleep);
+void				eating(t_philo *p);
+
+// forks
+void				picking_forks(t_philo *p);
+
+// mutex
+void				delete_mutex(t_table *table);
+t_mutex				*init_mutex(t_table *table);
+
+// philosopher
+void				free_philo(t_philo *philos);
+void				*routine(void *arg);
+int					all_philosophers_finished(t_philo *philos);
+void				init_philosophers(t_philo *philos, t_table *table);
+
+// table
+void				ft_error_table(t_table *table, const char *message);
+t_table				*init_table(char **argv);
+
+// utils
+void				ft_error_philo(t_philo *philos, const char *message);
+int					ft_atoi(const char *str);
+size_t				ft_strlen(const char *str);
+long long int		time_milliseconds(void);
+void				print_time(t_philo *p, t_msg_ids msg_id);
+
+// validations
+void				validate_arguments(int argc, char **argv);
 
 #endif

@@ -6,20 +6,47 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 14:44:54 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/07/09 09:51:24 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/07/09 18:50:41 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	ft_error_philo(t_table *table, const char *message)
+void	ft_error_philo(t_philo *philos, const char *message)
 {
 	printf("❌ Error ❌\n");
 	if (message != NULL && ft_strlen(message) != 0)
 		printf("► %s\n", message);
-	if (table)
-		free_table(table);
+	if (philos)
+		free_philo(philos);
 	exit(EXIT_FAILURE);
+}
+
+void	free_philo(t_philo *philos)
+{
+	if (philos)
+		philos = philos - philos->id + 1;
+	if (philos)
+	{
+		if (philos->table)
+		{
+			if (philos->table->forks)
+				free(philos->table->forks);
+			if (philos->table->mutex)
+			{
+				delete_mutex(philos->table);
+				if (philos->table->mutex->die)
+					free(philos->table->mutex->die);
+				if (philos->table->mutex->forks)
+					free(philos->table->mutex->forks);
+				if (philos->table->mutex->print)
+					free(philos->table->mutex->print);
+				free(philos->table->mutex);
+			}
+			free(philos->table);
+		}
+		free(philos);
+	}
 }
 
 int	ft_atoi(const char *str)
@@ -62,27 +89,19 @@ size_t	ft_strlen(const char *str)
 	return (i);
 }
 
-long long int	time_milliseconds(void)
-{
-	struct timeval	tv;
-	long long int	milliseconds;
-
-	gettimeofday(&tv, NULL);
-	milliseconds = (tv.tv_sec) * 1000 + (tv.tv_usec) / 1000;
-	return (milliseconds);
-}
-
-void	print_time(t_philo *philo, t_msg_ids msg_id, t_table *table)
+void	print_time(t_philo *p, t_msg_ids msg_id)
 {
 	const char	*messages[] = {TAKE, EAT, SLEEP, THINK, DIED, DROP};
+	t_table		*table;
 
+	table = p->table;
 	if (pthread_mutex_lock(table->mutex->print) != 0)
-		ft_error_philo(table, "failed to lock print");
+		ft_error_philo(p, "failed to lock print");
 	if (!table->dead && msg_id >= 0 && msg_id < 6)
 	{
-		printf("%llu %d %s (%d)\n", time_milliseconds(), philo->id,
-			messages[msg_id], philo->num_meals);
+		printf("%llu %d %s (%d)\n", time_milliseconds(), p->id,
+			messages[msg_id], p->num_meals);
 	}
 	if (pthread_mutex_unlock(table->mutex->print) != 0)
-		ft_error_philo(table, "failed to unlock print");
+		ft_error_philo(p, "failed to unlock print");
 }
