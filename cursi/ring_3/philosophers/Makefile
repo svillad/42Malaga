@@ -6,7 +6,7 @@
 #    By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/07 14:11:56 by svilla-d          #+#    #+#              #
-#    Updated: 2024/07/09 12:47:02 by svilla-d         ###   ########.fr        #
+#    Updated: 2024/07/10 14:10:01 by svilla-d         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ BONUS_TARGET	:= $(BONUS_DIR)/philo_bonus
 
 
 # CFLAGS 	:= -Wall -Wextra -Werror -g -fsanitize=address -I$(INCLUDE) -Ilibs/$(INCLUDE)
-CFLAGS 	:= -Wall -Wextra -Werror -I$(INCLUDE) -pthread -g -fsanitize=address
+CFLAGS 	:= -Wall -Wextra -Werror -I$(INCLUDE) -I$(BONUS_INCLUDE) -pthread
 LDFLAGS	:= -L. -lpthread
 CC 		:= gcc
 AR		:= ar -crs
@@ -54,7 +54,8 @@ WHITE   = \033[37m
 SRC_FILES	:= table.c utils.c validations.c philosopher.c mutex.c forks.c actions.c
 OBJ 		= $(addprefix $(OBJ_DIR), $(SRC_FILES:.c=.o))
 
-BONUS_FILES	:=
+BONUS_FILES	:= table_bonus.c utils_bonus.c validations_bonus.c philosopher_bonus.c \
+			semaphore_bonus.c forks_bonus.c actions_bonus.c
 BONUS_OBJ	= $(addprefix $(BONUS_OBJ_DIR), $(BONUS_FILES:.c=.o))
 
 # Message
@@ -128,12 +129,12 @@ fclean:
 
 re: fclean all
 
-$(TARGET): $(SRC_DIR)/main.c $(NAME)
+$(TARGET): $(SRC_DIR)main.c $(NAME)
 	$(call PRINT_MESSAGE,$(GREEN),"Generating executable $(TARGET)...")
-	$(CC) -o $(TARGET) $(SRC_DIR)/main.c $(CFLAGS) $(LDFLAGS) $(NAME)
+	$(CC) -o $(TARGET) $(SRC_DIR)main.c $(CFLAGS) $(LDFLAGS) $(NAME)
 	
-$(BONUS_TARGET): $(BONUS_SRC_DIR)/main_bonus.c $(BONUS_NAME) 
+$(BONUS_TARGET): $(BONUS_SRC_DIR)main_bonus.c $(BONUS_NAME) 
 	$(call PRINT_MESSAGE,$(GREEN),"Generating executable $(BONUS_TARGET)...")
-	$(CC) -o $(BONUS_TARGET) $(BONUS_SRC_DIR)/main_bonus.c $(CFLAGS) $(LDFLAGS) $(BONUS_NAME)
+	$(CC) -o $(BONUS_TARGET) $(BONUS_SRC_DIR)main_bonus.c $(CFLAGS) $(LDFLAGS) $(BONUS_NAME)
 
 #compile main.c: gcc -o a.out main.c -L. -lft

@@ -1,16 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philosopher.c                                      :+:      :+:    :+:   */
+/*   philosopher_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 14:42:57 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/07/10 12:17:28 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/07/10 14:45:31 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
+
+void	end_processes(t_philo *philos)
+{
+	int	i;
+	int	j;
+	int	res;
+
+	i = -1;
+	while (++i < philos->table->seats)
+	{
+		waitpid(-1, &res, 0);
+		if (res != 0)
+		{
+			j = -1;
+			while (++j < philos->table->seats)
+				kill(philos[j].pid, 15);
+			break ;
+		}
+	}
+}
 
 static void	start_routine(t_philo *p)
 {
@@ -23,11 +43,8 @@ static void	start_routine(t_philo *p)
 		ft_error_philo(p, "failed to detach thread dying");
 }
 
-void	*routine(void *arg)
+void	routine(t_philo	*p)
 {
-	t_philo	*p;
-
-	p = (t_philo *)arg;
 	start_routine(p);
 	while (!p->table->dead)
 	{
@@ -46,33 +63,26 @@ void	*routine(void *arg)
 		else
 			break ;
 	}
-	return (NULL);
-}
-
-int	all_philosophers_finished(t_philo *philos)
-{
-	int	i;
-	int	finished;
-
-	finished = TRUE;
-	i = -1;
-	while (++i < philos->table->seats)
-		if (philos[i].finished != TRUE)
-			finished = FALSE;
-	return (finished);
+	if (p->table->dead)
+		exit(EXIT_FAILURE);
+	exit(EXIT_SUCCESS);
 }
 
 static void	load_philo_info(int i, t_philo *p)
 {
+	char	str[2];
+
 	p->id = i + 1;
-	p->fork_left = i;
-	p->fork_right = i;
-	if (p->table->seats != 1)
-		p->fork_right = (i + 1) % p->table->seats;
 	p->meals = 0;
 	p->finished = FALSE;
 	p->num_meals = p->table->num_meals;
 	p->last_meal = 0;
+	str[0] = (char)i;
+	str[1] = '\0';
+	sem_unlink(str);
+	p->sem_eat = sem_open(str, O_CREAT, 0644, 1);
+	if (p->sem_eat == SEM_FAILED)
+		ft_error_philo(p, "failed to create semaphore: sem_eat");
 }
 
 void	init_philosophers(t_philo *philos, t_table *table)
@@ -85,12 +95,4 @@ void	init_philosophers(t_philo *philos, t_table *table)
 		philos[i].table = table;
 		load_philo_info(i, &philos[i]);
 	}
-	i = -1;
-	while (++i < philos->table->seats)
-		if (pthread_create(&philos[i].threads, NULL, &routine, &philos[i]) != 0)
-			ft_error_philo(philos, "Failed to create thread philosopher");
-	i = -1;
-	while (++i < philos->table->seats)
-		if (pthread_join(philos[i].threads, NULL) != 0)
-			ft_error_philo(philos, "Failed to join thread philosopher");
 }
