@@ -6,21 +6,11 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 14:44:54 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/07/10 12:58:13 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/07/12 19:01:20 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
-
-void	ft_error_philo(t_philo *philos, const char *message)
-{
-	printf("❌ Error ❌\n");
-	if (message != NULL && ft_strlen(message) != 0)
-		printf("► %s\n", message);
-	if (philos)
-		free_philo(philos);
-	exit(EXIT_FAILURE);
-}
 
 void	free_philo(t_philo *philos)
 {
@@ -67,6 +57,35 @@ int	ft_atoi(const char *str)
 		i++;
 	}
 	return (sign * result);
+}
+
+void	ft_itoa(int num, char *str)
+{
+	int	i;
+	int	length;
+	int	digit;
+
+	if (num == 0)
+	{
+		str[0] = '0';
+		str[1] = '\0';
+		return ;
+	}
+	length = 0;
+	i = num;
+	while (i != 0)
+	{
+		i /= 10;
+		length++;
+	}
+	i = 0;
+	while (num != 0)
+	{
+		digit = num % 10;
+		str[length - i++ - 1] = digit + '0';
+		num /= 10;
+	}
+	str[length] = '\0';
 }
 
 size_t	ft_strlen(const char *str)

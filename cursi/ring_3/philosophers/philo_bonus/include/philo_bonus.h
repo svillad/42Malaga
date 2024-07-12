@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 14:12:35 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/07/10 14:45:58 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/07/12 18:51:01 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,13 @@
 # include <stdlib.h>
 # include <string.h>
 # include <pthread.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 # include <sys/time.h>
 # include <sys/errno.h>
 # include <semaphore.h>
 # include <signal.h>
+# include <fcntl.h>
 
 # define NUM_PHILO "number of philosopher"
 # define TIME_DIE "time to die"
@@ -102,11 +105,12 @@ void				init_philosophers(t_philo *philos, t_table *table);
 
 // table
 void				ft_error_table(t_table *table, const char *message);
+void				ft_error_philo(t_philo *philos, const char *message);
 t_table				*init_table(char **argv);
 
 // utils
-void				ft_error_philo(t_philo *philos, const char *message);
 int					ft_atoi(const char *str);
+void				ft_itoa(int num, char *str);
 size_t				ft_strlen(const char *str);
 long long int		time_milliseconds(void);
 void				print_time(t_philo *p, t_msg_ids msg_id);

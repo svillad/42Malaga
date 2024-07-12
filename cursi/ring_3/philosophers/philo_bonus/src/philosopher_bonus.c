@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 14:42:57 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/07/10 14:45:31 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/07/12 18:53:31 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,15 +70,14 @@ void	routine(t_philo	*p)
 
 static void	load_philo_info(int i, t_philo *p)
 {
-	char	str[2];
+	char	str[10];
 
 	p->id = i + 1;
 	p->meals = 0;
 	p->finished = FALSE;
 	p->num_meals = p->table->num_meals;
 	p->last_meal = 0;
-	str[0] = (char)i;
-	str[1] = '\0';
+	ft_itoa(i, str);
 	sem_unlink(str);
 	p->sem_eat = sem_open(str, O_CREAT, 0644, 1);
 	if (p->sem_eat == SEM_FAILED)

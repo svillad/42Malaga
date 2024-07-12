@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 17:46:28 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/07/10 10:22:56 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/07/12 19:25:00 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,31 @@ void	ft_error_table(t_table *table, const char *message)
 		printf("► %s\n", message);
 	if (table)
 	{
+		if (table->sem)
+		{
+			if (table->sem->die && sem_close(table->sem->die) == -1)
+				ft_error_table(NULL, "failed to close semaphore: die");
+			sem_unlink("/die");
+			if (table->sem->forks && sem_close(table->sem->forks) == -1)
+				ft_error_philo(NULL, "failed to close semaphore: forks");
+			sem_unlink("/forks");
+			if (table->sem->print && sem_close(table->sem->print) == -1)
+				ft_error_philo(NULL, "failed to close semaphore: print");
+			sem_unlink("/print");
+			free(table->sem);
+		}
 		free(table);
 	}
+	exit(EXIT_FAILURE);
+}
+
+void	ft_error_philo(t_philo *philos, const char *message)
+{
+	printf("❌ Error ❌\n");
+	if (message != NULL && ft_strlen(message) != 0)
+		printf("► %s\n", message);
+	if (philos)
+		free_philo(philos);
 	exit(EXIT_FAILURE);
 }
 
@@ -35,6 +58,7 @@ static void	parse_arguments(char **argv, t_table *table)
 	else
 		table->num_meals = UNSET;
 	table->dead = FALSE;
+	table->sem = NULL;
 }
 
 t_table	*init_table(char **argv)

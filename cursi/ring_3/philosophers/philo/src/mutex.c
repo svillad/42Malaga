@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 18:49:06 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/07/10 09:33:38 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/07/12 17:24:53 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,15 @@ void	delete_mutex(t_table *table)
 	int	i;
 
 	if (table->mutex->die)
+	{
 		pthread_mutex_destroy(table->mutex->die);
+		free(table->mutex->die);
+	}
 	if (table->mutex->print)
+	{
 		pthread_mutex_destroy(table->mutex->print);
+		free(table->mutex->print);
+	}
 	i = -1;
 	while (++i < table->seats)
 	{
@@ -50,6 +56,11 @@ void	delete_mutex(t_table *table)
 		if (&table->mutex->forks[i])
 			pthread_mutex_destroy(&table->mutex->forks[i]);
 	}
+	if (table->mutex->eat)
+		free(table->mutex->eat);
+	if (table->mutex->forks)
+		free(table->mutex->forks);
+	free(table->mutex);
 }
 
 t_mutex	*init_mutex(t_table *table)

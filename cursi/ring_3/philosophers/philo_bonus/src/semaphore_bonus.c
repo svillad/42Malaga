@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 18:49:06 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/07/10 12:56:45 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/07/12 19:24:22 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,24 +15,23 @@
 void	close_semaphores(t_philo *philos)
 {
 	int		i;
-	char	str[2];
+	char	str[10];
 
 	if (sem_close(philos->table->sem->die) == -1)
-		ft_error_philo(philos, "failed to create semaphore: die");
+		ft_error_philo(philos, "failed to close semaphore: die");
 	sem_unlink("/die");
 	if (sem_close(philos->table->sem->forks) == -1)
-		ft_error_philo(philos, "failed to create semaphore: die");
+		ft_error_philo(philos, "failed to close semaphore: forks");
 	sem_unlink("/forks");
 	if (sem_close(philos->table->sem->print) == -1)
-		ft_error_philo(philos, "failed to create semaphore: die");
+		ft_error_philo(philos, "failed to close semaphore: print");
 	sem_unlink("/print");
 	i = -1;
 	while (++i < philos->table->seats)
 	{
-		str[0] = (char)i;
-		str[1] = '\0';
+		ft_itoa(i, str);
 		if (sem_close(philos[i].sem_eat) == -1)
-			ft_error_philo(philos, "failed to create semaphore: die");
+			ft_error_philo(philos, "failed to close semaphore: eat");
 		sem_unlink(str);
 	}
 }
@@ -60,6 +59,7 @@ t_semaphore	*init_semaphore(t_table *table)
 {
 	t_semaphore	*semaphore;
 
+	semaphore = NULL;
 	semaphore = (t_semaphore *)malloc(sizeof(t_semaphore));
 	if (!semaphore)
 		ft_error_table(table, "failed to allocate memory: semaphore");

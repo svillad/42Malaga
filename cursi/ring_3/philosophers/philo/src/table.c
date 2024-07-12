@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 17:46:28 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/07/09 18:30:44 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/07/12 17:25:10 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,7 @@ void	ft_error_table(t_table *table, const char *message)
 		if (table->forks)
 			free(table->forks);
 		if (table->mutex)
-		{
 			delete_mutex(table);
-			free(table->mutex);
-		}
 		free(table);
 	}
 	exit(EXIT_FAILURE);
