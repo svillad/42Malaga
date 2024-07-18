@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 14:44:54 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/07/12 17:25:26 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/07/18 20:19:28 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ void	free_philo(t_philo *philos)
 				free(philos->table->forks);
 			if (philos->table->mutex)
 				delete_mutex(philos->table);
+			if (philos->table->monitor)
+				free(philos->table->monitor);
 			free(philos->table);
 		}
 		free(philos);

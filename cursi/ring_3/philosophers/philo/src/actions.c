@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 10:02:22 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/07/09 18:50:51 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/07/18 20:37:57 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ long long int	time_to_think(t_philo *p)
 			- table->time_to_eat) / table->seats;
 	if (time_to_think < 0)
 		time_to_think = 0;
+	if (time_to_think > 800)
+		time_to_think = 800;
 	return (time_to_think);
 }
 
@@ -74,25 +76,19 @@ void	pausing_philo(t_philo *p, long long int sleep)
 
 void	eating(t_philo *p)
 {
-	pthread_t	t_died;
-
-	if (pthread_mutex_lock(&p->table->mutex->eat[p->id - 1]) != 0)
-		ft_error_philo(p, "failed to lock eat");
-	p->meals++;
-	print_time(p, EATING);
-	p->last_meal = time_milliseconds();
-	if (pthread_mutex_unlock(&p->table->mutex->eat[p->id - 1]) != 0)
-		ft_error_philo(p, "failed to unlock eat");
-	if (p->num_meals != 0)
+	if (p->finished == FALSE)
 	{
-		if (pthread_create(&t_died, NULL, &dying_routine, p) != 0)
-			ft_error_philo(p, "failed to create thread dying");
-		if (pthread_detach(t_died) != 0)
-			ft_error_philo(p, "failed to detach thread dying");
+		if (pthread_mutex_lock(&p->table->mutex->eat[p->id - 1]) != 0)
+			ft_error_philo(p, "failed to lock eat");
+		p->meals++;
+		print_time(p, EATING);
+		p->last_meal = time_milliseconds();
+		if (pthread_mutex_unlock(&p->table->mutex->eat[p->id - 1]) != 0)
+			ft_error_philo(p, "failed to unlock eat");
+		if (p->num_meals != -1)
+			p->num_meals--;
+		if (p->num_meals == 0)
+			p->finished = TRUE;
+		pausing_philo(p, p->table->time_to_eat);
 	}
-	if (p->num_meals != -1)
-		p->num_meals--;
-	if (p->num_meals == 0)
-		p->finished = 1;
-	pausing_philo(p, p->table->time_to_eat);
 }

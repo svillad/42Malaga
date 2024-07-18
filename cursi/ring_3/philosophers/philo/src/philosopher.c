@@ -6,29 +6,21 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 14:42:57 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/07/10 12:17:28 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/07/18 20:36:08 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-static void	start_routine(t_philo *p)
-{
-	pthread_t	t_died;
-
-	print_time(p, THINKING);
-	if (pthread_create(&t_died, NULL, &dying_routine, p) != 0)
-		ft_error_philo(p, "failed to create thread dying");
-	if (pthread_detach(t_died) != 0)
-		ft_error_philo(p, "failed to detach thread dying");
-}
 
 void	*routine(void *arg)
 {
 	t_philo	*p;
 
 	p = (t_philo *)arg;
-	start_routine(p);
+	print_time(p, THINKING);
+	if (pthread_create(&p->table->monitor[p->id - 1], NULL, &dying_routine,
+			p) != 0)
+		ft_error_philo(p, "failed to create thread dying");
 	while (!p->table->dead)
 	{
 		if (p->finished == FALSE)
@@ -93,4 +85,8 @@ void	init_philosophers(t_philo *philos, t_table *table)
 	while (++i < philos->table->seats)
 		if (pthread_join(philos[i].threads, NULL) != 0)
 			ft_error_philo(philos, "Failed to join thread philosopher");
+	i = -1;
+	while (++i < philos->table->seats)
+		if (pthread_join(philos->table->monitor[i], NULL) != 0)
+			ft_error_philo(philos, "failed to detach thread dying");
 }

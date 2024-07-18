@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 17:46:28 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/07/12 17:25:10 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/07/18 20:14:23 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ static void	parse_arguments(char **argv, t_table *table)
 	i = -1;
 	while (++i < table->seats)
 		table->forks[i] = UNLOCK;
+	table->monitor = (pthread_t *)malloc(table->seats * sizeof(pthread_t));
 }
 
 t_table	*init_table(char **argv)

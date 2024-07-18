@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 14:12:35 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/07/09 18:48:10 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/07/18 20:13:03 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ typedef struct s_table
 	int				dead;
 	int				*forks;
 	t_mutex			*mutex;
+	pthread_t		*monitor;
 }					t_table;
 
 typedef struct s_philo
