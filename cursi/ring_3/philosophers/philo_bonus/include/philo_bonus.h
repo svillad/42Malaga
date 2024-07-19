@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 14:12:35 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/07/12 18:51:01 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/07/19 09:53:46 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ typedef struct s_table
 	int				num_meals;
 	int				dead;
 	t_semaphore		*sem;
+	pthread_t		*monitor;
 }					t_table;
 
 typedef struct s_philo

@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 14:42:57 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/07/18 20:36:08 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/07/19 10:03:21 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	*routine(void *arg)
 	print_time(p, THINKING);
 	if (pthread_create(&p->table->monitor[p->id - 1], NULL, &dying_routine,
 			p) != 0)
-		ft_error_philo(p, "failed to create thread dying");
+		ft_error_philo(p, "failed to create thread monitor");
 	while (!p->table->dead)
 	{
 		if (p->finished == FALSE)
@@ -88,5 +88,5 @@ void	init_philosophers(t_philo *philos, t_table *table)
 	i = -1;
 	while (++i < philos->table->seats)
 		if (pthread_join(philos->table->monitor[i], NULL) != 0)
-			ft_error_philo(philos, "failed to detach thread dying");
+			ft_error_philo(philos, "failed to join thread monitor");
 }

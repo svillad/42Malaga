@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 14:44:54 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/07/12 19:01:20 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/07/19 10:11:01 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ void	free_philo(t_philo *philos)
 				close_semaphores(philos);
 				free(philos->table->sem);
 			}
+			if (philos->table->monitor)
+				free(philos->table->monitor);
 			free(philos->table);
 		}
 		free(philos);

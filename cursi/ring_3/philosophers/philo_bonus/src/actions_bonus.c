@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 10:02:22 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/07/10 14:11:15 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/07/19 10:12:06 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ long long int	time_to_think(t_philo *p)
 			- table->time_to_eat) / table->seats;
 	if (time_to_think < 0)
 		time_to_think = 0;
+	if (time_to_think > 800)
+		time_to_think = 800;
 	return (time_to_think);
 }
 

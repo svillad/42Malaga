@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 14:42:57 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/07/12 18:53:31 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/07/19 10:16:36 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,15 @@ void	end_processes(t_philo *philos)
 
 static void	start_routine(t_philo *p)
 {
-	pthread_t	t_died;
-
 	print_time(p, THINKING);
-	if (pthread_create(&t_died, NULL, &dying_routine, p) != 0)
-		ft_error_philo(p, "failed to create thread dying");
-	if (pthread_detach(t_died) != 0)
-		ft_error_philo(p, "failed to detach thread dying");
+	if (pthread_create(&p->table->monitor[p->id - 1], NULL, &dying_routine,
+			p) != 0)
+		ft_error_philo(p, "failed to create thread monitor");
+	if (pthread_detach(p->table->monitor[p->id - 1]) != 0)
+		ft_error_philo(p, "failed to detach thread monitor");
 }
 
-void	routine(t_philo	*p)
+void	routine(t_philo *p)
 {
 	start_routine(p);
 	while (!p->table->dead)

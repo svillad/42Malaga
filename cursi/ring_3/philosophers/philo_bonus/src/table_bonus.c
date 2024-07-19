@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 17:46:28 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/07/12 19:25:00 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/07/19 10:18:14 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void	ft_error_table(t_table *table, const char *message)
 			sem_unlink("/print");
 			free(table->sem);
 		}
+		if (table->monitor)
+			free(table->monitor);
 		free(table);
 	}
 	exit(EXIT_FAILURE);
@@ -59,6 +61,7 @@ static void	parse_arguments(char **argv, t_table *table)
 		table->num_meals = UNSET;
 	table->dead = FALSE;
 	table->sem = NULL;
+	table->monitor = (pthread_t *)malloc(table->seats * sizeof(pthread_t));
 }
 
 t_table	*init_table(char **argv)
