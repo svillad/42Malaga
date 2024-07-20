@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 10:02:22 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/07/19 10:12:06 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/07/20 16:45:44 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	*dying_routine(void *arg)
 	p = (t_philo *)arg;
 	current_meal = p->meals;
 	usleep(p->table->time_to_die * 1000);
-	if (p->meals == current_meal)
+	if (p->meals == current_meal && p->finished == FALSE)
 	{
 		if (sem_wait(p->sem_eat) == -1)
 			ft_error_philo(p, "failed to lock eat");
