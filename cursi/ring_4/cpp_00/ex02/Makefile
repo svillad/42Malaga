@@ -1,15 +1,16 @@
-NAME            = phonebook
+NAME            = account
 
 CC              = c++
-CFLAGS          = -Wall -Werror -Wextra -Iincludes -I. -std=c++98
+# CFLAGS          = -Wall -Werror -Wextra -Iincludes -I. -std=c++98
+CFLAGS          = -I. -std=c++98
 
 RM              = rm -rf
 
 SRC_DIR         = ./
 OBJ_DIR         = obj/
 
-FILES_SRC       = main.cpp
-FILES_EXEC      = Contact.cpp PhoneBook.cpp
+FILES_SRC       = tests.cpp
+FILES_EXEC      = Account.cpp
 
 SRC_MAIN        = $(addprefix $(SRC_DIR),$(FILES_SRC))
 SRC_EXEC        = $(addprefix $(SRC_DIR),$(FILES_EXEC))
