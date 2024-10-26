@@ -1,4 +1,4 @@
-NAME            = account
+NAME            = filemanager
 
 CC              = c++
 CFLAGS          = -Wall -Werror -Wextra -Iincludes -I. -std=c++98
@@ -8,8 +8,8 @@ RM              = rm -rf
 SRC_DIR         = ./
 OBJ_DIR         = obj/
 
-FILES_SRC       = tests.cpp
-FILES_EXEC      = Account.cpp
+FILES_SRC       = main.cpp
+FILES_EXEC      = FileManager.cpp
 
 SRC_MAIN        = $(addprefix $(SRC_DIR),$(FILES_SRC))
 SRC_EXEC        = $(addprefix $(SRC_DIR),$(FILES_EXEC))
@@ -34,6 +34,7 @@ clean:
 fclean: clean
 	@$(RM) $(NAME)
 	@$(RM) tests
+	@$(RM) *.replace
 
 re: fclean all
 
@@ -42,7 +43,7 @@ re: fclean all
 # --------------------------------------------------
 
 TESTS_DIR         = ./
-FILES_SRC_TESTS	= tests.cpp
+FILES_SRC_TESTS	= main.cpp
 
 SRC_MAIN_TESTS	= $(addprefix $(TESTS_DIR),$(FILES_SRC_TESTS))
 SRC_TESTS		= $(SRC_MAIN_TESTS) $(SRC_EXEC)
@@ -55,6 +56,10 @@ $(OBJ_DIR)%.o: $(TESTS_DIR)%.cpp
 
 tests: $(OBJ_SRC_TESTS)
 	$(CC) $(CFLAGS) $(OBJ_SRC_TESTS) -o $@
-	./tests
+	-./tests
+	-./tests no_file.txt filename "*FILENAME*"
+	-./tests test.txt filename
+	-./tests test.txt "" "*FILENAME*"
+	-./tests test.txt filename "*FILENAME*"
 
 .PHONY: all clean fclean re tests

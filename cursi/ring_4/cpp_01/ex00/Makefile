@@ -1,4 +1,4 @@
-NAME            = account
+NAME            = zombie
 
 CC              = c++
 CFLAGS          = -Wall -Werror -Wextra -Iincludes -I. -std=c++98
@@ -9,7 +9,7 @@ SRC_DIR         = ./
 OBJ_DIR         = obj/
 
 FILES_SRC       = tests.cpp
-FILES_EXEC      = Account.cpp
+FILES_EXEC      = Zombie.cpp
 
 SRC_MAIN        = $(addprefix $(SRC_DIR),$(FILES_SRC))
 SRC_EXEC        = $(addprefix $(SRC_DIR),$(FILES_EXEC))
