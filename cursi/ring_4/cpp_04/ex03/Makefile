@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2024/11/08 13:30:12 by svilla-d          #+#    #+#              #
+#    Updated: 2024/11/08 13:31:05 by svilla-d         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME            = character
 
 CC              = c++
@@ -43,7 +55,7 @@ re: fclean all
 # --------------------------------------------------
 
 TESTS_DIR         = ./
-FILES_SRC_TESTS	= main.cpp
+FILES_SRC_TESTS	= test.cpp
 
 SRC_MAIN_TESTS	= $(addprefix $(TESTS_DIR),$(FILES_SRC_TESTS))
 SRC_TESTS		= $(SRC_MAIN_TESTS) $(SRC_EXEC)

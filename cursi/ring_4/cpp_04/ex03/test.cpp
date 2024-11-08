@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   test.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 13:30:09 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/11/08 13:30:47 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/11/08 13:30:58 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 int main()
 {
     IMateriaSource* src = new MateriaSource();
+    src->learnMateria(NULL);
     src->learnMateria(new Ice());
     src->learnMateria(new Cure());
 
@@ -25,6 +26,10 @@ int main()
    
     AMateria* tmp;
     tmp = src->createMateria("ice");
+    src->learnMateria(tmp);
+    src->learnMateria(tmp);
+    me->equip(tmp);
+    tmp = src->createMateria("cure");
     me->equip(tmp);
     tmp = src->createMateria("cure");
     me->equip(tmp);
@@ -33,9 +38,15 @@ int main()
 
     me->use(0, *bob);
     me->use(1, *bob);
+    me->use(2, *bob);
+    me->use(3, *bob);
+    me->use(4, *bob);
 
     me->unequip(0);
     me->unequip(1);
+    me->unequip(1);
+    me->unequip(2);
+    me->unequip(4);
 
     delete bob;
     delete me;
