@@ -6,13 +6,22 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 13:12:37 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/11/08 13:12:39 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/11/09 15:55:22 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
+#include <sstream>
+#include <string>
 #include <cassert>
 #include "PhoneBook.hpp"
+
+template<typename T>
+std::string to_string(const T& value) {
+    std::ostringstream oss;
+    oss << value;
+    return oss.str();
+}
 
 void test_initial_contacts(void)
 {
@@ -41,11 +50,11 @@ void test_limit_contacts(void)
 	for (int i = 0; i < LIM; ++i)
 	{
 		phonebook.add(
-			Contact("Contact" + std::to_string(i + 1),
-					"LastName" + std::to_string(i + 1),
-					"Nick" + std::to_string(i + 1),
-					std::to_string(101 + i),
-					"Secret" + std::to_string(i + 1)));
+			Contact("Contact" + to_string(i + 1),
+					"LastName" + to_string(i + 1),
+					"Nick" + to_string(i + 1),
+					to_string(101 + i),
+					"Secret" + to_string(i + 1)));
 	}
 
 	std::cout   << "Checking that the PhoneBook size is " << LIM << ": "
@@ -63,11 +72,11 @@ void test_overwrite_old_contacts(void)
 	for (int i = 0; i < LIM; ++i)
 	{
 		phonebook.add(
-			Contact("Contact" + std::to_string(i + 1),
-					"LastName" + std::to_string(i + 1),
-					"Nick" + std::to_string(i + 1),
-					std::to_string(101 + i),
-					"Secret" + std::to_string(i + 1)));
+			Contact("Contact" + to_string(i + 1),
+					"LastName" + to_string(i + 1),
+					"Nick" + to_string(i + 1),
+					to_string(101 + i),
+					"Secret" + to_string(i + 1)));
 	}
 
 	phonebook.add(

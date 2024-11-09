@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 13:12:23 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/11/08 13:12:24 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/11/09 15:59:54 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void menu(void) {
 
 int search_contact(PhoneBook &p) {
 	int index;
+	bool error = false;
 
 	if (p.get_size() <= 0) {
 		std::cout << "There are no contacts to display" << std::endl;
@@ -34,38 +35,51 @@ int search_contact(PhoneBook &p) {
 	p.print();
 	do {
 		std::cout << "Enter the index of the contact to display: ";
-		std::cin >> index;
-		if (index >= p.get_size() || index < 0)
+		if (!(std::cin >> index)) {
+			clear_buffer();
+			std::cout << "Invalid input. Please enter a number." << std::endl;
+			error = true;
+		}
+		else if (index >= p.get_size() || index < 0) {
 			std::cout << "Invalid index. The index must be greater than or equal"
-				" to 0 and less than " << p.get_size() << std::endl;
-	} while (index >= p.get_size() || index < 0);
+						 " to 0 and less than "
+					  << p.get_size() << std::endl;
+			error = true;
+		}
+		else
+			error = false;
+	} while (error);
 	return (index);
 }
 
 int main() {
-	PhoneBook	phonebook;
-	Contact		contact;
-	std::string	command;
-	int			index;
+	PhoneBook phonebook;
+	Contact contact;
+	std::string command;
+	int index;
 
 	menu();
-	while (true) {
+	while (true)
+	{
 		std::cout << "Enter a command (ADD, SEARCH, EXIT): ";
 		std::cin >> command;
 
 		if (command == "ADD")
 			phonebook.add();
-		else if (command == "SEARCH") {
+		else if (command == "SEARCH")
+		{
 			index = search_contact(phonebook);
-			if (index >= 0) {
+			if (index >= 0)
+			{
 				contact = phonebook.search(index);
 				contact.print_full();
 			}
-		} 
-		else if (command == "EXIT") {
+		}
+		else if (command == "EXIT")
+		{
 			std::cout << "Exiting the program." << std::endl;
 			break;
-		} 
+		}
 		else
 			std::cout << "Invalid command. Please enter ADD, SEARCH, or EXIT."
 					  << std::endl;

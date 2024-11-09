@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 13:12:34 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/11/08 13:12:35 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/11/09 15:21:08 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define PHONEBOOK_H
 
 # include <iostream>
+# include <limits>
 # include "Contact.hpp"
 
 # define LIM 8
