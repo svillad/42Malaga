@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 13:12:34 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/11/09 15:21:08 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/11/16 20:00:19 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define PHONEBOOK_H
 
 # include <iostream>
-# include <limits>
 # include "Contact.hpp"
 
 # define LIM 8
@@ -32,12 +31,10 @@ public:
     ~PhoneBook(){};
 
     int get_size() const;
-    void add(void);
+    bool add(void);
     void add(const Contact& c);
     Contact search(int index);
     void print(void) const;
 };
-
-void clear_buffer(void);
 
 #endif

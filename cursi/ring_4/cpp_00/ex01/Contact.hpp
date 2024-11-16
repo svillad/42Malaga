@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 13:12:18 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/11/08 13:12:19 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/11/23 16:49:32 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <iostream>
 # include <iomanip>
+# include <limits>
 
 # define COL_WIDTH 10
 
@@ -26,7 +27,12 @@ private:
     std::string phone_number;
     std::string darkest_secret;
 
-    bool    set_field(const std::string& name, std::string* field);
+    std::string format_field(const std::string &str);
+    bool        set_field(const std::string& name, std::string* field);
+    bool        set_number(const std::string& name, std::string* field);
+    bool        trim_spaces(std::string& temp);
+    bool        is_valid_number_format(const std::string& temp);
+    bool        validate_number(const std::string& temp);
 
 public:
     Contact();
@@ -45,9 +51,10 @@ public:
 
     void    print() const;
     void    print_full() const;
-    void    create();
+    bool    create();
 };
 
 std::string formatColumn(const std::string& text);
+void clear_buffer(void);
 
 #endif

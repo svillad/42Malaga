@@ -6,11 +6,11 @@
 #    By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/08 13:22:16 by svilla-d          #+#    #+#              #
-#    Updated: 2024/11/08 13:22:17 by svilla-d         ###   ########.fr        #
+#    Updated: 2024/11/16 15:36:08 by svilla-d         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME            = zombie
+NAME            = reference
 
 CC              = c++
 CFLAGS          = -Wall -Werror -Wextra -Iincludes -I. -std=c++98

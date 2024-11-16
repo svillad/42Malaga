@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 13:12:31 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/11/08 13:12:32 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/11/16 20:00:34 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,15 @@ int PhoneBook::get_size() const {
 }
 
 
-void PhoneBook::add() {
+bool PhoneBook::add() {
 	Contact c;
 	int pos = size;
 
 	if (size >= LIM) {
 		pos = oldest;    
 	}
-	clear_buffer();
-	c.create();
+	if (!c.create())
+		return false;
 	contacts[pos] = c;
 	size++;
 
@@ -54,6 +54,7 @@ void PhoneBook::add() {
 		oldest = (oldest + 1) % LIM;
 	}
 	std::cout << "Contact added successfully!" << std::endl;
+	return true;
 }
 
 void PhoneBook::add(const Contact& c) {
@@ -95,9 +96,4 @@ void PhoneBook::print() const {
 		std::cout << std::setw(COL_WIDTH) << i  << "|";
 		contacts[i].print();
 	}
-}
-
-void clear_buffer(void) {
-	std::cin.clear();
-	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }

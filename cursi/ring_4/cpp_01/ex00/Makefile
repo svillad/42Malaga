@@ -6,7 +6,7 @@
 #    By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/08 13:21:47 by svilla-d          #+#    #+#              #
-#    Updated: 2024/11/08 13:21:47 by svilla-d         ###   ########.fr        #
+#    Updated: 2024/11/16 15:15:30 by svilla-d         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,8 +20,8 @@ RM              = rm -rf
 SRC_DIR         = ./
 OBJ_DIR         = obj/
 
-FILES_SRC       = tests.cpp
-FILES_EXEC      = Zombie.cpp
+FILES_SRC       = main.cpp
+FILES_EXEC      = Zombie.cpp newZombie.cpp randomChump.cpp
 
 SRC_MAIN        = $(addprefix $(SRC_DIR),$(FILES_SRC))
 SRC_EXEC        = $(addprefix $(SRC_DIR),$(FILES_EXEC))
@@ -54,7 +54,7 @@ re: fclean all
 # --------------------------------------------------
 
 TESTS_DIR         = ./
-FILES_SRC_TESTS	= tests.cpp
+FILES_SRC_TESTS	= main.cpp
 
 SRC_MAIN_TESTS	= $(addprefix $(TESTS_DIR),$(FILES_SRC_TESTS))
 SRC_TESTS		= $(SRC_MAIN_TESTS) $(SRC_EXEC)
