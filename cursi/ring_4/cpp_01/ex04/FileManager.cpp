@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 13:22:45 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/11/08 13:22:45 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/11/23 18:47:31 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ std::string FileManager::replace_content(const std::string &fileContent,
 
 bool FileManager::write_to_file(const std::string& newFilename,
 		const std::string& fileContent) {
-	std::ofstream outputFile(newFilename);
+	std::ofstream outputFile(newFilename.c_str());
 	if (!outputFile) {
 		handle_error("Error: Unable to create file " + newFilename);
 		return (false);
@@ -75,7 +75,7 @@ bool FileManager::write_to_file(const std::string& newFilename,
 }
 
 bool FileManager::replace_in_file() {
-	std::ifstream inputFile(filename);
+	std::ifstream inputFile(filename.c_str());
 	if (!validate(inputFile, filename, s1)) {
 		return false;
 	}

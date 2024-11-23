@@ -6,15 +6,15 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 13:22:20 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/11/08 13:22:21 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/11/23 18:11:57 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "HumanA.hpp"
 
-HumanA::HumanA() : name("none"), weapon() {}
-
-HumanA::HumanA(const HumanA &h) : name(h.name), weapon(h.weapon) {}
+HumanA::HumanA(const HumanA &h) {
+	*this = h;
+}
 
 HumanA&	HumanA::operator=(const HumanA &h) {
 	if (this != &h) {

@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 13:22:29 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/11/08 13:22:29 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/11/16 16:41:32 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ private:
 	Weapon		*weapon;
 
 public:
-	HumanB();
 	HumanB(const HumanB &h);
 	HumanB(const std::string &name);
 	HumanB&	operator=(const HumanB &h);
