@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 13:24:52 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/11/08 13:24:53 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/11/23 19:31:01 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <iostream>
 # include <string>
+# include <cmath>
 
 class Fixed {
 private:

@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 13:25:28 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/11/08 13:25:29 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/11/23 20:02:52 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void test_inside_point_1(void)
 	Point	point(1, 3);
 
 	std::cout << "\n*********   test_inside_point   *********" << std::endl;
+	std::cout << "A" << a << " B" << b << " C" << c << std::endl;
+	std::cout << "P" << point << std::endl;
 	plot_triangle(a, b, c, point);
 	std::cout << "Triangle area: " << triangle_area(a, b, c) << std::endl;
 	std::cout << "Inside point: " << bsp(a, b, c, point) << std::endl;
@@ -35,6 +37,8 @@ void test_inside_point_2(void)
 	Point	point(4, 3);
 
 	std::cout << "\n*********   test_inside_point   *********" << std::endl;
+	std::cout << "A" << a << " B" << b << " C" << c << std::endl;
+	std::cout << "P" << point << std::endl;
 	plot_triangle(a, b, c, point);
 	std::cout << "Triangle area: " << triangle_area(a, b, c) << std::endl;
 	std::cout << "Inside point: " << bsp(a, b, c, point) << std::endl;
@@ -49,6 +53,8 @@ void test_inside_point_3(void)
 	Point	point(0, 5);
 
 	std::cout << "\n*********   test_inside_point   *********" << std::endl;
+	std::cout << "A" << a << " B" << b << " C" << c << std::endl;
+	std::cout << "P" << point << std::endl;
 	plot_triangle(a, b, c, point);
 	std::cout << "Triangle area: " << triangle_area(a, b, c) << std::endl;
 	std::cout << "Inside point: " << bsp(a, b, c, point) << std::endl;
@@ -63,6 +69,8 @@ void test_outside_point(void)
 	Point	point(-2.5, 1);
 
 	std::cout << "\n*********   test_outside_point   *********" << std::endl;
+	std::cout << "A" << a << " B" << b << " C" << c << std::endl;
+	std::cout << "P" << point << std::endl;
 	plot_triangle(a, b, c, point);
 	std::cout << "Triangle area: " << triangle_area(a, b, c) << std::endl;
 	std::cout << "Outside point: " << bsp(a, b, c, point) << std::endl;
@@ -77,9 +85,11 @@ void test_invalid_triangle(void)
 	Point	point(-2.5, 1);
 
 	std::cout << "\n*********   test_inavlid_triangle  *********" << std::endl;
+	std::cout << "A" << a << " B" << b << " C" << c << std::endl;
+	std::cout << "P" << point << std::endl;
 	plot_triangle(a, b, c, point);
 	std::cout << "Triangle area: " << triangle_area(a, b, c) << std::endl;
-	std::cout << bsp(a, b, c, point) << std::endl;
+	std::cout << "Outside point: " << bsp(a, b, c, point) << std::endl;
 	std::cout << "\033[32mOK\033[0m" << std::endl;
 }
 

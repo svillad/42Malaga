@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 13:25:03 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/11/08 13:25:04 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/11/23 19:48:42 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ Fixed::Fixed(int integer) : raw_bits(integer) {
 
 Fixed::Fixed(float floating_point) : raw_bits(floating_point) {
 	std::cout << "Float constructor called" << std::endl;
-	raw_bits = std::roundf(floating_point * (1 << Fixed::bits));
+	raw_bits = roundf(floating_point * (1 << Fixed::bits));
 }
 
 Fixed& Fixed::operator=(const Fixed &f) {

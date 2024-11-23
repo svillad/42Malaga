@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 13:25:20 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/11/08 13:25:20 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/11/23 20:01:19 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,12 @@ void draw_triangle(const Point &a, const Point &b, const Point &c, const Point &
             Point p(x.toFloat(), y.toFloat());
             if (bsp(a, b, c, p)) {
                 if (p == point)
-                    std::cout << "-";
+                    std::cout << "x";
                 else
                     std::cout << "*";
             } else {
                 if (p == point)
-                    std::cout << "-";
+                    std::cout << "x";
                 else
                     std::cout << " ";
             }
