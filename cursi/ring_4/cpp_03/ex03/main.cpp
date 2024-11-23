@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 13:26:54 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/11/08 13:26:55 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/11/23 20:16:34 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void test_copy_constructor() {
 void test_attack() {
 	std::cout << "\n********* Test: Attack *********" << std::endl;
 	DiamondTrap diamond("Attacker");
+	diamond.print();
 	for (int i = 0; i < 5; i++) {
 		diamond.attack("Target");
 	}
@@ -41,6 +42,7 @@ void test_attack() {
 void test_take_damage() {
 	std::cout << "\n********* Test: Take Damage *********" << std::endl;
 	DiamondTrap diamond("Damaged");
+	diamond.print();
 	diamond.takeDamage(50);
 	diamond.takeDamage(60);
 	diamond.takeDamage(70);
@@ -49,6 +51,7 @@ void test_take_damage() {
 void test_be_repaired() {
 	std::cout << "\n********* Test: Be Repaired *********" << std::endl;
 	DiamondTrap diamond("Repairer");
+	diamond.print();
 	for (int i = 0; i < 5; i++) {
 		diamond.beRepaired(2);
 	}
@@ -57,6 +60,7 @@ void test_be_repaired() {
 void test_death_state() {
 	std::cout << "\n********* Test: Death State *********" << std::endl;
 	DiamondTrap diamond("Enemy");
+	diamond.print();
 	diamond.takeDamage(100);
 	diamond.attack("Target");
 	diamond.beRepaired(5);
@@ -65,18 +69,21 @@ void test_death_state() {
 void test_gate_keeper_mode() {
 	std::cout << "\n********* Test: Gate keeper mode *********" << std::endl;
 	DiamondTrap diamond("Guard");
+	diamond.print();
 	diamond.guardGate();
 }
 
 void test_high_five() {
 	std::cout << "\n********* Test: High five *********" << std::endl;
 	DiamondTrap diamond("HighFive");
+	diamond.print();
 	diamond.highFivesGuys();
 }
 
 void test_who_am_i() {
 	std::cout << "\n********* Test: Who am I *********" << std::endl;
 	DiamondTrap diamond("Hero");
+	diamond.print();
 	diamond.whoAmI();
 }
 

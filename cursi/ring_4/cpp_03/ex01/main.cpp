@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 13:26:07 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/11/08 13:26:08 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/11/23 20:13:21 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void test_copy_constructor() {
 void test_attack() {
 	std::cout << "\n********* Test: Attack *********" << std::endl;
 	ScavTrap scav("Attacker");
+	scav.print();
 	for (int i = 0; i < 5; i++) {
 		scav.attack("Target");
 	}
@@ -43,6 +44,7 @@ void test_attack() {
 void test_take_damage() {
 	std::cout << "\n********* Test: Take Damage *********" << std::endl;
 	ScavTrap scav("Damaged");
+	scav.print();
 	scav.takeDamage(50);
 	scav.takeDamage(60);
 	scav.takeDamage(70);
@@ -51,6 +53,7 @@ void test_take_damage() {
 void test_be_repaired() {
 	std::cout << "\n********* Test: Be Repaired *********" << std::endl;
 	ScavTrap scav("Repairer");
+	scav.print();
 	for (int i = 0; i < 5; i++) {
 		scav.beRepaired(2);
 	}
@@ -59,6 +62,7 @@ void test_be_repaired() {
 void test_death_state() {
 	std::cout << "\n********* Test: Death State *********" << std::endl;
 	ScavTrap scav("Enemy");
+	scav.print();
 	scav.takeDamage(100);
 	scav.attack("Target");
 	scav.beRepaired(5);
@@ -67,6 +71,7 @@ void test_death_state() {
 void test_gate_keeper_mode() {
 	std::cout << "\n********* Test: Gate keeper mode *********" << std::endl;
 	ScavTrap scav("Guard");
+	scav.print();
 	scav.guardGate();
 }
 

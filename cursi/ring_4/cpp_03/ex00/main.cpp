@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 13:25:55 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/11/08 13:25:56 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/11/23 20:11:40 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void test_copy_constructor() {
 void test_attack() {
 	std::cout << "\n********* Test: Attack *********" << std::endl;
 	ClapTrap clap("Attacker");
+	clap.print();
 	for (int i = 0; i < DEFAULT + 1; i++) {
 		clap.attack("Target");
 	}
@@ -43,6 +44,7 @@ void test_attack() {
 void test_take_damage() {
 	std::cout << "\n********* Test: Take Damage *********" << std::endl;
 	ClapTrap clap("Damaged");
+	clap.print();
 	clap.takeDamage(5);
 	clap.takeDamage(6);
 	clap.takeDamage(7);
@@ -51,6 +53,7 @@ void test_take_damage() {
 void test_be_repaired() {
 	std::cout << "\n********* Test: Be Repaired *********" << std::endl;
 	ClapTrap clap("Repairer");
+	clap.print();
 	for (int i = 0; i < DEFAULT + 1; i++) {
 		clap.beRepaired(2);
 	}
@@ -59,6 +62,7 @@ void test_be_repaired() {
 void test_exceed_energy() {
 	std::cout << "\n********* Test: Exceed Energy Limit *********" << std::endl;
 	ClapTrap clap("Exhausted");
+	clap.print();
 	for (int i = 0; i < DEFAULT + 1; i++) {
 		clap.attack("Target");
 	}
@@ -68,6 +72,7 @@ void test_exceed_energy() {
 void test_death_state() {
 	std::cout << "\n********* Test: Death State *********" << std::endl;
 	ClapTrap clap("Enemy");
+	clap.print();
 	clap.takeDamage(10);
 	clap.attack("Target");
 	clap.beRepaired(5);
