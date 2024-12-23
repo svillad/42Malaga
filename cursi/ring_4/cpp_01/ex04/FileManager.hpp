@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 13:22:47 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/11/08 13:22:48 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/12/23 17:46:13 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ private:
 	void		handle_error(const std::string& message);
 	bool		validate(std::ifstream &inputFile,
 					const std::string &filename, const std::string &s1);
+	std::string decode_escapes(const std::string &input);
 	std::string	read_file_content(std::ifstream& inputFile);
 	std::string	replace_content(const std::string& fileContent,
 					const std::string& s1, const std::string& s2);

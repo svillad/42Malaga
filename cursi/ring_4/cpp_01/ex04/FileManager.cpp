@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 13:22:45 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/11/23 18:47:31 by svilla-d         ###   ########.fr       */
+/*   Updated: 2024/12/23 18:59:21 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,40 @@ bool FileManager::validate(std::ifstream &inputFile,
 	return (true);
 }
 
+std::string FileManager::decode_escapes(const std::string &input) {
+	std::string result;
+	result.reserve(input.size());
+
+	for (size_t i = 0; i < input.size(); ++i)
+	{
+		if (input[i] == '\\' && (i + 1) < input.size())
+		{
+			++i;
+			switch (input[i])
+			{
+				case 'n':
+					result.push_back('\n');
+					break;
+				case 't':
+					result.push_back('\t');
+					break;
+				case '\\':
+					result.push_back('\\');
+					break;
+				case '0':
+					result.push_back('\0');
+					break;
+				default:
+					result.push_back(input[i]);
+					break;
+			}
+		}
+		else
+			result.push_back(input[i]);
+	}
+	return (result);
+}
+
 std::string FileManager::read_file_content(std::ifstream& inputFile) {
 	std::ostringstream buffer;
 	buffer << inputFile.rdbuf();
@@ -51,13 +85,17 @@ std::string FileManager::read_file_content(std::ifstream& inputFile) {
 }
 
 std::string FileManager::replace_content(const std::string &fileContent,
-		const std::string &s1, const std::string &s2) {
+				const std::string &s1, const std::string &s2) {
+	std::string realS1 = decode_escapes(s1);
+	std::string realS2 = decode_escapes(s2);
+
 	std::string newContent = fileContent;
 	size_t pos = 0;
-	while ((pos = newContent.find(s1, pos)) != std::string::npos) {
-		newContent.erase(pos, s1.length());
-		newContent.insert(pos, s2);
-		pos += s2.length();
+	while ((pos = newContent.find(realS1, pos)) != std::string::npos)
+	{
+		newContent.erase(pos, realS1.length());
+		newContent.insert(pos, realS2);
+		pos += realS2.length();
 	}
 	return (newContent);
 }

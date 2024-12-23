@@ -6,7 +6,7 @@
 #    By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/08 13:22:59 by svilla-d          #+#    #+#              #
-#    Updated: 2024/11/08 13:23:00 by svilla-d         ###   ########.fr        #
+#    Updated: 2024/12/23 19:00:13 by svilla-d         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -69,9 +69,9 @@ $(OBJ_DIR)%.o: $(TESTS_DIR)%.cpp
 tests: $(OBJ_SRC_TESTS)
 	$(CC) $(CFLAGS) $(OBJ_SRC_TESTS) -o $@
 	-./tests
-	-./tests no_file.txt filename "*FILENAME*"
-	-./tests test.txt filename
+	-./tests no_file.txt "filename" "*FILENAME*"
+	-./tests test.txt "filename"
 	-./tests test.txt "" "*FILENAME*"
-	-./tests test.txt filename "*FILENAME*"
+	-./tests test.txt "filename" "*FILENAME*"
 
 .PHONY: all clean fclean re tests
