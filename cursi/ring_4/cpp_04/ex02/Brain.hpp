@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 13:29:12 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/11/08 13:29:12 by svilla-d         ###   ########.fr       */
+/*   Updated: 2025/01/11 16:48:53 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,8 @@ public:
 	void print(int lim) const;
 	void setIdeas(std::string idea);
 };
+
+template<typename T>
+std::string to_string(const T& value);
 
 #endif

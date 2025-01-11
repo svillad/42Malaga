@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 13:29:09 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/11/08 13:29:10 by svilla-d         ###   ########.fr       */
+/*   Updated: 2025/01/11 16:47:47 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,3 +49,9 @@ void Brain::setIdeas(std::string idea) {
   }
 }
 
+template<typename T>
+std::string to_string(const T& value) {
+    std::ostringstream oss;
+    oss << value;
+    return oss.str();
+}

@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 13:28:41 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/11/08 13:28:42 by svilla-d         ###   ########.fr       */
+/*   Updated: 2025/01/11 20:03:52 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,10 @@ void test_constructor() {
     for (int i = 0; i < ANIMALS_COUNT; ++i) {
         animals[i]->makeSound();
         if (Cat* cat = dynamic_cast<Cat*>(animals[i])) {
+            cat->setIdeas();
             cat->printIdeas(NUM_IDEAS);
         } else if (Dog* dog = dynamic_cast<Dog*>(animals[i])) {
+            dog->setIdeas();
             dog->printIdeas(NUM_IDEAS);
         }
     }
@@ -65,6 +67,7 @@ void test_deep_copy() {
 }
 
 int main() {
+    srand(time(0));
     test_simple_test();
 	test_constructor();
 	test_deep_copy();

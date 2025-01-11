@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 13:28:30 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/11/08 13:28:30 by svilla-d         ###   ########.fr       */
+/*   Updated: 2025/01/11 20:04:04 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,13 @@ void Cat::printIdeas(int lim) const {
 }
 
 void Cat::setIdeas(void) {
-	brain->setIdeas("I'm hungry");
+    const char* ideas[] = {
+        "As the supreme being, I am hungry.",
+        "I, the mighty cat, want to play.",
+        "The great one feels sleepy.",
+        "The almighty feline demands attention.",
+        "I, ruler of all, shall go outside."
+    };
+  	for (int i = 0; i < LIM; ++i)
+    	brain->setIdea(ideas[rand() % 5]);
 }

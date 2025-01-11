@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 13:28:36 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/11/08 13:28:36 by svilla-d         ###   ########.fr       */
+/*   Updated: 2025/01/11 20:04:24 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,13 @@ void Dog::printIdeas(int lim) const {
 }
 
 void Dog::setIdeas(void) {
-	brain->setIdeas("I wanna play");
+	const char* ideas[] = {
+        "I am so excited! I need a snack!",
+        "Oh boy, I want to play! Can we go outside?",
+        "I love you! I just want to cuddle.",
+        "I'm so tired, but I'll guard you while I sleep.",
+        "Let's go outside, I have to chase something!"
+    };
+  	for (int i = 0; i < LIM; ++i)
+    	brain->setIdea(ideas[rand() % 5]);
 }

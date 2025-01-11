@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 13:28:24 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/11/08 13:28:25 by svilla-d         ###   ########.fr       */
+/*   Updated: 2025/01/11 20:04:57 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 Brain::Brain() {
   std::cout << "\e[31m[Brain]\e[0m Default constructor called for Brain" << std::endl;
+  count = 0;
 }
 
 Brain::Brain(const Brain &b) {
@@ -27,6 +28,7 @@ Brain &Brain::operator=(const Brain &b) {
 	  for (int i = 0; i < LIM; ++i) {
       ideas[i] = b.ideas[i];
     }
+    count = b.count;
   }
   return (*this);
 }
@@ -43,9 +45,9 @@ void Brain::print(int lim) const {
   }
 }
 
-void Brain::setIdeas(std::string idea) {
-  for (int i = 0; i < LIM; ++i) {
-      ideas[i] = std::to_string(i) + "_" + idea;
-  }
+void Brain::setIdea(std::string idea) {
+  ideas[count] = idea;
+  count++;
+  if (count >= LIM)
+    count = 0;
 }
-

@@ -6,7 +6,7 @@
 #    By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/08 13:27:40 by svilla-d          #+#    #+#              #
-#    Updated: 2024/11/08 13:27:41 by svilla-d         ###   ########.fr        #
+#    Updated: 2025/01/11 16:35:55 by svilla-d         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,7 +54,7 @@ re: fclean all
 # --------------------------------------------------
 
 TESTS_DIR         = ./
-FILES_SRC_TESTS	= main.cpp
+FILES_SRC_TESTS	= tests.cpp
 
 SRC_MAIN_TESTS	= $(addprefix $(TESTS_DIR),$(FILES_SRC_TESTS))
 SRC_TESTS		= $(SRC_MAIN_TESTS) $(SRC_EXEC)

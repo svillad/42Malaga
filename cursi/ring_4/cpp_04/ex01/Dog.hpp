@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 13:28:38 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/11/08 13:28:39 by svilla-d         ###   ########.fr       */
+/*   Updated: 2025/01/11 18:42:08 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "Animal.hpp"
 # include "Brain.hpp"
 # include <iostream>
+# include <cstdlib>
 # include <string>
 
 class Dog : virtual public Animal {
