@@ -6,15 +6,22 @@
 #    By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/08 13:30:12 by svilla-d          #+#    #+#              #
-#    Updated: 2024/11/08 13:31:05 by svilla-d         ###   ########.fr        #
+#    Updated: 2025/01/25 18:55:44 by svilla-d         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME            = character
 
 CC              = c++
+
+# Logging levels:
+# 0 - DEBUG: Detailed debug information.
+# 1 - INFO: General information about program execution.
+# 2 - WARN: Indications of potential issues.
+# 3 - ERROR: Errors that affect program execution.
+# 4 - OFF: Disable all logging.
 LOG		 		?= 4
-CFLAGS          = -Wall -Werror -Wextra -Iincludes -I. -std=c++98 -DLOG=$(LOG)  -g -fsanitize=address 
+CFLAGS          = -Wall -Werror -Wextra -Iincludes -I. -std=c++98 -DLOG=$(LOG) -g -fsanitize=address 
 
 RM              = rm -rf
 

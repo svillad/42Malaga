@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 13:29:15 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/11/08 13:29:15 by svilla-d         ###   ########.fr       */
+/*   Updated: 2025/01/25 19:14:26 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ Cat::Cat() : AAnimal("Cat") {
 	brain = new Brain();
 }
 
-Cat::Cat(const Cat &c) : AAnimal(c) {
+Cat::Cat(const Cat &c) : AAnimal(c), brain(NULL)  {
 	std::cout << "\e[32m[Cat]\e[0m Copy constructor called for " << c.type << std::endl;
 	*this = c;
 }
@@ -26,9 +26,12 @@ Cat &Cat::operator=(const Cat &c) {
 	std::cout << "\e[32m[Cat]\e[0m Copy assignment operator called for " << c.type << std::endl;
 	if (this != &c) {
 		type = c.type;
-		if (brain)
-			delete brain;
-		brain = new Brain(*c.brain);
+		if (this->brain)
+			delete this->brain;
+		if (c.brain)
+			this->brain = new Brain(*c.brain);
+		else
+			this->brain = NULL;
 	}
 	return (*this);
 }
@@ -47,5 +50,13 @@ void Cat::printIdeas(int lim) const {
 }
 
 void Cat::setIdeas(void) {
-	brain->setIdeas("I'm hungry");
+	const char* ideas[] = {
+		"As the supreme being, I am hungry.",
+		"I, the mighty cat, want to play.",
+		"The great one feels sleepy.",
+		"The almighty feline demands attention.",
+		"I, ruler of all, shall go outside."
+	};
+	for (int i = 0; i < LIM; ++i)
+		brain->setIdea(ideas[rand() % 5]);
 }

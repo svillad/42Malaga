@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 13:29:09 by svilla-d          #+#    #+#             */
-/*   Updated: 2025/01/11 16:47:47 by svilla-d         ###   ########.fr       */
+/*   Updated: 2025/01/25 19:04:18 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 Brain::Brain() {
   std::cout << "\e[31m[Brain]\e[0m Default constructor called for Brain" << std::endl;
+  count = 0;
 }
 
 Brain::Brain(const Brain &b) {
@@ -24,9 +25,10 @@ Brain::Brain(const Brain &b) {
 Brain &Brain::operator=(const Brain &b) {
   std::cout << "\e[31m[Brain]\e[0m Copy assignment operator called for Brain" << std::endl;
   if (this != &b) {
-	  for (int i = 0; i < LIM; ++i) {
+    for (int i = 0; i < LIM; ++i) {
       ideas[i] = b.ideas[i];
     }
+    count = b.count;
   }
   return (*this);
 }
@@ -43,15 +45,9 @@ void Brain::print(int lim) const {
   }
 }
 
-void Brain::setIdeas(std::string idea) {
-  for (int i = 0; i < LIM; ++i) {
-      ideas[i] = std::to_string(i) + "_" + idea;
-  }
-}
-
-template<typename T>
-std::string to_string(const T& value) {
-    std::ostringstream oss;
-    oss << value;
-    return oss.str();
+void Brain::setIdea(std::string idea) {
+  ideas[count] = idea;
+  count++;
+  if (count >= LIM)
+    count = 0;
 }

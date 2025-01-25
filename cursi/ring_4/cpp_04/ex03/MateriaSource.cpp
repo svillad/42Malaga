@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 13:30:15 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/11/08 13:30:15 by svilla-d         ###   ########.fr       */
+/*   Updated: 2025/01/25 18:50:48 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ MateriaSource::~MateriaSource() {
 
 void MateriaSource::learnMateria(AMateria* m) {
     log.print(DEBUG, "\e[35m[Materia]\e[0m Start learn materia process");
-    if (!m) {
+    if (m == NULL) {
         log.print(ERROR, "\e[35m[Materia]\e[0m Trying learn a null materia");
         return ;
     }
@@ -57,6 +57,8 @@ void MateriaSource::learnMateria(AMateria* m) {
         if (!templates[i]) {
             templates[i] = m->clone();
             log.print(DEBUG, "\e[35m[Materia]\e[0m '" + m->getType() + "' successfully learned");
+            delete m;
+            m = NULL;
             return ;
         }
     }
@@ -74,14 +76,14 @@ AMateria* MateriaSource::createMateria(std::string const &type) {
         }
     }
     log.print(WARN, "\e[35m[Materia]\e[0m The materia '" + type + "' not found. Operation not completed");
-    return (nullptr);
+    return (NULL);
 }
 
 void MateriaSource::freeArray(AMateria* array[], int size) {
     for (int i = 0; i < size; ++i) {
-        if (array[i]) {
+        if (array[i] != NULL) {
             delete array[i];
-            array[i] = nullptr;
+            array[i] = NULL;
         }
     }
 }
@@ -89,7 +91,7 @@ void MateriaSource::freeArray(AMateria* array[], int size) {
 void MateriaSource::copyArray(AMateria* dst[], AMateria* const src[], int size) {
     freeArray(dst, size);
     for (int i = 0; i < size; ++i) {
-        dst[i] = src[i] ? src[i]->clone() : nullptr;
+        dst[i] = src[i] ? src[i]->clone() : NULL;
     }
 }
 

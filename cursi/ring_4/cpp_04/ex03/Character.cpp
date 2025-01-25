@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 13:29:39 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/11/08 13:29:39 by svilla-d         ###   ########.fr       */
+/*   Updated: 2025/01/25 18:49:40 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ Character &Character::operator=(Character const &c) {
     {
         name = c.name;
         copyArray(slot, c.slot, SLOT_SIZE);
-        copyArray(bag, c.bag, SLOT_SIZE);
+        copyArray(bag, c.bag, BAG_SIZE);
     }
     return *this;
 }
@@ -58,16 +58,16 @@ void Character::equip(AMateria *m) {
     }
     int p = exists(m);
     if (p != -1) {
-        log.print(WARN, "\e[31m[Character]\e[0m Materia already equipped in slot " + std::to_string(p)
+        log.print(WARN, "\e[31m[Character]\e[0m Materia already equipped in slot " + to_string(p)
                     + ". Operation not completed");
         return ;
     }
     log.print(DEBUG, "\e[31m[Character]\e[0m Trying equip '" + m->getType() + "' for " + name);
     for (int i = 0; i < SLOT_SIZE; ++i) {
         if (!slot[i]) {
-            slot[i] = m->clone();
+            slot[i] = m;
             log.print(DEBUG, "\e[31m[Character]\e[0m '" + m->getType()
-                        + "' successfully equipped in slot " + std::to_string(i));
+                        + "' successfully equipped in slot " + to_string(i));
             return ;
         }
     }
@@ -77,15 +77,15 @@ void Character::equip(AMateria *m) {
 
 void Character::unequip(int idx) {
     log.print(DEBUG, "\e[31m[Character]\e[0m Start unequip process");
-    log.print(DEBUG, "\e[31m[Character]\e[0m Trying unequip slot '" + std::to_string(idx) + "' for " + name);
+    log.print(DEBUG, "\e[31m[Character]\e[0m Trying unequip slot '" + to_string(idx) + "' for " + name);
     if (idx < 0 || idx >= SLOT_SIZE) {
         log.print(ERROR, "\e[31m[Character]\e[0m '" + name + "' are trying to unequip "
-                    + "an invalid slot("+ std::to_string(idx) + "). "
-                    + "It must be between 0 and " + std::to_string(SLOT_SIZE - 1));
+                    + "an invalid slot("+ to_string(idx) + "). "
+                    + "It must be between 0 and " + to_string(SLOT_SIZE - 1));
         return ;
     }
     if (!slot[idx]) {
-        log.print(WARN, "\e[31m[Character]\e[0m slot '" + std::to_string(idx) + "' was already empty");
+        log.print(WARN, "\e[31m[Character]\e[0m slot '" + to_string(idx) + "' was already empty");
         return ;
     }
     for (int i = 0; i < BAG_SIZE; ++i)
@@ -93,9 +93,9 @@ void Character::unequip(int idx) {
         if (!bag[i])
         {
             bag[i] = slot[idx];
-            slot[idx] = nullptr;
+            slot[idx] = NULL;
             log.print(DEBUG, "\e[31m[Character]\e[0m '" + bag[i]->getType()
-                        + "' successfully unequipped from slot " + std::to_string(i));
+                        + "' successfully unequipped from slot " + to_string(i));
             return ;
         }
     }
@@ -106,13 +106,13 @@ void Character::unequip(int idx) {
 void Character::use(int idx, ICharacter &target) {
     if (idx < 0 || idx >= SLOT_SIZE) {
         log.print(ERROR, "\e[31m[Character]\e[0m '" + name + "' are trying to use "
-                    + "an invalid slot("+ std::to_string(idx) + "). "
-                    + "It must be between 0 and " + std::to_string(SLOT_SIZE - 1));
+                    + "an invalid slot("+ to_string(idx) + "). "
+                    + "It must be between 0 and " + to_string(SLOT_SIZE - 1));
         return ;
     }
     if (!slot[idx]) {
         log.print(WARN, "\e[31m[Character]\e[0m '" + name + "' doesn't have slot "
-                    + std::to_string(idx) + " equipped");
+                    + to_string(idx) + " equipped");
         return ;
     }
     slot[idx]->use(target);
@@ -120,14 +120,14 @@ void Character::use(int idx, ICharacter &target) {
 
 void Character::initArray(AMateria* array[], int size) {
     for (int i = 0; i < size; ++i)
-        array[i] = nullptr;
+        array[i] = NULL;
 }
 
 void Character::freeArray(AMateria* array[], int size) {
     for (int i = 0; i < size; ++i) {
         if (array[i]) {
             delete array[i];
-            array[i] = nullptr;
+            array[i] = NULL;
         }
     }
 }
@@ -135,7 +135,7 @@ void Character::freeArray(AMateria* array[], int size) {
 void Character::copyArray(AMateria* dst[], AMateria* const src[], int size) {
     freeArray(dst, size);
     for (int i = 0; i < size; ++i) {
-        dst[i] = src[i] ? src[i]->clone() : nullptr;
+        dst[i] = src[i] ? src[i]->clone() : NULL;
     }
 }
 
@@ -146,4 +146,11 @@ int Character::exists(AMateria* m) const {
             return (i);
     }
     return (-1);
+}
+
+template<typename T>
+std::string to_string(const T& value) {
+    std::ostringstream oss;
+    oss << value;
+    return oss.str();
 }

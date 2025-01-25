@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 13:29:12 by svilla-d          #+#    #+#             */
-/*   Updated: 2025/01/11 16:48:53 by svilla-d         ###   ########.fr       */
+/*   Updated: 2025/01/25 16:59:03 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,12 @@
 # include <iostream>
 # include <string>
 
-# define LIM 100
+# define LIM 5
 
 class Brain {
 protected:
 	std::string	ideas[LIM];
+	int count;
 
 public:
 	Brain();
@@ -29,10 +30,7 @@ public:
 	virtual ~Brain();
 
 	void print(int lim) const;
-	void setIdeas(std::string idea);
+	void setIdea(std::string idea);
 };
-
-template<typename T>
-std::string to_string(const T& value);
 
 #endif

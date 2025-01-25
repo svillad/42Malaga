@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 13:29:41 by svilla-d          #+#    #+#             */
-/*   Updated: 2024/11/08 13:29:42 by svilla-d         ###   ########.fr       */
+/*   Updated: 2025/01/25 17:02:22 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "AMateria.hpp"
 # include "Logger.hpp"
 # include <iostream>
+# include <sstream>
 
 # define SLOT_SIZE 4
 # define BAG_SIZE 100
@@ -45,5 +46,8 @@ public:
     void unequip(int idx);
     void use(int idx, ICharacter& target);
 };
+
+template<typename T>
+std::string to_string(const T& value);
 
 #endif
