@@ -1,8 +1,10 @@
 #ifndef SERIALIZER_HPP
 #define SERIALIZER_HPP
 
-#include <iostream>
 #include "ILogger.hpp"
+#include <iostream>
+#include <sstream>
+#include <stdint.h>
 
 struct Data {
     int id;
@@ -24,5 +26,12 @@ public:
     static uintptr_t serialize(Data* ptr);
     static Data* deserialize(uintptr_t raw);
 };
+
+template<typename T>
+std::string to_string(const T& value) {
+    std::ostringstream oss;
+    oss << value;
+    return oss.str();
+}
 
 #endif

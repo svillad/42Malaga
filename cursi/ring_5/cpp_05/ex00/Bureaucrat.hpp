@@ -5,6 +5,7 @@
 # include "FileLogger.hpp"
 # include "ConsoleLogger.hpp"
 # include <iostream>
+# include <sstream>
 # include <string>
 
 class Bureaucrat {
@@ -47,5 +48,12 @@ public:
 };
 
 std::ostream& operator<<(std::ostream &stream, const Bureaucrat &b);
+
+template<typename T>
+std::string to_string(const T& value) {
+    std::ostringstream oss;
+    oss << value;
+    return oss.str();
+}
 
 #endif

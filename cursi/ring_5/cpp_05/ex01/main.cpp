@@ -54,5 +54,6 @@ int main() {
         logger->log(ERROR, "[main] Exception: " + std::string(e.what()));
         std::cerr << "Exception: " << e.what() << std::endl;
     }
+    delete logger;
     return 0;
 }

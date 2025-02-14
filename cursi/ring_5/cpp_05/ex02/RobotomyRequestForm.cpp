@@ -4,9 +4,9 @@ RobotomyRequestForm::RobotomyRequestForm() : AForm() {
     FileLogger logger("logs.log");
     logger.log(DEBUG, "[RobotomyRequestForm] Default constructor called for " + name +
                       ", target: " + this->target +
-                      ", signed: " + std::to_string(isSigned) +
-                      ", sign grade: " + std::to_string(signGrade) +
-                      ", exec grade: " + std::to_string(execGrade));
+                      ", signed: " + to_string(isSigned) +
+                      ", sign grade: " + to_string(signGrade) +
+                      ", exec grade: " + to_string(execGrade));
 }
 
 RobotomyRequestForm::RobotomyRequestForm(std::string target)
@@ -14,9 +14,9 @@ RobotomyRequestForm::RobotomyRequestForm(std::string target)
     FileLogger logger("logs.log");
     logger.log(DEBUG, "[RobotomyRequestForm] Overload constructor called for " + name +
                       ", target: " + this->target +
-                      ", signed: " + std::to_string(isSigned) +
-                      ", sign grade: " + std::to_string(signGrade) +
-                      ", exec grade: " + std::to_string(execGrade));
+                      ", signed: " + to_string(isSigned) +
+                      ", sign grade: " + to_string(signGrade) +
+                      ", exec grade: " + to_string(execGrade));
 }
 
 RobotomyRequestForm::RobotomyRequestForm(std::string target, std::string name)
@@ -24,9 +24,9 @@ RobotomyRequestForm::RobotomyRequestForm(std::string target, std::string name)
     FileLogger logger("logs.log");
     logger.log(DEBUG, "[RobotomyRequestForm] Overload constructor called for " + name +
                       ", target: " + this->target +
-                      ", signed: " + std::to_string(isSigned) +
-                      ", sign grade: " + std::to_string(signGrade) +
-                      ", exec grade: " + std::to_string(execGrade));
+                      ", signed: " + to_string(isSigned) +
+                      ", sign grade: " + to_string(signGrade) +
+                      ", exec grade: " + to_string(execGrade));
 }
 
 RobotomyRequestForm::RobotomyRequestForm(const RobotomyRequestForm &f)
@@ -37,9 +37,9 @@ RobotomyRequestForm::RobotomyRequestForm(const RobotomyRequestForm &f)
     if (logger)
         logger->log(DEBUG,"[RobotomyRequestForm] Copy constructor called for " + name +
                       ", target: " + target +
-                      ", signed: " + std::to_string(isSigned) +
-                      ", sign grade: " + std::to_string(signGrade) +
-                      ", exec grade: " + std::to_string(execGrade));
+                      ", signed: " + to_string(isSigned) +
+                      ", sign grade: " + to_string(signGrade) +
+                      ", exec grade: " + to_string(execGrade));
 }
 
 RobotomyRequestForm &RobotomyRequestForm::operator=(const RobotomyRequestForm &f) {
@@ -50,9 +50,9 @@ RobotomyRequestForm &RobotomyRequestForm::operator=(const RobotomyRequestForm &f
     if (logger)
         logger->log(DEBUG,"[RobotomyRequestForm] Copy assignment operator called for " + name +
                       ", target: " + target +
-                      ", signed: " + std::to_string(isSigned) +
-                      ", sign grade: " + std::to_string(signGrade) +
-                      ", exec grade: " + std::to_string(execGrade));
+                      ", signed: " + to_string(isSigned) +
+                      ", sign grade: " + to_string(signGrade) +
+                      ", exec grade: " + to_string(execGrade));
     return (*this);
 }
 
@@ -72,7 +72,7 @@ void RobotomyRequestForm::execute(Bureaucrat const &b) const {
     std::cout << b.getName() << " execute " << name << std::endl;
     std::cout << "* BZZZZZZZZZ... DRRRR... BZZZZT *" << std::endl;
     std::srand(std::time(NULL));
-    bool success = (std::rand() % 2 == 0);
+    bool success = (rand() % 2 == 0);
     if (success) {
         std::cout << target << " has been robotomized successfully! ✅ 🤖" << std::endl;
         std::cout << "               /(o_o)\\" << std::endl;

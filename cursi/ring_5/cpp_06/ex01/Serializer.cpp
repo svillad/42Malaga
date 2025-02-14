@@ -22,7 +22,7 @@ void Serializer::setLogger(ILogger* log) {
 uintptr_t Serializer::serialize(Data* ptr) {
     uintptr_t raw = reinterpret_cast<uintptr_t>(ptr);
     if (logger)
-        logger->log(DEBUG, "[Serializer] Serialized pointer: " + std::to_string(raw));
+        logger->log(DEBUG, "[Serializer] Serialized pointer: " + to_string(raw));
     return raw;
 }
 
@@ -30,6 +30,6 @@ uintptr_t Serializer::serialize(Data* ptr) {
 Data* Serializer::deserialize(uintptr_t raw) {
     Data* ptr = reinterpret_cast<Data*>(raw);
     if (logger)
-        logger->log(DEBUG, "[Serializer] Deserialized pointer: " + std::to_string(raw));
+        logger->log(DEBUG, "[Serializer] Deserialized pointer: " + to_string(raw));
     return ptr;
 }

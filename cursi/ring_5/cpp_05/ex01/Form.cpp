@@ -3,25 +3,25 @@
 Form::Form() : name("unnamed"), isSigned(false), signGrade(1), execGrade(1) {
     FileLogger logger("logs.log");
     logger.log(DEBUG, "[Form] Default constructor called for " + name +
-                      ", signed: " + std::to_string(isSigned) +
-                      ", sign grade: " + std::to_string(signGrade) +
-                      ", exec grade: " + std::to_string(execGrade));
+                      ", signed: " + to_string(isSigned) +
+                      ", sign grade: " + to_string(signGrade) +
+                      ", exec grade: " + to_string(execGrade));
 }
 
 Form::Form(std::string name) : name(name), isSigned(false), signGrade(1), execGrade(1){
     FileLogger logger("logs.log");
     logger.log(DEBUG, "[Form] Overload constructor called for " + name +
-                      ", signed: " + std::to_string(isSigned) +
-                      ", sign grade: " + std::to_string(signGrade) +
-                      ", exec grade: " + std::to_string(execGrade));
+                      ", signed: " + to_string(isSigned) +
+                      ", sign grade: " + to_string(signGrade) +
+                      ", exec grade: " + to_string(execGrade));
 }
 
 Form::Form(std::string name, int grade) : name(name), isSigned(false), signGrade(grade), execGrade(grade){
     FileLogger logger("logs.log");
     logger.log(DEBUG, "[Form] Overload constructor called for " + name +
-                      ", signed: " + std::to_string(isSigned) +
-                      ", sign grade: " + std::to_string(signGrade) +
-                      ", exec grade: " + std::to_string(execGrade));
+                      ", signed: " + to_string(isSigned) +
+                      ", sign grade: " + to_string(signGrade) +
+                      ", exec grade: " + to_string(execGrade));
     validateGrade(grade);
 }
 
@@ -33,9 +33,9 @@ Form::Form(const Form &f) : signGrade(f.signGrade), execGrade(f.execGrade) {
     }
     if (logger)
         logger->log(DEBUG,"[Form] Copy constructor called for " + name +
-                      ", signed: " + std::to_string(isSigned) +
-                      ", sign grade: " + std::to_string(signGrade) +
-                      ", exec grade: " + std::to_string(execGrade));
+                      ", signed: " + to_string(isSigned) +
+                      ", sign grade: " + to_string(signGrade) +
+                      ", exec grade: " + to_string(execGrade));
 }
 
 Form &Form::operator=(const Form &f) {
@@ -46,9 +46,9 @@ Form &Form::operator=(const Form &f) {
     }
     if (logger)
         logger->log(DEBUG,"[Form] Copy assignment operator called for " + name +
-                      ", signed: " + std::to_string(isSigned) +
-                      ", sign grade: " + std::to_string(signGrade) +
-                      ", exec grade: " + std::to_string(execGrade));
+                      ", signed: " + to_string(isSigned) +
+                      ", sign grade: " + to_string(signGrade) +
+                      ", exec grade: " + to_string(execGrade));
     return (*this);
 }
 
@@ -90,8 +90,8 @@ void Form::validateSignGrade(const Bureaucrat &b) const {
     if (b.getGrade() > signGrade) {
         if (logger)
             logger->log(WARN, "[Form] Grade is too low to sign! Bureaucrat " +
-                    b.getName() + "(grade: " + std::to_string(b.getGrade()) + ") cannot sign the form " +
-                    name + + "(grade: " + std::to_string(signGrade) + ").");
+                    b.getName() + "(grade: " + to_string(b.getGrade()) + ") cannot sign the form " +
+                    name + + "(grade: " + to_string(signGrade) + ").");
         throw GradeTooLowException();
     }
 }
@@ -100,8 +100,8 @@ void Form::validateExecGrade(const Bureaucrat &b) const {
     if (b.getGrade() > execGrade) {
         if (logger)
             logger->log(WARN, "[Form] Grade is too low to exec! Bureaucrat " +
-                    b.getName() + "(grade: " + std::to_string(b.getGrade()) + ") cannot exec the form " +
-                    name + + "(grade: " + std::to_string(execGrade) + ").");
+                    b.getName() + "(grade: " + to_string(b.getGrade()) + ") cannot exec the form " +
+                    name + + "(grade: " + to_string(execGrade) + ").");
         throw GradeTooLowException();
     }
 }
@@ -110,7 +110,7 @@ void Form::beSigned(const Bureaucrat &b) {
     validateSignGrade(b);
     if (isSigned) {
         if (logger)
-            logger->log(WARN, "[Form] " + name + " couldn’t Signed by " + b.getName() + " because the form is already signed." );
+            logger->log(WARN, "[Form] " + name + " couldn't Signed by " + b.getName() + " because the form is already signed." );
         throw FormSignedException();
     }
     isSigned = true;

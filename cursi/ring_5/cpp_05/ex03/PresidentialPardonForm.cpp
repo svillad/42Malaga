@@ -4,9 +4,9 @@ PresidentialPardonForm::PresidentialPardonForm() : AForm() {
     FileLogger logger("logs.log");
     logger.log(DEBUG, "[PresidentialPardonForm] Default constructor called for " + name +
                       ", target: " + this->target +
-                      ", signed: " + std::to_string(isSigned) +
-                      ", sign grade: " + std::to_string(signGrade) +
-                      ", exec grade: " + std::to_string(execGrade));
+                      ", signed: " + to_string(isSigned) +
+                      ", sign grade: " + to_string(signGrade) +
+                      ", exec grade: " + to_string(execGrade));
 }
 
 PresidentialPardonForm::PresidentialPardonForm(std::string target)
@@ -14,9 +14,9 @@ PresidentialPardonForm::PresidentialPardonForm(std::string target)
     FileLogger logger("logs.log");
     logger.log(DEBUG, "[PresidentialPardonForm] Overload constructor called for " + name +
                       ", target: " + this->target +
-                      ", signed: " + std::to_string(isSigned) +
-                      ", sign grade: " + std::to_string(signGrade) +
-                      ", exec grade: " + std::to_string(execGrade));
+                      ", signed: " + to_string(isSigned) +
+                      ", sign grade: " + to_string(signGrade) +
+                      ", exec grade: " + to_string(execGrade));
 }
 
 PresidentialPardonForm::PresidentialPardonForm(std::string target, std::string name)
@@ -24,9 +24,9 @@ PresidentialPardonForm::PresidentialPardonForm(std::string target, std::string n
     FileLogger logger("logs.log");
     logger.log(DEBUG, "[PresidentialPardonForm] Overload constructor called for " + name +
                       ", target: " + this->target +
-                      ", signed: " + std::to_string(isSigned) +
-                      ", sign grade: " + std::to_string(signGrade) +
-                      ", exec grade: " + std::to_string(execGrade));
+                      ", signed: " + to_string(isSigned) +
+                      ", sign grade: " + to_string(signGrade) +
+                      ", exec grade: " + to_string(execGrade));
 }
 
 PresidentialPardonForm::PresidentialPardonForm(const PresidentialPardonForm &f)
@@ -37,9 +37,9 @@ PresidentialPardonForm::PresidentialPardonForm(const PresidentialPardonForm &f)
     if (logger)
         logger->log(DEBUG,"[PresidentialPardonForm] Copy constructor called for " + name +
                       ", target: " + target +
-                      ", signed: " + std::to_string(isSigned) +
-                      ", sign grade: " + std::to_string(signGrade) +
-                      ", exec grade: " + std::to_string(execGrade));
+                      ", signed: " + to_string(isSigned) +
+                      ", sign grade: " + to_string(signGrade) +
+                      ", exec grade: " + to_string(execGrade));
 }
 
 PresidentialPardonForm &PresidentialPardonForm::operator=(const PresidentialPardonForm &f) {
@@ -50,9 +50,9 @@ PresidentialPardonForm &PresidentialPardonForm::operator=(const PresidentialPard
     if (logger)
         logger->log(DEBUG,"[PresidentialPardonForm] Copy assignment operator called for " + name +
                       ", target: " + target +
-                      ", signed: " + std::to_string(isSigned) +
-                      ", sign grade: " + std::to_string(signGrade) +
-                      ", exec grade: " + std::to_string(execGrade));
+                      ", signed: " + to_string(isSigned) +
+                      ", sign grade: " + to_string(signGrade) +
+                      ", exec grade: " + to_string(execGrade));
     return (*this);
 }
 

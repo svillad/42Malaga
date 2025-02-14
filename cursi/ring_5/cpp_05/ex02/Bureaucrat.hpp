@@ -6,6 +6,7 @@
 # include "ConsoleLogger.hpp"
 # include "AForm.hpp"
 # include <iostream>
+# include <sstream>
 # include <string>
 
 class AForm;
@@ -52,5 +53,12 @@ public:
 };
 
 std::ostream& operator<<(std::ostream &stream, const Bureaucrat &b);
+
+template<typename T>
+std::string to_string(const T& value) {
+    std::ostringstream oss;
+    oss << value;
+    return oss.str();
+}
 
 #endif

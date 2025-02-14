@@ -4,9 +4,9 @@ ShrubberyCreationForm::ShrubberyCreationForm() : AForm(), target("target") {
     FileLogger logger("logs.log");
     logger.log(DEBUG, "[ShrubberyCreationForm] Default constructor called for " + name +
                       ", target: " + this->target +
-                      ", signed: " + std::to_string(isSigned) +
-                      ", sign grade: " + std::to_string(signGrade) +
-                      ", exec grade: " + std::to_string(execGrade));
+                      ", signed: " + to_string(isSigned) +
+                      ", sign grade: " + to_string(signGrade) +
+                      ", exec grade: " + to_string(execGrade));
 }
 
 ShrubberyCreationForm::ShrubberyCreationForm(std::string target)
@@ -14,9 +14,9 @@ ShrubberyCreationForm::ShrubberyCreationForm(std::string target)
     FileLogger logger("logs.log");
     logger.log(DEBUG, "[ShrubberyCreationForm] Overload constructor called for " + name +
                       ", target: " + this->target +
-                      ", signed: " + std::to_string(isSigned) +
-                      ", sign grade: " + std::to_string(signGrade) +
-                      ", exec grade: " + std::to_string(execGrade));
+                      ", signed: " + to_string(isSigned) +
+                      ", sign grade: " + to_string(signGrade) +
+                      ", exec grade: " + to_string(execGrade));
 }
 
 ShrubberyCreationForm::ShrubberyCreationForm(std::string target, std::string name)
@@ -24,9 +24,9 @@ ShrubberyCreationForm::ShrubberyCreationForm(std::string target, std::string nam
     FileLogger logger("logs.log");
     logger.log(DEBUG, "[ShrubberyCreationForm] Overload constructor called for " + name +
                       ", target: " + this->target +
-                      ", signed: " + std::to_string(isSigned) +
-                      ", sign grade: " + std::to_string(signGrade) +
-                      ", exec grade: " + std::to_string(execGrade));
+                      ", signed: " + to_string(isSigned) +
+                      ", sign grade: " + to_string(signGrade) +
+                      ", exec grade: " + to_string(execGrade));
 }
 
 ShrubberyCreationForm::ShrubberyCreationForm(const ShrubberyCreationForm &f)
@@ -37,9 +37,9 @@ ShrubberyCreationForm::ShrubberyCreationForm(const ShrubberyCreationForm &f)
     if (logger)
         logger->log(DEBUG,"[ShrubberyCreationForm] Copy constructor called for " + name +
                       ", target: " + target +
-                      ", signed: " + std::to_string(isSigned) +
-                      ", sign grade: " + std::to_string(signGrade) +
-                      ", exec grade: " + std::to_string(execGrade));
+                      ", signed: " + to_string(isSigned) +
+                      ", sign grade: " + to_string(signGrade) +
+                      ", exec grade: " + to_string(execGrade));
 }
 
 ShrubberyCreationForm &ShrubberyCreationForm::operator=(const ShrubberyCreationForm &f) {
@@ -50,9 +50,9 @@ ShrubberyCreationForm &ShrubberyCreationForm::operator=(const ShrubberyCreationF
     if (logger)
         logger->log(DEBUG,"[ShrubberyCreationForm] Copy assignment operator called for " + name +
                       ", target: " + target +
-                      ", signed: " + std::to_string(isSigned) +
-                      ", sign grade: " + std::to_string(signGrade) +
-                      ", exec grade: " + std::to_string(execGrade));
+                      ", signed: " + to_string(isSigned) +
+                      ", sign grade: " + to_string(signGrade) +
+                      ", exec grade: " + to_string(execGrade));
     return (*this);
 }
 

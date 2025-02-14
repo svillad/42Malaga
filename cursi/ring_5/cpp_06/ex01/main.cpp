@@ -50,6 +50,6 @@ int main() {
     } else {
         std::cout << "\nError: Deserialized pointer does not match the original pointer." << std::endl;
     }
-
+    delete logger;
     return 0;
 }

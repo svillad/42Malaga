@@ -7,6 +7,7 @@
 # include "Bureaucrat.hpp"
 # include "AForm.hpp"
 # include <iostream>
+# include <cstdlib>
 # include <string>
 
 # define DEFAULT_SIGN_ROBOT 72

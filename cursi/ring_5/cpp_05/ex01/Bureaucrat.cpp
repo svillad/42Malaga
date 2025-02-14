@@ -2,17 +2,17 @@
 
 Bureaucrat::Bureaucrat() : name("unnamed"), grade(150) {
     FileLogger logger("logs.log");
-    logger.log(DEBUG, "[Bureaucrat] Default constructor called for " + name + ", grade: " + std::to_string(grade));
+    logger.log(DEBUG, "[Bureaucrat] Default constructor called for " + name + ", grade: " + to_string(grade));
 }
 
 Bureaucrat::Bureaucrat(std::string name) : name(name), grade(150) {
     FileLogger logger("logs.log");
-    logger.log(DEBUG, "[Bureaucrat] Overload constructor called for " + name + ", grade: " + std::to_string(grade));
+    logger.log(DEBUG, "[Bureaucrat] Overload constructor called for " + name + ", grade: " + to_string(grade));
 }
 
 Bureaucrat::Bureaucrat(std::string name, int grade) : name(name), grade(grade) {
     FileLogger logger("logs.log");
-    logger.log(DEBUG, "[Bureaucrat] Overload constructor called for " + name + ", grade: " + std::to_string(grade));
+    logger.log(DEBUG, "[Bureaucrat] Overload constructor called for " + name + ", grade: " + to_string(grade));
     validateGrade(grade);
 }
 
@@ -23,7 +23,7 @@ Bureaucrat::Bureaucrat(const Bureaucrat &b) {
         logger = b.logger;
     }
     if (logger)
-        logger->log(DEBUG,"[Bureaucrat] Copy constructor called for " + b.name + ", grade: " + std::to_string(grade));
+        logger->log(DEBUG,"[Bureaucrat] Copy constructor called for " + b.name + ", grade: " + to_string(grade));
     validateGrade(b.grade);
 }
 
@@ -34,7 +34,7 @@ Bureaucrat &Bureaucrat::operator=(const Bureaucrat &b) {
         logger = b.logger;
     }
     if (logger)
-        logger->log(DEBUG,"[Bureaucrat] Copy assignment operator called for " + b.name + ", grade: " + std::to_string(grade));
+        logger->log(DEBUG,"[Bureaucrat] Copy assignment operator called for " + b.name + ", grade: " + to_string(grade));
     return (*this);
 }
 
@@ -54,12 +54,12 @@ int Bureaucrat::getGrade(void) const {
 void Bureaucrat::validateGrade(int grade) const {
     if (grade < 1) {
         if (logger)
-            logger->log(WARN, "[Bureaucrat] Grade is too high! Bureaucrat " + name + " cannot have a grade higher than 1 (" + std::to_string(grade) + ").");
+            logger->log(WARN, "[Bureaucrat] Grade is too high! Bureaucrat " + name + " cannot have a grade higher than 1 (" + to_string(grade) + ").");
         throw GradeTooHighException(name);
     }
     if (grade > 150) {
         if (logger)
-            logger->log(WARN, "[Bureaucrat] Grade is too low! Bureaucrat " + name + " cannot have a grade lower than 150 (" + std::to_string(grade) + ").");
+            logger->log(WARN, "[Bureaucrat] Grade is too low! Bureaucrat " + name + " cannot have a grade lower than 150 (" + to_string(grade) + ").");
         throw GradeTooLowException(name);
     }
 }
@@ -68,14 +68,14 @@ void Bureaucrat::incrementGrade(void) {
     validateGrade(grade - 1);
     grade--;
     if (logger)
-        logger->log(INFO, "[Bureaucrat] " + name + " → Grade increased to " + std::to_string(grade));
+        logger->log(INFO, "[Bureaucrat] " + name + " → Grade increased to " + to_string(grade));
 }
 
 void Bureaucrat::decrementGrade(void) {
     validateGrade(grade + 1);
     grade++;
     if (logger)
-        logger->log(INFO, "[Bureaucrat] " + name + " → Grade decreased to " + std::to_string(grade));
+        logger->log(INFO, "[Bureaucrat] " + name + " → Grade decreased to " + to_string(grade));
 }
 
 void Bureaucrat::signForm(Form &form) {
@@ -84,7 +84,7 @@ void Bureaucrat::signForm(Form &form) {
     } catch (const std::exception &e) {
         if (logger)
             logger->log(WARN, "[Bureaucrat] Exception: " + std::string(e.what()));
-        std::cout << name << " couldn’t sign " << form.getName() << " because "  << std::string(e.what()) << std::endl;
+        std::cout << name << " couldn't sign " << form.getName() << " because "  << std::string(e.what()) << std::endl;
     }
 }
 
