@@ -1,0 +1,159 @@
+**********************************************************************************************************
+**                                Ejercicio 00 (Bitcoin Exchange):: std::map                            **
+**********************************************************************************************************
+Esto se debe a que un map permite almacenar los pares (fecha, precio) ordenados automáticamente
+por la fecha, lo que facilita la búsqueda del precio correspondiente a una fecha dada o, en caso
+de que no exista,la fecha inmediatamente inferior. La semántica de búsqueda logarítmica simplifica
+considerablemente la implementación. Esto es fundamental para poder, mediante métodos como
+lower_bound, encontrar rápidamente el precio correspondiente a una fecha dada o, en su defecto,
+la fecha inmediatamente anterior. La eficiencia logarítmica en las búsquedas simplifica la implementación
+y garantiza que se cumplan los requisitos del ejercicio
+
+Descripción: consiste en desarrollar un programa llamado btc que procese dos bases de datos:
+
+• Una base de datos en formato CSV que contiene la evolución del precio del bitcoin a lo largo del
+tiempo. Cada registro tiene una fecha y el precio correspondiente.  
+• Un archivo de entrada que se pasa como argumento al programa, en el que cada línea (salvo la cabecera)
+tiene el formato "fecha | value", donde "fecha" se espera en el formato YYYY-MM-DD y "value" es un número
+(entero o flotante) que representa una cantidad de bitcoin.
+
+La idea es que, para cada línea del archivo de entrada, el programa busque en la base de datos el
+precio del bitcoin correspondiente a la fecha indicada. Si la fecha no existe en la base de datos,
+se debe buscar la fecha inmediatamente anterior (la mayor fecha menor o igual a la proporcionada)
+y usar ese precio. Posteriormente, se multiplica el "value" del archivo de entrada por el precio
+obtenido para dar el resultado.
+
+Entre los puntos clave tenemos:
+
+1. Lectura de la base de datos:  
+   Se debe leer el archivo CSV que contiene los pares (fecha, precio) y almacenarlos en un std::map.
+   Este contenedor es ideal ya que mantiene las claves (fechas) ordenadas automáticamente y permite
+   búsquedas eficientes mediante métodos como lower_bound.
+
+2. Lectura y validación del archivo de entrada:  
+   El programa debe procesar cada línea del archivo (saltando la cabecera) y validar que:  
+   - La fecha esté en el formato correcto (YYYY-MM-DD) y sea una fecha válida.  
+   - El valor sea un número válido (flotante o entero) y esté en el rango permitido (de 0 a 1000).  
+   En caso de encontrar errores, se debe imprimir un mensaje específico (por ejemplo, "Error: not a
+   positive number." o "Error: bad input => [fecha]").
+
+3. Búsqueda del precio:  
+   Una vez validada la entrada, se busca en el std::map el precio del bitcoin para la fecha indicada.
+   Si la fecha no se encuentra, se utiliza el precio de la fecha inmediatamente anterior. Esto se logra
+   eficientemente gracias a la estructura ordenada del map.
+
+4. Cálculo y salida:  
+   Se multiplica el valor de bitcoin ingresado por el precio obtenido y se muestra en la salida estándar
+   el resultado con el formato especificado:  
+   "fecha => value = resultado".
+
+5. Manejo de errores:  
+   Se debe gestionar el error al no poder abrir el archivo de entrada, errores en el formato de la fecha
+   o valor, y valores fuera del rango permitido (como números negativos o excesivamente grandes).
+
+Este ejercicio te permite practicar:
+- La lectura y procesamiento de archivos en C++.
+- La utilización y manejo de contenedores de la STL, específicamente std::map.
+- La implementación de búsquedas eficientes y manejo de errores en la entrada.
+
+
+**********************************************************************************************************
+**                            Ejercicio 01 (Reverse Polish Notation):: std::stack                       **
+**********************************************************************************************************
+La evaluación de expresiones en notación polaca inversa se adapta perfectamente a la estructura LIFO que
+ofrece la pila, haciendo el manejo de operandos y operaciones mucho más directo. La evaluación de expresiones
+en notación polaca inversa se basa en la lógica LIFO (Last In, First Out), y la pila proporciona justamente
+esta estructura, facilitando las operaciones de push y pop sobre los operandos. Esto hace que el manejo de
+la expresión sea mucho más directo y limpio.
+
+Descripción: consiste en crear un programa llamado RPN que evalúa expresiones matemáticas escritas en notación
+polaca inversa. Te explico en detalle:
+
+• En RPN los operadores se colocan después de sus operandos. Por ejemplo, la expresión "8 9 * 9 - 9 - 9 - 4 - 1 +"
+se evalúa de la siguiente manera:
+  - Primero se empujan los números (operandos) en una pila.
+  - Al encontrar un operador (por ejemplo, *), se extraen de la pila los dos últimos operandos, se aplica la 
+    operación y se vuelve a colocar el resultado en la pila.
+  - Este proceso se repite para cada token de la expresión hasta que se procesa toda la cadena.
+
+• El programa debe recibir la expresión RPN como argumento en la línea de comandos. Esto significa que, al
+invocar el programa, se le pasa una cadena (por ejemplo, "7 7 * 7 -") que contiene tanto números como
+operadores separados por espacios.
+
+• Los tokens válidos son:
+  - Números: Los operandos se limitan a números menores a 10 (aunque el resultado de las operaciones puede ser mayor).
+  - Operadores: Los símbolos "+", "-", "/" y "*" son los únicos operadores admitidos.
+
+• El algoritmo típico para evaluar una expresión RPN utiliza un contenedor tipo stack (pila). En cada iteración:
+  - Si el token es un número, se hace push en la pila.
+  - Si el token es un operador, se deben extraer dos operandos de la pila, aplicar la operación y luego hacer push
+    del resultado.
+
+• Se deben manejar casos de error:
+  - Si en algún momento no hay suficientes operandos en la pila para realizar una operación.
+  - Si se encuentra un token no válido (por ejemplo, paréntesis u otro símbolo que no corresponda a un número u operador).
+  - Si, al finalizar la evaluación, queda más de un número en la pila, lo que indica una expresión mal formada.
+  - En caso de error, el programa debe imprimir un mensaje en la salida de error estándar.
+
+• Ejemplos de ejecución:
+  - ./RPN "8 9 * 9 - 9 - 9 - 4 - 1 +" debería mostrar 42.
+  - ./RPN "7 7 * 7 -" también debería resultar en 42.
+  - Una expresión como ./RPN "(1 + 1)" no es válida y debería provocar un mensaje de error.
+
+
+**********************************************************************************************************
+**                            Ejercicio 02 (PmergeMe):: std::vector y std::deque                        **
+**********************************************************************************************************
+El vector es muy simple de usar gracias a su almacenamiento contiguo y acceso aleatorio,
+lo que facilita la implementación del algoritmo de ordenación. Por otro lado,
+el deque permite inserciones eficientes en ambos extremos y también ofrece acceso aleatorio,
+lo que permitirá comparar el rendimiento entre ambos contenedores, cumpliendo a la vez con el requisito de
+utilizar dos contenedores distintos.
+
+Descripción: Este punto tiene como objetivo principal que implementes un algoritmo de ordenación
+usando dos contenedores distintos de la STL (por ejemplo, un std::vector y un std::deque) para comparar su
+rendimiento. Puntos clave:
+
+• **Entrada:**  
+  - El programa se llamará “PmergeMe” y debe recibir una secuencia de enteros positivos (como argumentos de la
+  línea de comandos).  
+  - La secuencia puede ser muy larga (se espera que el programa pueda manejar al menos 3000 elementos), por lo
+  que el manejo eficiente de la memoria y el tiempo es fundamental.  
+  - Es importante validar que cada argumento sea un número positivo; si se detecta algún error (por ejemplo, un
+  número negativo o un valor no numérico), el programa debe mostrar un mensaje de error en la salida estándar
+  de errores.
+
+• **Algoritmo de ordenación:**  
+  - Se debe usar el algoritmo de "merge-insert sort" (también conocido como el algoritmo de Ford-Johnson), que
+  es un algoritmo poco convencional para la ordenación.  
+  - La idea es implementar este algoritmo (o una variante inspirada en él) por separado para cada contenedor,
+  es decir, tendrás dos implementaciones (una para std::vector y otra para std::deque).  
+  - Es importante no escribir una función genérica única, sino implementar el algoritmo individualmente para
+  cada contenedor, para poder comparar su rendimiento de forma justa.
+
+• **Contenedores a utilizar:**  
+  - **std::vector:** Se utiliza por su eficiencia en el acceso aleatorio y en el uso de memoria contigua.  
+  - **std::deque:** Aunque también ofrece acceso aleatorio, permite inserciones y borrados eficientes en ambos
+  extremos, lo que puede influir en el rendimiento según la implementación del algoritmo.
+
+• **Salida del programa:**  
+  El programa debe imprimir información en cuatro líneas:
+  1. **Primera línea:** Una etiqueta seguida de la secuencia original (sin ordenar). Por ejemplo:  
+     `Before: 3 5 9 7 4`
+  2. **Segunda línea:** Una etiqueta seguida de la secuencia ya ordenada. Por ejemplo:  
+     `After: 3 4 5 7 9`
+  3. **Tercera línea:** Un mensaje que indique el tiempo (con la precisión necesaria para ver diferencias) que
+  tomó ordenar la secuencia usando el primer contenedor (por ejemplo, std::vector). Ejemplo:  
+     `Time to process a range of 5 elements with std::vector : 0.00031 us`
+  4. **Cuarta línea:** Un mensaje similar al anterior, pero para el segundo contenedor (por ejemplo, std::deque).Ejemplo:  
+     `Time to process a range of 5 elements with std::deque : 0.00014 us`
+
+• **Manejo de errores y validaciones:**  
+  - El programa debe asegurarse de que los argumentos son todos números enteros positivos.  
+  - Si se encuentra un error (por ejemplo, un número negativo o una cadena no convertible a entero), se debe
+  emitir un mensaje de error.  
+  - Gestionar casos de duplicados
+
+• **Consideraciones adicionales:**  
+  - Medir el tiempo puede hacerse usando funciones de la librería <ctime> para capturar la diferencia
+  entre el inicio y el fin del algoritmo de ordenación para cada contenedor.
