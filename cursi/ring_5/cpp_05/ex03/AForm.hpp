@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   AForm.hpp                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/22 15:45:26 by svilla-d          #+#    #+#             */
+/*   Updated: 2025/02/22 15:45:27 by svilla-d         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef AFORM_HPP
 #define AFORM_HPP
 
@@ -12,7 +24,7 @@ class Bureaucrat;
 
 class AForm {
 protected:
-	std::string	name;
+	const std::string name;
 	bool  isSigned;
 	const int signGrade;
 	const int execGrade;
@@ -28,7 +40,7 @@ public:
 	AForm& operator=(const AForm &f);
 	virtual ~AForm();
 
-	std::string	getName(void) const;
+	const std::string getName(void) const;
 	bool getIsSigned(void)const;
 	int getSignGrade(void)const;
 	int getExecGrade(void)const;

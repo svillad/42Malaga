@@ -1,16 +1,28 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Bureaucrat.cpp                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/22 15:45:31 by svilla-d          #+#    #+#             */
+/*   Updated: 2025/02/22 15:45:31 by svilla-d         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "Bureaucrat.hpp"
 
-Bureaucrat::Bureaucrat() : name("unnamed"), grade(150) {
+Bureaucrat::Bureaucrat() : name("unnamed"), grade(150), logger(NULL) {
     FileLogger logger("logs.log");
     logger.log(DEBUG, "[Bureaucrat] Default constructor called for " + name + ", grade: " + to_string(grade));
 }
 
-Bureaucrat::Bureaucrat(std::string name) : name(name), grade(150) {
+Bureaucrat::Bureaucrat(std::string name) : name(name), grade(150), logger(NULL) {
     FileLogger logger("logs.log");
     logger.log(DEBUG, "[Bureaucrat] Overload constructor called for " + name + ", grade: " + to_string(grade));
 }
 
-Bureaucrat::Bureaucrat(std::string name, int grade) : name(name), grade(grade) {
+Bureaucrat::Bureaucrat(std::string name, int grade) : name(name), grade(grade), logger(NULL) {
     FileLogger logger("logs.log");
     logger.log(DEBUG, "[Bureaucrat] Overload constructor called for " + name + ", grade: " + to_string(grade));
     validateGrade(grade);

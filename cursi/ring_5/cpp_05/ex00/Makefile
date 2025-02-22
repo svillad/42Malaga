@@ -6,11 +6,11 @@
 #    By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/08 13:30:12 by svilla-d          #+#    #+#              #
-#    Updated: 2025/02/08 14:23:16 by svilla-d         ###   ########.fr        #
+#    Updated: 2025/02/22 15:14:04 by svilla-d         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME            = bureaucrat
+NAME       = bureaucrat
 
 # LOG_LEVEL can be DEBUG, INFO, WARN, ERROR, OFF (by default: DEBUG)
 LOG_LEVEL ?= DEBUG

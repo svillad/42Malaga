@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   AForm.cpp                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/22 15:45:22 by svilla-d          #+#    #+#             */
+/*   Updated: 2025/02/22 15:45:23 by svilla-d         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "AForm.hpp"
 
-AForm::AForm() : name("unnamed"), isSigned(false), signGrade(1), execGrade(1) {
+AForm::AForm() : name("unnamed"), isSigned(false), signGrade(1), execGrade(1), logger(NULL) {
     FileLogger logger("logs.log");
     logger.log(DEBUG, "[Form] Default constructor called for " + name +
                       ", signed: " + to_string(isSigned) +
@@ -8,7 +20,7 @@ AForm::AForm() : name("unnamed"), isSigned(false), signGrade(1), execGrade(1) {
                       ", exec grade: " + to_string(execGrade));
 }
 
-AForm::AForm(std::string name) : name(name), isSigned(false), signGrade(1), execGrade(1){
+AForm::AForm(std::string name) : name(name), isSigned(false), signGrade(1), execGrade(1), logger(NULL) {
     FileLogger logger("logs.log");
     logger.log(DEBUG, "[Form] Overload constructor called for " + name +
                       ", signed: " + to_string(isSigned) +
@@ -16,7 +28,7 @@ AForm::AForm(std::string name) : name(name), isSigned(false), signGrade(1), exec
                       ", exec grade: " + to_string(execGrade));
 }
 
-AForm::AForm(std::string name, int grade) : name(name), isSigned(false), signGrade(grade), execGrade(grade){
+AForm::AForm(std::string name, int grade) : name(name), isSigned(false), signGrade(grade), execGrade(grade), logger(NULL) {
     FileLogger logger("logs.log");
     logger.log(DEBUG, "[Form] Overload constructor called for " + name +
                       ", signed: " + to_string(isSigned) +
@@ -25,7 +37,7 @@ AForm::AForm(std::string name, int grade) : name(name), isSigned(false), signGra
     validateGrade(grade);
 }
 
-AForm::AForm(std::string name, int signGrade, int execGrade) : name(name), isSigned(false), signGrade(signGrade), execGrade(execGrade){
+AForm::AForm(std::string name, int signGrade, int execGrade) : name(name), isSigned(false), signGrade(signGrade), execGrade(execGrade) {
     FileLogger logger("logs.log");
     logger.log(DEBUG, "[Form] Overload constructor called for " + name +
                       ", signed: " + to_string(isSigned) +
@@ -35,9 +47,8 @@ AForm::AForm(std::string name, int signGrade, int execGrade) : name(name), isSig
     validateGrade(execGrade);
 }
 
-AForm::AForm(const AForm &f) : signGrade(f.signGrade), execGrade(f.execGrade) {
+AForm::AForm(const AForm &f) : name(f.name), signGrade(f.signGrade), execGrade(f.execGrade) {
     if (this != &f) {
-        name      = f.name;
         isSigned  = f.isSigned;
         logger    = f.logger;
     }
@@ -50,7 +61,6 @@ AForm::AForm(const AForm &f) : signGrade(f.signGrade), execGrade(f.execGrade) {
 
 AForm &AForm::operator=(const AForm &f) {
     if (this != &f) {
-        name      = f.name;
         isSigned  = f.isSigned;
         logger    = f.logger;
     }
@@ -67,7 +77,7 @@ AForm::~AForm() {
         logger->log(DEBUG,"[Form] Destructor called for " + name);
 }
 
-std::string AForm::getName(void) const {
+const std::string AForm::getName(void) const {
     return (name);
 }
 

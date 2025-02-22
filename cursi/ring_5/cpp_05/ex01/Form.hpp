@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Form.hpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/22 15:25:44 by svilla-d          #+#    #+#             */
+/*   Updated: 2025/02/22 15:25:47 by svilla-d         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef FORM_HPP
 #define FORM_HPP
 
@@ -12,7 +24,7 @@ class Bureaucrat;
 
 class Form {
 protected:
-	std::string	name;
+	const std::string name;
 	bool  isSigned;
 	const int signGrade;
 	const int execGrade;
@@ -27,7 +39,7 @@ public:
 	Form& operator=(const Form &f);
 	virtual ~Form();
 
-	std::string	getName(void) const;
+	const std::string getName(void) const;
 	bool getIsSigned(void)const;
 	int getSignGrade(void)const;
 	int getExecGrade(void)const;
