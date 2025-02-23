@@ -6,7 +6,7 @@
 /*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 16:21:17 by svilla-d          #+#    #+#             */
-/*   Updated: 2025/02/22 16:21:18 by svilla-d         ###   ########.fr       */
+/*   Updated: 2025/02/23 12:48:06 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int main(int argc, char *argv[]) {
     ScalarConverter::setLogger(logger);
     ScalarConverter::convert(argv[1]);
 
+    std::cout << std::endl;
     delete logger;
     return 0;
 }

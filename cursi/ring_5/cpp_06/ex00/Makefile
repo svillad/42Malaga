@@ -6,11 +6,11 @@
 #    By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/08 13:30:12 by svilla-d          #+#    #+#              #
-#    Updated: 2025/02/14 17:27:41 by svilla-d         ###   ########.fr        #
+#    Updated: 2025/02/23 18:19:58 by svilla-d         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = converter
+NAME = convert
 
 # LOG_LEVEL can be DEBUG, INFO, WARN, ERROR, OFF (by default: DEBUG)
 LOG_LEVEL ?= DEBUG
@@ -109,12 +109,21 @@ tests: $(OBJ_SRC_TESTS)
 	$(CC) $(CFLAGS) $(OBJ_SRC_TESTS) -o tests
 	@echo "Running tests..."
 	- ./tests
+	- ./tests nan
 	- ./tests -inff
+	- ./tests -inf
 	- ./tests a
 	- ./tests 42
 	- ./tests 42.0f
 	- ./tests 42.0
 	- ./tests malaga
-
+	- ./tests 2147483647
+	- ./tests 2147483648
+	- ./tests 2147483648.0
+	- ./tests -2147483648
+	- ./tests -2147483649
+	- ./tests 25.999999
+	- ./tests 999999999999.9999999999
+	- ./tests 999999999999.9999999999f
 
 .PHONY: all clean fclean re tests
