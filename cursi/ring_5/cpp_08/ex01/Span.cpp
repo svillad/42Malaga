@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Span.cpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/01 19:32:50 by svilla-d          #+#    #+#             */
+/*   Updated: 2025/03/01 20:16:01 by svilla-d         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "Span.hpp"
 
 Span::Span(unsigned int N) : capacity(N) {
@@ -33,7 +45,7 @@ void Span::addNumber(int value)
 int Span::shortestSpan() const
 {
     if (numbers.size() < 2)
-        throw std::runtime_error("Not enough elements in Span to compute a span.");
+        throw std::runtime_error("Not enough elements in Span to compute a shortest span.");
 
     std::vector<int> tmp(numbers);
     std::sort(tmp.begin(), tmp.end());
@@ -46,7 +58,7 @@ int Span::shortestSpan() const
 int Span::longestSpan() const
 {
     if (numbers.size() < 2)
-        throw std::runtime_error("Not enough elements in Span to compute a span.");
+        throw std::runtime_error("Not enough elements in Span to compute a longest span.");
 
     int minVal = *std::min_element(numbers.begin(), numbers.end());
     int maxVal = *std::max_element(numbers.begin(), numbers.end());

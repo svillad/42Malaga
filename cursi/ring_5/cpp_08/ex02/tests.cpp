@@ -1,10 +1,34 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tests.cpp                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/01 20:58:27 by svilla-d          #+#    #+#             */
+/*   Updated: 2025/03/01 20:58:29 by svilla-d         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "MutantStack.hpp"
 #include <iostream>
 #include <algorithm>
 #include <list>
 
+void test_simple(MutantStack<int> &mstack) {
+    std::cout << "\n---------- Simple tests ----------" << std::endl;
+    if (!mstack.empty())
+        std::cout << "Stack isn't empty" << std::endl;
+
+    std::cout << "Stack size: " << mstack.size() << std::endl;
+    std::cout << "Top: " << mstack.top() << std::endl;
+    mstack.pop();
+    std::cout << "New size: " << mstack.size() << std::endl;
+    std::cout << "New top: " << mstack.top() << std::endl;
+}
+
 void test_cmp_list() {
-    std::cout << "\n---------- List tests ----------" << std::endl;
+    std::cout << "\n---------- Compare with List tests ----------" << std::endl;
     std::list<int> nlist;
     nlist.push_back(5);
     nlist.push_back(17);
@@ -118,6 +142,7 @@ int main() {
     mstack.push(737);
     mstack.push(0);
     
+    test_simple(mstack);
     test_cmp_list();
     test_cmp_mutanstack();
     test_copy(mstack);
