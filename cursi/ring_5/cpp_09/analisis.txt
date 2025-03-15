@@ -127,7 +127,7 @@ rendimiento. Puntos clave:
   - Se debe usar el algoritmo de "merge-insert sort" (también conocido como el algoritmo de Ford-Johnson), que
   es un algoritmo poco convencional para la ordenación.  
   - La idea es implementar este algoritmo (o una variante inspirada en él) por separado para cada contenedor,
-  es decir, tendrás dos implementaciones (una para std::vector y otra para std::deque).  
+  es decir, tendremos dos implementaciones (una para std::vector y otra para std::deque).  
   - Es importante no escribir una función genérica única, sino implementar el algoritmo individualmente para
   cada contenedor, para poder comparar su rendimiento de forma justa.
 

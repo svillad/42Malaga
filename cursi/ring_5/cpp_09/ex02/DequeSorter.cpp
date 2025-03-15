@@ -2,7 +2,7 @@
 #include <deque>
 #include <cstdlib>
 #include <iostream>
-#include <algorithm> // Para std::min, std::max, std::swap, std::find
+#include <algorithm>
 
 using std::deque;
 using std::swap;

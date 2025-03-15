@@ -12,7 +12,6 @@ private:
     bool isValidDate(const std::string &date);
 
 public:
-    // Constructor por defecto
     BitcoinExchange();
     BitcoinExchange(const std::string &data);
     BitcoinExchange(const BitcoinExchange &other);
@@ -22,4 +21,4 @@ public:
     void process(const std::string &inputFile);
 };
 
-#endif // BITCOINEXCHANGE_HPP
+#endif

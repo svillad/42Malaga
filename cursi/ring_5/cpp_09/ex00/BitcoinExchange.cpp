@@ -72,7 +72,18 @@ void BitcoinExchange::loadData(const std::string &data) {
         std::string rateStr;
         if (std::getline(iss, date, ',') && std::getline(iss, rateStr)) {
             double rate = atof(rateStr.c_str());
+            if (!isValidDate(date)) {
+                std::cout << "Error: bad data input => " << date << std::endl;
+                exit (1);
+            }
+            if (rate < 0) {
+                std::cout << "Error: rate is not a positive number." << std::endl;
+                exit (1);
+            }
             bitcoin[date] = rate;
+        } else {
+            std::cout << "Error: invalid format => " << line << std::endl;
+            exit (1);
         }
     }
     file.close();

@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <cctype>
+#include <algorithm>
 
 PmergeMe::PmergeMe() : numbers_() { }
 
@@ -31,7 +32,6 @@ bool PmergeMe::isValidNumber(const std::string &s) const {
 }
 
 void PmergeMe::parseInput(int argc, char** argv) {
-    // Se ignora argv[0] ya que es el nombre del programa.
     for (int i = 1; i < argc; ++i) {
         std::string arg(argv[i]);
         if (!isValidNumber(arg)) {
@@ -47,7 +47,6 @@ void PmergeMe::parseInput(int argc, char** argv) {
             std::cerr << "----------------------------------------------\n" << std::endl;
             exit(1);
         }
-        // Verificar si el número ya se encuentra en numbers_
         if (std::find(numbers_.begin(), numbers_.end(), num) != numbers_.end()) {
             std::cerr << "Error: duplicate input '" << num << "'." << std::endl;
             std::cerr << "----------------------------------------------\n" << std::endl;

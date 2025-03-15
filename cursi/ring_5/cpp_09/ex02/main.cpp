@@ -25,7 +25,6 @@ void printContainer(const Container& container) {
     std::cout << std::endl;
 }
 
-
 std::string formatTime(double timeUs) {
     std::ostringstream oss;
     if (timeUs < 1000.0) {
@@ -40,8 +39,6 @@ std::string formatTime(double timeUs) {
     return oss.str();
 }
 
-// Función para medir el tiempo de ordenación de un VectorSorter.
-// Retorna el tiempo en microsegundos.
 double measureVectorSortTime(VectorSorter& sorter) {
     std::clock_t start = std::clock();
     sorter.sort();
@@ -49,8 +46,6 @@ double measureVectorSortTime(VectorSorter& sorter) {
     return 1000000.0 * (end - start) / CLOCKS_PER_SEC;
 }
 
-// Función para medir el tiempo de ordenación de un DequeSorter.
-// Retorna el tiempo en microsegundos.
 double measureDequeSortTime(DequeSorter& sorter) {
     std::clock_t start = std::clock();
     sorter.sort();
@@ -66,37 +61,26 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    // Paso 1: Parseo y validación de entrada.
     PmergeMe parser(argc, argv);
     const std::vector<int>& numbers = parser.getNumbers();
 
-    // Imprimir la secuencia original.
     std::cout << "Before: ";
     printContainer(numbers);
 
-    // Paso 2: Inicialización para std::vector.
     VectorSorter vectorSorter(numbers);
-    // Paso 3: Inicialización para std::deque.
     std::deque<int> deq(numbers.begin(), numbers.end());
     DequeSorter dequeSorter(deq);
 
-    // Medir el tiempo de ordenación para std::vector.
     double vectorTime = measureVectorSortTime(vectorSorter);
-    // Medir el tiempo de ordenación para std::deque.
     double dequeTime = measureDequeSortTime(dequeSorter);
 
-    // Imprimir la secuencia ordenada para std::vector.
-    std::cout << "After (std::vector): ";
+    std::cout << "After:  ";
     printContainer(vectorSorter.getNumbers());
-    // Imprimir la secuencia ordenada para std::deque.
-    std::cout << "After (std::deque): ";
-    printContainer(dequeSorter.getNumbers());
 
-    // Mostrar los tiempos de procesamiento.
     std::cout << "Time to process a range of " << numbers.size() 
               << " elements with std::vector : " << formatTime(vectorTime) << std::endl;
     std::cout << "Time to process a range of " << numbers.size() 
-              << " elements with std::deque : " << formatTime(dequeTime) << std::endl;
+              << " elements with std::deque :  " << formatTime(dequeTime) << std::endl;
     std::cout << "----------------------------------------------\n" << std::endl;
 
     return 0;

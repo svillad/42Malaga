@@ -7,18 +7,18 @@
 using std::vector;
 using std::swap;
 
-VectorSorter::VectorSorter() : numbers_() {
+VectorSorter::VectorSorter() : numbers() {
 }
 
-VectorSorter::VectorSorter(const vector<int>& numbers) : numbers_(numbers) {
+VectorSorter::VectorSorter(const vector<int>& numbers) : numbers(numbers) {
 }
 
-VectorSorter::VectorSorter(const VectorSorter &other) : numbers_(other.numbers_) {
+VectorSorter::VectorSorter(const VectorSorter &other) : numbers(other.numbers) {
 }
 
 VectorSorter &VectorSorter::operator=(const VectorSorter &other) {
     if (this != &other) {
-        numbers_ = other.numbers_;
+        numbers = other.numbers;
     }
     return *this;
 }
@@ -27,16 +27,15 @@ VectorSorter::~VectorSorter() {
 }
 
 const vector<int>& VectorSorter::getNumbers() const {
-    return numbers_;
+    return numbers;
 }
 
 void VectorSorter::sort() {
-    if (!numbers_.empty()) {
-        fordJohnsonSort(numbers_);
+    if (!numbers.empty()) {
+        fordJohnsonSort(numbers);
     }
 }
 
-// Inserción binaria: inserta 'value' en 'vec', que se asume ya ordenado.
 void VectorSorter::binaryInsert(vector<int>& vec, int value) {
     int left = 0, right = vec.size();
     while (left < right) {
@@ -49,8 +48,8 @@ void VectorSorter::binaryInsert(vector<int>& vec, int value) {
     vec.insert(vec.begin() + left, value);
 }
 
-// Calcula el n-ésimo número de Jacobsthal.
-// J(0)=0, J(1)=1, y para n>=2, J(n)=J(n-1) + 2*J(n-2)
+// Calculates the n-th Jacobsthal number.
+// J(0) = 0, J(1) = 1, and for n >= 2, J(n) = J(n-1) + 2*J(n-2)
 int VectorSorter::jacobsthal(int n) const {
     if (n == 0) return 0;
     if (n == 1) return 1;
@@ -63,7 +62,6 @@ int VectorSorter::jacobsthal(int n) const {
     return b;
 }
 
-// Calcula el orden de inserción para 'm' perdedores basándose en la secuencia de Jacobsthal.
 vector<int> VectorSorter::computeInsertionOrder(int m) const {
     vector<int> order;
     if (m <= 0)
@@ -98,7 +96,6 @@ void VectorSorter::fordJohnsonSort(vector<int>& vec) {
         return;
     }
 
-    // Si el número de elementos es impar, se extrae el último para procesarlo al final.
     bool odd = false;
     int extra;
     if (n % 2 == 1) {

@@ -5,54 +5,45 @@
 #include <cstdlib>
 #include <cctype>
 
-// Constructor por defecto: inicializa con una cadena vacía.
-RPNCalculator::RPNCalculator() : expression_(""), tokens_() {
-    // No se tokeniza, pues no hay expresión.
+RPNCalculator::RPNCalculator() : expression(""), tokens() {
 }
 
-// Constructor que recibe la expresión y la tokeniza.
 RPNCalculator::RPNCalculator(const std::string &expression)
-    : expression_(expression), tokens_() {
+    : expression(expression), tokens() {
     tokenize();
 }
 
-// Constructor de copia.
 RPNCalculator::RPNCalculator(const RPNCalculator &other)
-    : expression_(other.expression_), tokens_(other.tokens_) {
-    // Se realiza una copia directa de los miembros.
+    : expression(other.expression), tokens(other.tokens) {
 }
 
-// Operador de asignación.
 RPNCalculator &RPNCalculator::operator=(const RPNCalculator &other) {
     if (this != &other) {
-        expression_ = other.expression_;
-        tokens_ = other.tokens_;
+        expression = other.expression;
+        tokens = other.tokens;
     }
     return *this;
 }
 
-// Destructor.
 RPNCalculator::~RPNCalculator() {
-    // No se requieren acciones especiales, ya que std::string y std::vector
-    // liberan sus recursos automáticamente.
 }
 
 const std::vector<std::string>& RPNCalculator::getTokens() const {
-    return tokens_;
+    return tokens;
 }
 
 void RPNCalculator::printTokens() const {
     std::cout << "Tokens:" << std::endl;
-    for (size_t i = 0; i < tokens_.size(); ++i) {
-        std::cout << tokens_[i] << std::endl;
+    for (size_t i = 0; i < tokens.size(); ++i) {
+        std::cout << tokens[i] << std::endl;
     }
 }
 
 void RPNCalculator::tokenize() {
-    std::istringstream iss(expression_);
+    std::istringstream iss(expression);
     std::string token;
     while (iss >> token) {
-        tokens_.push_back(token);
+        tokens.push_back(token);
     }
 }
 
@@ -83,14 +74,13 @@ bool RPNCalculator::isNumber(const std::string &token) const {
     std::istringstream iss(token);
     double d;
     iss >> d;
-    // Se verifica que toda la cadena se haya consumido y la conversión haya sido exitosa.
     return !token.empty() && iss.eof() && !iss.fail();
 }
 
 double RPNCalculator::evaluate() const {
     std::stack<double> s;
-    for (size_t i = 0; i < tokens_.size(); ++i) {
-        const std::string &token = tokens_[i];
+    for (size_t i = 0; i < tokens.size(); ++i) {
+        const std::string &token = tokens[i];
         if (isOperator(token)) {
             if (s.size() < 2) {
                 std::cerr << "Error: not enough operands for operator '"
