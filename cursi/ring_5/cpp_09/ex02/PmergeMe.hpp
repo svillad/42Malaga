@@ -6,10 +6,9 @@
 
 class PmergeMe {
 private:
-    std::vector<int> numbers_;
+    std::vector<int> numbers;
 
     bool isValidNumber(const std::string &s) const;
-    void parseInput(int argc, char** argv);
 
 public:
     PmergeMe();
@@ -19,6 +18,7 @@ public:
     ~PmergeMe();
 
     const std::vector<int>& getNumbers() const;
+    void parseInput(int argc, char** argv);
 };
 
 #endif

@@ -6,11 +6,7 @@
 class VectorSorter {
 private:
     std::vector<int> numbers;
-
     void fordJohnsonSort(std::vector<int>& vec);
-    void binaryInsert(std::vector<int>& vec, int value);
-    int jacobsthal(int n) const;
-    std::vector<int> computeInsertionOrder(int m) const;
 
 public:
     VectorSorter();
@@ -20,6 +16,8 @@ public:
     ~VectorSorter();
 
     const std::vector<int>& getNumbers() const;
+    void setNumbers(const std::vector<int>& numbers);
+    
     void sort();
 };
 

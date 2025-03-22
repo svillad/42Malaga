@@ -39,48 +39,54 @@ std::string formatTime(double timeUs) {
     return oss.str();
 }
 
-double measureVectorSortTime(VectorSorter& sorter) {
+double measureParserTime(PmergeMe &parser, int argc, char** argv) {
     std::clock_t start = std::clock();
+    parser.parseInput(argc, argv);
+    std::clock_t end = std::clock();
+    return 1000000.0 * (end - start) / CLOCKS_PER_SEC;
+}
+
+double measureVectorSortTime(VectorSorter &sorter, const std::vector<int>& num) {
+    std::clock_t start = std::clock();
+    std::vector<int> numbers = num;
+    sorter.setNumbers(numbers);
     sorter.sort();
     std::clock_t end = std::clock();
     return 1000000.0 * (end - start) / CLOCKS_PER_SEC;
 }
 
-double measureDequeSortTime(DequeSorter& sorter) {
+double measureDequeSortTime(DequeSorter &sorter, const std::vector<int>& num) {
     std::clock_t start = std::clock();
+    std::deque<int> deq(num.begin(), num.end());
+    sorter.setNumbers(deq);
     sorter.sort();
     std::clock_t end = std::clock();
     return 1000000.0 * (end - start) / CLOCKS_PER_SEC;
 }
 
 int main(int argc, char** argv) {
-    std::cout << "[main] New program execution" << std::endl;
     if (argc < 2) {
         std::cerr << "Usage: " << argv[0] << " number1 number2 ..." << std::endl;
         std::cerr << "----------------------------------------------\n" << std::endl;
         return 1;
     }
 
-    PmergeMe parser(argc, argv);
-    const std::vector<int>& numbers = parser.getNumbers();
+    PmergeMe parser;
+    VectorSorter vectorSorter;
+    DequeSorter dequeSorter;
+
+    double parseTime  = measureParserTime(parser, argc, argv);
+    double vectorTime = parseTime + measureVectorSortTime(vectorSorter, parser.getNumbers());
+    double dequeTime  = parseTime + measureDequeSortTime(dequeSorter, parser.getNumbers());
 
     std::cout << "Before: ";
-    printContainer(numbers);
-
-    VectorSorter vectorSorter(numbers);
-    std::deque<int> deq(numbers.begin(), numbers.end());
-    DequeSorter dequeSorter(deq);
-
-    double vectorTime = measureVectorSortTime(vectorSorter);
-    double dequeTime = measureDequeSortTime(dequeSorter);
-
+    printContainer(parser.getNumbers());
     std::cout << "After:  ";
     printContainer(vectorSorter.getNumbers());
-
-    std::cout << "Time to process a range of " << numbers.size() 
+    std::cout << "Time to process a range of " << parser.getNumbers().size() 
               << " elements with std::vector : " << formatTime(vectorTime) << std::endl;
-    std::cout << "Time to process a range of " << numbers.size() 
-              << " elements with std::deque :  " << formatTime(dequeTime) << std::endl;
+    std::cout << "Time to process a range of " << parser.getNumbers().size() 
+              << " elements with std::deque  : " << formatTime(dequeTime) << std::endl;
     std::cout << "----------------------------------------------\n" << std::endl;
 
     return 0;

@@ -6,7 +6,7 @@
 #    By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/08 13:30:12 by svilla-d          #+#    #+#              #
-#    Updated: 2025/02/16 23:28:40 by svilla-d         ###   ########.fr        #
+#    Updated: 2025/03/22 16:45:20 by svilla-d         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -100,12 +100,18 @@ tests: $(OBJ_SRC_TESTS)
 	@echo "Building test executable..."
 	$(CC) $(CFLAGS) $(OBJ_SRC_TESTS) -o tests
 	@echo "Running tests..."
-	- ./tests
+	- ./tests 3
+	- ./tests 5 4
+	- ./tests 5 4 9
 	- ./tests 3 5 9 7 4
 	- ./tests 3 3 9 7 4
+	- ./tests `shuf -i 1-10 -n 10| tr "\n" " "`
 	- ./tests `shuf -i 1-100000 -n 30000 | tr "\n" " "`
 	- ./tests `shuf -i 1-100000 -n 75229 | tr "\n" " "`
+	- ./tests
 	- ./tests "-1" "2"
+	- ./tests "1" "a"
+	- ./tests "99999999999999999999999999999999999" "1"
 
 
 .PHONY: all clean fclean re tests
