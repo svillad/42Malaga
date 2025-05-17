@@ -1,6 +1,4 @@
 #include "PmergeMe.hpp"
-#include "VectorSorter.hpp"
-#include "DequeSorter.hpp"
 #include <iostream>
 #include <ctime>
 #include <vector>
@@ -46,20 +44,16 @@ double measureParserTime(PmergeMe &parser, int argc, char** argv) {
     return 1000000.0 * (end - start) / CLOCKS_PER_SEC;
 }
 
-double measureVectorSortTime(VectorSorter &sorter, const std::vector<int>& num) {
+double measureVectorSortTime(PmergeMe &parser) {
     std::clock_t start = std::clock();
-    std::vector<int> numbers = num;
-    sorter.setNumbers(numbers);
-    sorter.sort();
+    parser.sortVector();
     std::clock_t end = std::clock();
     return 1000000.0 * (end - start) / CLOCKS_PER_SEC;
 }
 
-double measureDequeSortTime(DequeSorter &sorter, const std::vector<int>& num) {
+double measureDequeSortTime(PmergeMe &parser) {
     std::clock_t start = std::clock();
-    std::deque<int> deq(num.begin(), num.end());
-    sorter.setNumbers(deq);
-    sorter.sort();
+    parser.sortDeque();
     std::clock_t end = std::clock();
     return 1000000.0 * (end - start) / CLOCKS_PER_SEC;
 }
@@ -71,23 +65,27 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    PmergeMe parser;
-    VectorSorter vectorSorter;
-    DequeSorter dequeSorter;
+    try {
+        PmergeMe parser;
+        double parseTime  = measureParserTime(parser, argc, argv);
+        std::cout << "Before: ";
+        printContainer(parser.getVectorNumbers());
 
-    double parseTime  = measureParserTime(parser, argc, argv);
-    double vectorTime = parseTime + measureVectorSortTime(vectorSorter, parser.getNumbers());
-    double dequeTime  = parseTime + measureDequeSortTime(dequeSorter, parser.getNumbers());
-
-    std::cout << "Before: ";
-    printContainer(parser.getNumbers());
-    std::cout << "After:  ";
-    printContainer(vectorSorter.getNumbers());
-    std::cout << "Time to process a range of " << parser.getNumbers().size() 
-              << " elements with std::vector : " << formatTime(vectorTime) << std::endl;
-    std::cout << "Time to process a range of " << parser.getNumbers().size() 
-              << " elements with std::deque  : " << formatTime(dequeTime) << std::endl;
-    std::cout << "----------------------------------------------\n" << std::endl;
+        double vectorTime = parseTime + measureVectorSortTime(parser);
+        double dequeTime  = parseTime + measureDequeSortTime(parser);
+        
+        std::cout << "After:  ";
+        printContainer(parser.getVectorNumbers());
+        std::cout << "Time to process a range of " << parser.getVectorNumbers().size() 
+                << " elements with std::vector : " << formatTime(vectorTime) << std::endl;
+        std::cout << "Time to process a range of " << parser.getDequeNumbers().size() 
+                << " elements with std::deque  : " << formatTime(dequeTime) << std::endl;
+        std::cout << "----------------------------------------------\n" << std::endl;
+    } catch (const std::exception& e) {
+        std::cerr << e.what() << std::endl;
+        std::cerr << "----------------------------------------------\n" << std::endl;
+        return 1;
+    }
 
     return 0;
 }
