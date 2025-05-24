@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   PmergeMe.hpp                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/24 18:13:37 by svilla-d          #+#    #+#             */
+/*   Updated: 2025/05/24 18:13:39 by svilla-d         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PMERGEME_HPP
 #define PMERGEME_HPP
 
@@ -5,6 +17,7 @@
 #include <deque>
 #include <string>
 #include <iostream>
+#include <sstream>
 #include <cstdlib>
 #include <algorithm>
 
@@ -44,5 +57,13 @@ public:
     void sortDeque();
     void mergeInsertionSort(std::deque<int>& arr);
 };
+
+template<typename T>
+std::string to_string(const T& value) {
+    std::ostringstream oss;
+    oss << value;
+    return oss.str();
+}
+
 
 #endif

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   PmergeMe.cpp                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/24 18:13:32 by svilla-d          #+#    #+#             */
+/*   Updated: 2025/05/24 18:13:33 by svilla-d         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "PmergeMe.hpp"
 #include <iostream>
 #include <cstdlib>
@@ -39,7 +51,14 @@ PmergeMe &PmergeMe::operator=(const PmergeMe &other) {
 PmergeMe::~PmergeMe() { }
 
 bool PmergeMe::isValidNumber(const std::string &s) const {
-    return !s.empty() && std::all_of(s.begin(), s.end(), ::isdigit);
+    bool all_digits = true;
+    for (std::string::const_iterator it = s.begin(); it != s.end(); ++it) {
+        if (!::isdigit(*it)) {
+            all_digits = false;
+            break;
+        }
+    }
+    return !s.empty() && all_digits;
 }
 
 void PmergeMe::parseInput(int argc, char** argv) {
@@ -53,7 +72,7 @@ void PmergeMe::parseInput(int argc, char** argv) {
             throw std::out_of_range("Error: input must be a positive integer in valid range: '" + arg + "'");
 
         if (std::find(vectorNumbers.begin(), vectorNumbers.end(), num) != vectorNumbers.end())
-            throw std::runtime_error("Error: duplicate input '" + std::to_string(num) + "'.");
+            throw std::runtime_error("Error: duplicate input '" + to_string(num) + "'.");
 
         vectorNumbers.push_back(num);
         dequeNumbers.push_back(num);
