@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   RPNCalculator.hpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: svilla-d <svilla-d@student.42malaga.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 18:02:43 by svilla-d          #+#    #+#             */
-/*   Updated: 2025/05/24 18:02:44 by svilla-d         ###   ########.fr       */
+/*   Updated: 2025/05/31 19:40:00 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,28 @@
 #define RPNCALCULATOR_HPP
 
 #include <string>
-#include <vector>
+#include <stack>
 
 class RPNCalculator {
 private:
-    std::string expression;
-    std::vector<std::string> tokens;
+    std::string             expression;
+    std::stack<std::string> stack;
 
-    void tokenize();
-    bool isOperator(const std::string &token) const;
+    void   tokenize();
+    bool   isOperator(const std::string &t) const;
+    bool   isNumber(const std::string &t) const;
     double applyOperator(char op, double a, double b) const;
-    bool isNumber(const std::string &token) const;
+    double compute();
 
 public:
     RPNCalculator();
-    RPNCalculator(const std::string &expression);
+    explicit RPNCalculator(const std::string &expression);
     RPNCalculator(const RPNCalculator &other);
     RPNCalculator &operator=(const RPNCalculator &other);
     ~RPNCalculator();
 
-    const std::vector<std::string>& getTokens() const;
-    void printTokens() const;
-    double evaluate() const;
+    void   setExpression(const std::string &expr);
+    double evaluate();
 };
 
 #endif

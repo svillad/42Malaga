@@ -3,36 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   RPNCalculator.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: svilla-d <svilla-d@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: svilla-d <svilla-d@student.42malaga.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/24 18:02:39 by svilla-d          #+#    #+#             */
-/*   Updated: 2025/05/24 18:02:40 by svilla-d         ###   ########.fr       */
+/*   Created: 2025/05/24 18:02:43 by svilla-d          #+#    #+#             */
+/*   Updated: 2025/05/31 19:40:02 by svilla-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "RPNCalculator.hpp"
 #include <sstream>
 #include <iostream>
-#include <stack>
 #include <cstdlib>
-#include <cctype>
 
-RPNCalculator::RPNCalculator() : expression(""), tokens() {
+RPNCalculator::RPNCalculator() : expression("") {
 }
 
-RPNCalculator::RPNCalculator(const std::string &expression)
-    : expression(expression), tokens() {
-    tokenize();
+RPNCalculator::RPNCalculator(const std::string &expr) : expression(expr) {
 }
 
 RPNCalculator::RPNCalculator(const RPNCalculator &other)
-    : expression(other.expression), tokens(other.tokens) {
+    : expression(other.expression), stack(other.stack) {
 }
 
 RPNCalculator &RPNCalculator::operator=(const RPNCalculator &other) {
     if (this != &other) {
         expression = other.expression;
-        tokens = other.tokens;
+        stack      = other.stack;
     }
     return *this;
 }
@@ -40,29 +36,28 @@ RPNCalculator &RPNCalculator::operator=(const RPNCalculator &other) {
 RPNCalculator::~RPNCalculator() {
 }
 
-const std::vector<std::string>& RPNCalculator::getTokens() const {
-    return tokens;
-}
-
-void RPNCalculator::printTokens() const {
-    std::cout << "Tokens:" << std::endl;
-    for (size_t i = 0; i < tokens.size(); ++i) {
-        std::cout << tokens[i] << std::endl;
-    }
-}
-
 void RPNCalculator::tokenize() {
+    while (!stack.empty())
+        stack.pop();
+
     std::istringstream iss(expression);
-    std::string token;
-    while (iss >> token) {
-        tokens.push_back(token);
-    }
+    std::string tok;
+    while (iss >> tok)
+        stack.push(tok);
 }
 
-bool RPNCalculator::isOperator(const std::string &token) const {
-    return token.size() == 1 &&
-           (token[0] == '+' || token[0] == '-' ||
-            token[0] == '*' || token[0] == '/');
+bool RPNCalculator::isOperator(const std::string &t) const {
+    return t.size() == 1 && (t[0] == '+' || t[0] == '-' ||
+                             t[0] == '*' || t[0] == '/');
+}
+
+bool RPNCalculator::isNumber(const std::string &t) const {
+    if (t.empty())
+        return false;
+    std::istringstream iss(t);
+    double d;
+    iss >> d;
+    return iss.eof() && !iss.fail();
 }
 
 double RPNCalculator::applyOperator(char op, double a, double b) const {
@@ -73,48 +68,50 @@ double RPNCalculator::applyOperator(char op, double a, double b) const {
         case '/':
             if (b == 0) {
                 std::cerr << "Error: division by zero." << std::endl;
-                exit(1);
+                std::exit(EXIT_FAILURE);
             }
             return a / b;
         default:
             std::cerr << "Error: unknown operator '" << op << "'." << std::endl;
-            exit(1);
+            std::exit(EXIT_FAILURE);
     }
 }
 
-bool RPNCalculator::isNumber(const std::string &token) const {
-    std::istringstream iss(token);
-    double d;
-    iss >> d;
-    return !token.empty() && iss.eof() && !iss.fail();
+double RPNCalculator::compute() {
+    if (stack.empty()) {
+        std::cerr << "Error: not enough tokens." << std::endl;
+        std::exit(EXIT_FAILURE);
+    }
+
+    std::string tok = stack.top();
+    stack.pop();
+
+    if (isNumber(tok))
+        return std::atof(tok.c_str());
+
+    if (isOperator(tok)) {
+        double b = compute();
+        double a = compute();
+        return applyOperator(tok[0], a, b);
+    }
+
+    std::cerr << "Error: invalid token '" << tok << "'." << std::endl;
+    std::exit(EXIT_FAILURE);
+    return 0;
 }
 
-double RPNCalculator::evaluate() const {
-    std::stack<double> s;
-    for (size_t i = 0; i < tokens.size(); ++i) {
-        const std::string &token = tokens[i];
-        if (isOperator(token)) {
-            if (s.size() < 2) {
-                std::cerr << "Error: not enough operands for operator '"
-                          << token << "'." << std::endl;
-                exit(1);
-            }
-            double b = s.top(); s.pop();
-            double a = s.top(); s.pop();
-            double result = applyOperator(token[0], a, b);
-            s.push(result);
-        } else if (isNumber(token)) {
-            double num = std::atof(token.c_str());
-            s.push(num);
-        } else {
-            std::cerr << "Error: invalid token '" << token << "'." << std::endl;
-            exit(1);
-        }
+void RPNCalculator::setExpression(const std::string &expr) {
+    expression = expr;
+}
+
+double RPNCalculator::evaluate() {
+    tokenize();
+    double result = compute();
+
+    if (!stack.empty()) {
+        std::cerr << "Error: malformed expression. Remaining tokens = "
+                  << stack.size() << std::endl;
+        std::exit(EXIT_FAILURE);
     }
-    if (s.size() != 1) {
-        std::cerr << "Error: malformed expression. Stack size: "
-                  << s.size() << std::endl;
-        exit(1);
-    }
-    return s.top();
+    return result;
 }
