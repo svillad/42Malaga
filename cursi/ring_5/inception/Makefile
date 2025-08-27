@@ -280,3 +280,5 @@ fclean:
 	@$(MAKE) --no-print-directory rmi || true
 	@echo "$(RED)Removing $(ENV_FILE)$(RESET)"
 	@rm -f $(ENV_FILE)
+	@echo "$(RED)Removing $(COMPOSE_DIR)/requirements/nginx/certs$(RESET)"
+	@rm -rf $(COMPOSE_DIR)/requirements/nginx/certs

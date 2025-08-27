@@ -55,12 +55,12 @@ echo "${BOLD}${MAGENTA}###   Nginx configuration           ###${RESET}"
 echo "${BOLD}${MAGENTA}########################################${RESET}\n"
 
 # Nginx configuration
-USER42=$(whoami)
-DEFAULT_DOMAIN="${USER42}.42.fr"
+LOGIN=$(whoami)
+DEFAULT_DOMAIN="${LOGIN}.42.fr"
 DOMAIN=$(ask "Public domain (for TLS/server_name)" "$DEFAULT_DOMAIN")
 UPSTREAM="http://adminer:80"
 NGINX_PORT=$(ask "Nginx port" "443")
-GENERATE_SELF_SIGNED=$(ask "Generate self-signed certificates? (true/false)" "false")
+GENERATE_SELF_SIGNED=$(ask "Generate self-signed certificates? (true/false)" "true")
 
 echo "\n${BOLD}${MAGENTA}########################################${RESET}"
 echo "${BOLD}${MAGENTA}###   WordPress configuration       ###${RESET}"
@@ -72,7 +72,7 @@ WORDPRESS_DB_VOLUME=$(ask "DB volume name (WordPress DB)" "wordpress_db")
 WORDPRESS_DATA_VOLUME=$(ask "Site volume name (WordPress files)" "wordpress_data")
 
 echo "\n${BOLD}${CYAN}=== WordPress site ===${RESET}"
-WORDPRESS_SITE_URL=$(ask "WordPress site URL" "https://$DOMAIN/")
+WORDPRESS_SITE_URL="https://$DOMAIN/"
 WORDPRESS_SITE_TITLE=$(ask "WordPress site title" "My Site")
 WORDPRESS_PORT=$(ask "WordPress port" "9000")
 
@@ -86,6 +86,19 @@ WORDPRESS_USER=$(ask "WordPress user" "jesi")
 WORDPRESS_USER_EMAIL=$(ask "WordPress user email" "jesi@example.com")
 WORDPRESS_USER_PASS=$(ask "WordPress user password" "4321")
 
+# Ensure host directories for bind mounts (Linux vs macOS)
+if [ "$(uname)" = "Darwin" ]; then
+  HOST_DATA_DIR="/Users/$LOGIN/data"
+else
+  HOST_DATA_DIR="/home/$LOGIN/data"
+fi
+
+DB_DIR="$HOST_DATA_DIR/$WORDPRESS_DB_VOLUME"
+SITE_DIR="$HOST_DATA_DIR/$WORDPRESS_DATA_VOLUME"
+
+echo "${CYAN}Creating host directories for volumes in $HOST_DATA_DIR...${RESET}"
+mkdir -p "$DB_DIR" "$SITE_DIR"
+
 echo "\n${BOLD}${MAGENTA}########################################${RESET}"
 echo "${BOLD}${MAGENTA}###   Networking and volumes        ###${RESET}"
 echo "${BOLD}${MAGENTA}########################################${RESET}\n"
@@ -94,6 +107,10 @@ echo "${BOLD}${MAGENTA}########################################${RESET}\n"
 STACK_NETWORK=$(ask "Network name" "inception_net")
 
 cat > "$ENV_FILE" <<EOL
+# User
+LOGIN=$LOGIN
+HOST_DATA_DIR=$HOST_DATA_DIR
+
 # Services
 MARIADB_IMAGE=$MARIADB_IMAGE
 ADMINER_IMAGE=$ADMINER_IMAGE

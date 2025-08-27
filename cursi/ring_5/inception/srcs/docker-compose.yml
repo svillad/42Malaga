@@ -80,9 +80,19 @@ services:
 
 volumes:
   wp_db:
-    name: ${WORDPRESS_DB_VOLUME}
+    name: $WORDPRESS_DB_VOLUME
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: $HOST_DATA_DIR/${WORDPRESS_DB_VOLUME}
   wp_data:
-    name: ${WORDPRESS_DATA_VOLUME}
+    name: $WORDPRESS_DATA_VOLUME
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: $HOST_DATA_DIR/${WORDPRESS_DATA_VOLUME}
 
 networks:
   stack_net:
