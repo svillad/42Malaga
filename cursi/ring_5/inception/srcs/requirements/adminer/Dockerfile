@@ -20,9 +20,7 @@ RUN mkdir -p /var/www/html/adminer \
  && chown -R www-data:www-data /var/www/html
 
 # 4) Variable with the default host in the login
-ENV ADMINER_DEFAULT_SERVER=mariadb
-
-EXPOSE 80
+ENV ADMINER_DEFAULT_SERVER=${DATABASE_SERVER}:${MARIADB_PORT}
 
 # 5) Healthcheck to the /adminer route
 HEALTHCHECK --interval=10s --timeout=5s --retries=5 \

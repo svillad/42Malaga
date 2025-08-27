@@ -37,5 +37,4 @@ RUN sed -i 's/\r$//' /usr/local/bin/wordpress-setup.sh && \
     chmod +x /usr/local/bin/wordpress-setup.sh
 
 WORKDIR /var/www/html
-EXPOSE 9000
 ENTRYPOINT ["/usr/local/bin/wordpress-setup.sh"]

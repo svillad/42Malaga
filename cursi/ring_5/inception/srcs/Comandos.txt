@@ -34,3 +34,16 @@ docker compose -f srcs/docker-compose.yml exec nginx sh -lc \
 
 docker compose -f srcs/docker-compose.yml exec wordpress sh -lc \
 'ls -l /var/www/html/wp-content/themes/twentytwentyfive/assets/css/editor-style.css || true'
+
+docker-compose ps
+curl -vk https://localhost:443
+nc -vz 127.0.0.1 443 || echo "No publicado"
+
+curl -vk https://localhost:80
+nc -vz 127.0.0.1 80 || echo "No publicado"
+
+curl -vk https://localhost:3306
+nc -vz 127.0.0.1 3306 || echo "No publicado"
+
+curl -vk https://localhost:9000
+nc -vz 127.0.0.1 9000 || echo "No publicado"

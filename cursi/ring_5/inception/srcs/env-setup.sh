@@ -59,7 +59,6 @@ LOGIN=$(whoami)
 DEFAULT_DOMAIN="${LOGIN}.42.fr"
 DOMAIN=$(ask "Public domain (for TLS/server_name)" "$DEFAULT_DOMAIN")
 UPSTREAM="http://adminer:80"
-NGINX_PORT=$(ask "Nginx port" "443")
 GENERATE_SELF_SIGNED=$(ask "Generate self-signed certificates? (true/false)" "true")
 
 echo "\n${BOLD}${MAGENTA}########################################${RESET}"
@@ -128,7 +127,6 @@ MARIADB_ROOT_PASSWORD=$MARIADB_ROOT_PASSWORD
 # Nginx configuration
 DOMAIN=$DOMAIN
 UPSTREAM=$UPSTREAM
-NGINX_PORT=$NGINX_PORT
 GENERATE_SELF_SIGNED=$GENERATE_SELF_SIGNED
 
 # WordPress configuration

@@ -16,7 +16,8 @@ RUN mkdir -p /var/lib/mysql /var/run/mysqld /docker-entrypoint-initdb.d \
 ENV MARIADB_DATABASE= \
     MARIADB_USER= \
     MARIADB_PASSWORD= \
-    MARIADB_ROOT_PASSWORD=
+    MARIADB_ROOT_PASSWORD= \
+    MARIADB_PORT=
 
 # 4) Entry script (initializes if the datadir is empty)
 COPY mariadb-setup.sh /usr/local/bin/

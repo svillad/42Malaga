@@ -8,6 +8,7 @@ services:
       - MARIADB_DATABASE=${MARIADB_DATABASE}
       - MARIADB_USER=${MARIADB_USER}
       - MARIADB_PASSWORD=${MARIADB_PASSWORD}
+      - MARIADB_PORT=${MARIADB_PORT}
       - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
     volumes:
       - wp_db:/var/lib/mysql
@@ -21,7 +22,7 @@ services:
     image: ${ADMINER_IMAGE}
     container_name: adminer
     environment:
-      - ADMINER_DEFAULT_SERVER=${DATABASE_SERVER}
+      - ADMINER_DEFAULT_SERVER=${DATABASE_SERVER}:${MARIADB_PORT}
     depends_on:
       - mariadb
     restart: unless-stopped
@@ -67,7 +68,7 @@ services:
       - GENERATE_SELF_SIGNED=${GENERATE_SELF_SIGNED}
       - WORDPRESS_PORT=${WORDPRESS_PORT}
     ports:
-      - "${NGINX_PORT}:443"
+      - 443:443
     volumes:
       - ./requirements/nginx/certs:/etc/nginx/certs
       - wp_data:/var/www/html:ro

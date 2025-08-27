@@ -5,7 +5,7 @@ log() {
   printf "[mariadb-setup][%s] %s\n" "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" "$*" >&2
 }
 
-log "Starting service mariadb with DATABASE=${MARIADB_DATABASE} USER=${MARIADB_USER} PASSWORD=${MARIADB_PASSWORD}"
+log "Starting service mariadb with DATABASE=${MARIADB_DATABASE} USER=${MARIADB_USER} PASSWORD=${MARIADB_PASSWORD} PORT=${MARIADB_PORT}"
 
 # Variables
 DATADIR="/var/lib/mysql"
@@ -117,5 +117,37 @@ if [ -d "${DATADIR}/mysql" ]; then
   fi
 fi
 
-# Exec the main process
-exec "$@" "${EXTRA_ARGS[@]}"
+# Exec the main process, forcing the desired port as the last arg (last-wins)
+if [ "$1" = "mysqld" ]; then
+  DESIRED_PORT="${MARIADB_PORT:-3306}"
+  # Remove any existing --port/--port=* from provided args
+  CLEAN_ARGS=()
+  skip_next=0
+  for a in "$@"; do
+    if [ $skip_next -eq 1 ]; then
+      skip_next=0
+      continue
+    fi
+    case "$a" in
+      --port)
+        skip_next=1;;
+      --port=*)
+        ;; # drop
+      *)
+        CLEAN_ARGS+=("$a");;
+    esac
+  done
+  # Also remove any port from EXTRA_ARGS to avoid surprises
+  CLEAN_EXTRA=()
+  for a in "${EXTRA_ARGS[@]}"; do
+    case "$a" in
+      --port|--port=*) ;;
+      *) CLEAN_EXTRA+=("$a");;
+    esac
+  done
+  # Append our desired port last so it takes precedence
+  set -- "${CLEAN_ARGS[@]}" "${CLEAN_EXTRA[@]}" "--port=${DESIRED_PORT}"
+  exec "$@"
+else
+  exec "$@" "${EXTRA_ARGS[@]}"
+fi

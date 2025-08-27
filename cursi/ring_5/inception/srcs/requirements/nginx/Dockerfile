@@ -19,9 +19,7 @@ RUN sed -i 's/\r$//' /usr/local/bin/nginx-setup.sh && \
 
 # 4) Default variables
 ENV DOMAIN= \
-    UPSTREAM=
-
-EXPOSE 443
+    UPSTREAM= 
 
 # 5) Health via HTTPS (use -k if self-signed cert)
 HEALTHCHECK --interval=10s --timeout=5s --retries=5 \
