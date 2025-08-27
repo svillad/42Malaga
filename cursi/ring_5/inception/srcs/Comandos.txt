@@ -1,0 +1,36 @@
+docker-compose up -d --build
+docker-compose down
+
+docker volume rm mariadb_data
+
+# Entrar a la base de datos como root
+docker exec -it mariadb mariadb -uroot
+
+docker network ls
+docker volume ls
+
+# Comandos SQL
+  - SHOW DATABASES;
+  - USE mysql;
+  - SHOW TABLES;
+  - SELECT User,Password,Host,plugin, authentication_string FROM user;
+
+  - USE appdb;
+  - SELECT * FROM <table>;
+  - USE TABLES;
+  - SELECT * FROM wp_users;
+  - SELECT user_login,user_email FROM wp_users;
+
+curl -vk https://svilla-d.42.fr/
+docker compose -f srcs/docker-compose.yml exec nginx curl -vk https://localhost/healthz
+
+docker compose -f srcs/docker-compose.yml exec wordpress sh -lc 'env | grep -E "WORDPRESS_DB_HOST|MARIADB_(DATABASE|USER|PASSWORD)"'
+
+docker compose -f srcs/docker-compose.yml exec nginx sh -lc \
+'ls -l /var/www/html/wp-content/themes/twentytwentyfive/assets/css/style.min.css || true'
+
+docker compose -f srcs/docker-compose.yml exec nginx sh -lc \
+'ls -l /var/www/html/wp-content/themes/twentytwentyfive/assets/css/editor-style.css || true'
+
+docker compose -f srcs/docker-compose.yml exec wordpress sh -lc \
+'ls -l /var/www/html/wp-content/themes/twentytwentyfive/assets/css/editor-style.css || true'
