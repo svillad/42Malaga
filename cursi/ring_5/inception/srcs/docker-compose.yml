@@ -18,7 +18,7 @@ services:
 
   adminer:
     build:
-      context: ./requirements/adminer
+      context: ./requirements/bonus/adminer
     image: ${ADMINER_IMAGE}
     container_name: adminer
     environment:
