@@ -1,0 +1,20 @@
+### Hexchat
+
+/DCC SEND svillad
+
+PRIVMSG sebastian.villa :DCC SEND tests/a.txt
+PRIVMSG sebastian.villa :DCC SEND tests/a.txt 127.0.0.1 4343
+PRIVMSG sebastian.villa :DCC SEND tests/comillas.jpg 127.0.0.1 4343
+
+PRIVMSG sebastian.villa :DCC RECV a.txt 127.0.0.1 4343 10
+PRIVMSG sebastian.villa :DCC RECV comillas.jpg 127.0.0.1 4343 59585
+
+### nc
+
+PRIVMSG jesi :DCC SEND tests/a.txt
+PRIVMSG jesi :DCC SEND tests/a.txt 127.0.0.1 4343
+PRIVMSG jesi :DCC SEND tests/comillas.jpg 127.0.0.1 4343
+
+PRIVMSG svillad :DCC RECV a.txt 127.0.0.1 XXXX 10
+PRIVMSG svillad :DCC RECV a.txt 127.0.0.1 4343 10
+PRIVMSG svillad :DCC RECV comillas.jpg 127.0.0.1 4343 59585
