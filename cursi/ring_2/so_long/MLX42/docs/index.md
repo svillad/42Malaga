@@ -112,7 +112,7 @@ A: Officially, _no_. However, ask your head of studies first before about using 
 
 Q: **_"Is it faster?"_**
 
-A: From my personal projects there was a considerable peformance gain, especially when compiled with `-Ofast`. Projects such as FDF could rotate their maps mind blowingly smooth and even larger maps with a width and height of 1000+ points moved rotated relatively smooth, in short, yes.
+A: From my personal projects there was a considerable peformance gain, especially when compiled with `-O3 -ffast-math`. Projects such as FDF could rotate their maps mind blowingly smooth and even larger maps with a width and height of 1000+ points moved rotated relatively smooth, in short, yes.
 
 Q: **_"Can I just drag and drop it into my old project and just not do anything?"_**
 
