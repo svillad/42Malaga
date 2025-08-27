@@ -71,6 +71,11 @@ WORDPRESS_DB_VOLUME=$(ask "DB volume name (WordPress DB)" "wordpress_db")
 WORDPRESS_DATA_VOLUME=$(ask "Site volume name (WordPress files)" "wordpress_data")
 
 echo "\n${BOLD}${CYAN}=== WordPress site ===${RESET}"
+# Lista de algunos locales comunes para WordPress:
+# en_US (Inglés EE.UU.), es_ES (Español España), fr_FR (Francés Francia), de_DE (Alemán Alemania),
+# it_IT (Italiano Italia), pt_PT (Portugués Portugal), ru_RU (Ruso), ja_JP (Japonés), zh_CN (Chino simplificado),
+# nl_NL (Neerlandés), pl_PL (Polaco), tr_TR (Turco), sv_SE (Sueco), fi_FI (Finlandés), el_GR (Griego)
+WORDPRESS_LOCALE=$(ask "WordPress locale (language/region:en_US,es_ES,fr_FR,de_DE,it_IT,pt_PT,ru_RU,ja_JP,zh_CN,nl_NL,pl_PL,tr_TR,sv_SE,fi_FI,el_GR)" "en_US")
 WORDPRESS_SITE_URL="https://$DOMAIN/"
 WORDPRESS_SITE_TITLE=$(ask "WordPress site title" "My Site")
 WORDPRESS_PORT=$(ask "WordPress port" "9000")
@@ -95,7 +100,7 @@ fi
 DB_DIR="$HOST_DATA_DIR/$WORDPRESS_DB_VOLUME"
 SITE_DIR="$HOST_DATA_DIR/$WORDPRESS_DATA_VOLUME"
 
-echo "${CYAN}Creating host directories for volumes in $HOST_DATA_DIR...${RESET}"
+echo "\n${CYAN}Creating host directories for volumes in $HOST_DATA_DIR...${RESET}"
 mkdir -p "$DB_DIR" "$SITE_DIR"
 
 echo "\n${BOLD}${MAGENTA}########################################${RESET}"
@@ -136,6 +141,7 @@ WORDPRESS_PORT=$WORDPRESS_PORT
 
 WORDPRESS_SITE_URL=$WORDPRESS_SITE_URL
 WORDPRESS_SITE_TITLE=$WORDPRESS_SITE_TITLE
+WORDPRESS_LOCALE=$WORDPRESS_LOCALE
 
 WORDPRESS_ADMIN_USER=$WORDPRESS_ADMIN_USER
 WORDPRESS_ADMIN_EMAIL=$WORDPRESS_ADMIN_EMAIL

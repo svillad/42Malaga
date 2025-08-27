@@ -113,15 +113,49 @@ fi
 # Install core if needed
 if ! as_www "wp core is-installed --path=/var/www/html --allow-root" >/dev/null 2>&1; then
   log "Installing WordPress core at ${WORDPRESS_SITE_URL}"
-  as_www "wp core install --url='${WORDPRESS_SITE_URL}' --title='${WORDPRESS_SITE_TITLE}' --admin_user='${WORDPRESS_ADMIN_USER}' --admin_password='${WORDPRESS_ADMIN_PASS}' --admin_email='${WORDPRESS_ADMIN_EMAIL}' --path=/var/www/html --allow-root"
+  log "Data: title='${WORDPRESS_SITE_TITLE}', admin_user='${WORDPRESS_ADMIN_USER}', admin_email='${WORDPRESS_ADMIN_EMAIL}', locale='${WORDPRESS_LOCALE}'"
+  as_www "wp core install \
+    --url='${WORDPRESS_SITE_URL}' \
+    --title='${WORDPRESS_SITE_TITLE}' \
+    --admin_user='${WORDPRESS_ADMIN_USER}' \
+    --admin_password='${WORDPRESS_ADMIN_PASS}' \
+    --admin_email='${WORDPRESS_ADMIN_EMAIL}' \
+    --locale='${WORDPRESS_LOCALE}' \
+    --skip-email \
+    --path=/var/www/html \
+    --allow-root"
 else
   log "WordPress core already installed"
+fi
+
+# ---------------------------
+# Ensure the requested language is actually installed and activated
+if [ -n "${WORDPRESS_LOCALE:-}" ]; then
+  log "Ensuring core language '${WORDPRESS_LOCALE}' is installed and active"
+  # Try to install if not present (don't fail the script if it doesn't exist upstream)
+  if ! as_www "wp language core is-installed '${WORDPRESS_LOCALE}' --path=/var/www/html --allow-root" >/dev/null 2>&1; then
+    as_www "wp language core install '${WORDPRESS_LOCALE}' --path=/var/www/html --allow-root" || true
+  fi
+
+  # Proceed only if it's really installed; otherwise, skip gracefully
+  if as_www "wp language core is-installed '${WORDPRESS_LOCALE}' --path=/var/www/html --allow-root" >/dev/null 2>&1; then
+    as_www "wp site switch-language '${WORDPRESS_LOCALE}' --path=/var/www/html --allow-root"
+    as_www "wp option update WPLANG '${WORDPRESS_LOCALE}' --path=/var/www/html --allow-root"
+    as_www "printf 'Current WPLANG='; wp option get WPLANG --path=/var/www/html --allow-root"
+    # Also set the admin user's dashboard language to match
+    as_www "wp user meta update '${WORDPRESS_ADMIN_USER}' locale '${WORDPRESS_LOCALE}' --path=/var/www/html --allow-root" || true
+    if [ -n "${WORDPRESS_USER:-}" ]; then
+      as_www "wp user meta update '${WORDPRESS_USER}' locale '${WORDPRESS_LOCALE}' --path=/var/www/html --allow-root" || true
+    fi
+  else
+    log "Language '${WORDPRESS_LOCALE}' not available; skipping language switch and keeping current site language."
+  fi
 fi
 
 # Ensure admin user (update password/email if exists)
 if as_www "wp user get '${WORDPRESS_ADMIN_USER}' --path=/var/www/html --allow-root" >/dev/null 2>&1; then
   log "Admin user '${WORDPRESS_ADMIN_USER}' exists; updating password/email"
-  as_www "wp user update '${WORDPRESS_ADMIN_USER}' --user_pass='${WORDPRESS_ADMIN_PASS}' --user_email='${WORDPRESS_ADMIN_EMAIL}' --path=/var/www/html --allow-root"
+  as_www "wp user update '${WORDPRESS_ADMIN_USER}' --user_pass='${WORDPRESS_ADMIN_PASS}' --user_email='${WORDPRESS_ADMIN_EMAIL}' --skip-email --path=/var/www/html --allow-root"
 else
   log "Creating admin user '${WORDPRESS_ADMIN_USER}'"
   as_www "wp user create '${WORDPRESS_ADMIN_USER}' '${WORDPRESS_ADMIN_EMAIL}' --role=administrator --user_pass='${WORDPRESS_ADMIN_PASS}' --path=/var/www/html --allow-root"
