@@ -1,0 +1,118 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  line-height: 1.6;
+  background: #f4f4f9;
+  color: #333;
+}
+
+header {
+  background: #2c3e50;
+  color: white;
+  padding: 2rem;
+  text-align: center;
+}
+
+header h1 {
+  margin: 0;
+}
+
+header ul {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0;
+}
+header li {
+  display: inline;
+  margin: 0 0.5rem;
+}
+
+header a {
+  color: #f1c40f; /* amarillo dorado que contrasta con azul oscuro */
+  text-decoration: none;
+}
+header a:hover {
+  text-decoration: underline;
+}
+
+main {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+h2 {
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 0.3rem;
+  margin-top: 2rem;
+}
+
+ul {
+  list-style-type: square;
+  padding-left: 1.5rem;
+}
+
+footer {
+  text-align: center;
+  background: #2c3e50;
+  color: white;
+  padding: 1rem;
+  margin-top: 3rem;
+}
+
+#splash {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100vh;
+  font-family: sans-serif;
+  font-size: 1.5em;
+  opacity: 1;
+  transition: opacity 0.6s ease-in;
+  background: inherit;
+}
+
+#splash.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#main-content {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.6s ease-in;
+}
+
+#main-content.block {
+  visibility: visible;
+  opacity: 1;
+}
+
+article {
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid #ccc;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.profile-pic {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.header-text {
+  display: flex;
+  flex-direction: column;
+}

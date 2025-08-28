@@ -1,0 +1,16 @@
+{
+  "name": "website",
+  "version": "1.0.0",
+  "description": "Static website for Inception project (CV and personal page)",
+  "author": "Sebastian Villa Duarte",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rm -rf build",
+    "build": "npm run clean && mkdir -p build && cp -r public/* build/",
+    "serve": "serve -s build -l 3000",
+    "start": "npm run build && npm run serve"
+  },
+  "devDependencies": {
+    "serve": "^14.2.1"
+  }
+}

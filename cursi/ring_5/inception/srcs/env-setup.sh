@@ -37,6 +37,8 @@ MARIADB_IMAGE=$(ask "MariaDB image" "mariadb-local:bookworm")
 ADMINER_IMAGE=$(ask "Adminer image" "adminer-local:bookworm")
 NGINX_IMAGE=$(ask "Nginx image" "nginx-local:bookworm")
 WORDPRESS_IMAGE=$(ask "WordPress image" "wordpress-local:bookworm")
+FTP_IMAGE=$(ask "FTP image" "ftp-local:bookworm")
+WEBSITE_IMAGE=$(ask "Website image" "website-local:bookworm")
 
 echo "\n${BOLD}${MAGENTA}########################################${RESET}"
 echo "${BOLD}${MAGENTA}###   Database configuration        ###${RESET}"
@@ -90,6 +92,13 @@ WORDPRESS_USER=$(ask "WordPress user" "jesi")
 WORDPRESS_USER_EMAIL=$(ask "WordPress user email" "jesi@example.com")
 WORDPRESS_USER_PASS=$(ask "WordPress user password" "4321")
 
+echo "\n${BOLD}${MAGENTA}########################################${RESET}"
+echo "${BOLD}${MAGENTA}###   FTP configuration              ###${RESET}"
+echo "${BOLD}${MAGENTA}########################################${RESET}\n"
+
+FTP_USER=$(ask "FTP user" "$LOGIN")
+FTP_PASSWORD=$(ask "FTP password" "1234")
+
 # Ensure host directories for bind mounts (Linux vs macOS)
 if [ "$(uname)" = "Darwin" ]; then
   HOST_DATA_DIR="/Users/$LOGIN/data"
@@ -120,6 +129,8 @@ MARIADB_IMAGE=$MARIADB_IMAGE
 ADMINER_IMAGE=$ADMINER_IMAGE
 NGINX_IMAGE=$NGINX_IMAGE
 WORDPRESS_IMAGE=$WORDPRESS_IMAGE
+FTP_IMAGE=$FTP_IMAGE
+WEBSITE_IMAGE=$WEBSITE_IMAGE
 
 # Database credentials
 DATABASE_SERVER=$DATABASE_SERVER
@@ -150,6 +161,10 @@ WORDPRESS_ADMIN_PASS=$WORDPRESS_ADMIN_PASS
 WORDPRESS_USER=$WORDPRESS_USER
 WORDPRESS_USER_EMAIL=$WORDPRESS_USER_EMAIL
 WORDPRESS_USER_PASS=$WORDPRESS_USER_PASS
+
+# FTP configuration
+FTP_USER=$FTP_USER
+FTP_PASSWORD=$FTP_PASSWORD
 
 # Networking
 STACK_NETWORK=$STACK_NETWORK

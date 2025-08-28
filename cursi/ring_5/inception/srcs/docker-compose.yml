@@ -80,6 +80,17 @@ services:
     networks:
       - stack_net
 
+  website:
+    build:
+      context: ./requirements/bonus/website
+    image: ${WEBSITE_IMAGE}
+    container_name: website
+    environment:
+      - LOGIN=${LOGIN}
+    restart: unless-stopped
+    networks:
+      - stack_net
+
 volumes:
   wp_db:
     name: $WORDPRESS_DB_VOLUME

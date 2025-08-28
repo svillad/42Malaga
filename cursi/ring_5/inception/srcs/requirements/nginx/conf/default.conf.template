@@ -15,6 +15,19 @@ server {
     # Resolver de Docker para re-resolver hostnames internos (wordpress, adminer, etc.)
     resolver 127.0.0.11 ipv6=off valid=30s;
 
+    location = /me {
+        return 301 /me/;
+    }
+
+    location ^~ /me/ {
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_redirect off;
+        proxy_pass http://website:3000/;
+    }
+
     # Upstream PHP-FPM como variable (se resuelve en tiempo de petición)
     set $php_upstream "wordpress:${WORDPRESS_PORT}";
 
@@ -66,9 +79,9 @@ server {
     # Proteger ficheros .ht*
     location ~ /\.ht { deny all; }
 
-    # Adminer bajo /db/ (redirigir /db -> /db/)
-    location = /db {
-        return 301 /db/;
+    # Adminer bajo /adminer/ (redirigir /adminer -> /adminer/)
+    location = /adminer {
+        return 301 /adminer/;
     }
 
     location /adminer/ {
