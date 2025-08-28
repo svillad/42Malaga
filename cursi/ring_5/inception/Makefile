@@ -27,6 +27,7 @@ ifneq ("$(wildcard $(ENV_FILE))","")
   ADMINER_IMAGE  := $(shell grep -E '^ADMINER_IMAGE='  $(ENV_FILE) | cut -d= -f2-)
   NGINX_IMAGE    := $(shell grep -E '^NGINX_IMAGE='    $(ENV_FILE) | cut -d= -f2-)
   WORDPRESS_IMAGE := $(shell grep -E '^WORDPRESS_IMAGE=' $(ENV_FILE) | cut -d= -f2-)
+  LOGIN          := $(shell grep -E '^LOGIN='          $(ENV_FILE) | cut -d= -f2-)
   FTP_IMAGE      := $(shell grep -E '^FTP_IMAGE='      $(ENV_FILE) | cut -d= -f2-)
   WEBSITE_IMAGE  := $(shell grep -E '^WEBSITE_IMAGE='  $(ENV_FILE) | cut -d= -f2-)
   FTP_USER      := $(shell grep -E '^FTP_USER='      $(ENV_FILE) | cut -d= -f2-)
@@ -58,7 +59,7 @@ RESET := \033[0m
 	logs logs-f logs-db logs-adminer logs-nginx logs-wp logs-ftp logs-website sh-ftp sh-website \
 	ps exec-db sh-db sh-adminer sh-nginx sh-wp \
 	down down-v clean re reset-wp-db reset-wp-data \
-	config url rmi health require-env fclean
+	config url rmi health require-env fclean ensure-dirs
 
 # Ensure .env exists before continuing
 require-env:
@@ -66,6 +67,22 @@ require-env:
 	  echo "$(RED)$(ENV_FILE) not found. Run 'make setup' first.$(RESET)"; \
 	  exit 1; \
 	fi
+
+# Ensure host directories for bind mounts exist (macOS vs Linux)
+ensure-dirs: require-env
+	@echo "$(CYAN)==> Ensuring host directories for volumes exist$(RESET)"
+	@bash -lc '\
+	  LOGIN_VAL="$(LOGIN)"; \
+	  if [ -z "$$LOGIN_VAL" ]; then LOGIN_VAL="$$(grep -E "^LOGIN=" $(ENV_FILE) | cut -d= -f2-)"; fi; \
+	  if [ "$$LOGIN_VAL" = "" ]; then echo "$(RED)LOGIN not set in $(ENV_FILE)$(RESET)"; exit 1; fi; \
+	  if [ "$$(uname)" = "Darwin" ]; then HOST_DATA_DIR="/Users/$$LOGIN_VAL/data"; else HOST_DATA_DIR="/home/$$LOGIN_VAL/data"; fi; \
+	  DB_DIR="$$HOST_DATA_DIR/$(WORDPRESS_DB_VOLUME)"; \
+	  SITE_DIR="$$HOST_DATA_DIR/$(WORDPRESS_DATA_VOLUME)"; \
+	  echo "Creating (if not exists): $$DB_DIR"; \
+	  echo "Creating (if not exists): $$SITE_DIR"; \
+	  mkdir -p "$$DB_DIR" "$$SITE_DIR"; \
+	  echo -e "$(GREEN)OK: host volume directories are present$(RESET)"; \
+	'
 
 help:
 	@echo ""
@@ -126,6 +143,7 @@ build:
 # Start stack (detached)
 up:
 	@$(MAKE) require-env
+	@$(MAKE) --no-print-directory ensure-dirs
 	@echo "$(CYAN)==> Up (detached)$(RESET)"
 	$(call DC,up -d)
 	@$(MAKE) --no-print-directory url
@@ -133,12 +151,14 @@ up:
 # Build + up
 up-build:
 	@$(MAKE) require-env
+	@$(MAKE) --no-print-directory ensure-dirs
 	@echo "$(CYAN)==> Up (build + detached)$(RESET)"
 	$(call DC,up -d --build)
 	@$(MAKE) --no-print-directory url
 
 # Start existing containers
 start:
+	@$(MAKE) require-env ensure-dirs
 	@echo "$(CYAN)==> Start$(RESET)"
 	$(call DC,start)
 
