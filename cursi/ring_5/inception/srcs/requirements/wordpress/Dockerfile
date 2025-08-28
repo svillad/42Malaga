@@ -8,7 +8,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
 # Install PHP-FPM and common extensions for WordPress + tools
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gettext-base ca-certificates curl tar unzip mariadb-client \
-    php-fpm php-mysql php-xml php-mbstring php-curl php-zip php-gd php-intl \
+    php-fpm php-mysql php-xml php-mbstring php-curl php-zip php-gd php-intl procps \
  && rm -rf /var/lib/apt/lists/*
 
 
@@ -35,6 +35,10 @@ RUN set -eux; \
 COPY wordpress-setup.sh /usr/local/bin/wordpress-setup.sh
 RUN sed -i 's/\r$//' /usr/local/bin/wordpress-setup.sh && \
     chmod +x /usr/local/bin/wordpress-setup.sh
+
+# Healthcheck: ensure PHP-FPM is running and its Unix socket exists
+HEALTHCHECK --interval=10s --timeout=5s --retries=5 \
+  CMD sh -lc '[ -S /run/php/php-fpm.sock ] && pgrep -x php-fpm >/dev/null'
 
 WORKDIR /var/www/html
 ENTRYPOINT ["/usr/local/bin/wordpress-setup.sh"]

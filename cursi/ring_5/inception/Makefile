@@ -29,6 +29,9 @@ ifneq ("$(wildcard $(ENV_FILE))","")
   WORDPRESS_IMAGE := $(shell grep -E '^WORDPRESS_IMAGE=' $(ENV_FILE) | cut -d= -f2-)
   FTP_IMAGE      := $(shell grep -E '^FTP_IMAGE='      $(ENV_FILE) | cut -d= -f2-)
   WEBSITE_IMAGE  := $(shell grep -E '^WEBSITE_IMAGE='  $(ENV_FILE) | cut -d= -f2-)
+  FTP_USER      := $(shell grep -E '^FTP_USER='      $(ENV_FILE) | cut -d= -f2-)
+  FTP_PORT      := $(shell grep -E '^FTP_PORT='      $(ENV_FILE) | cut -d= -f2-)
+  FTP_HOST      := $(shell grep -E '^FTP_HOST='      $(ENV_FILE) | cut -d= -f2-)
 endif
 
 # Compose command helper (echo the exact command, run from $(COMPOSE_DIR))
@@ -98,7 +101,7 @@ help:
 	@echo "   make clean       - Prune dangling images/volumes/networks"
 	@echo "   make re          - Rebuild and restart"
 	@echo "   make config      - Show resolved docker compose config"
-	@echo "   make url         - Print Adminer URL"
+	@echo "   make url         - Print useful URLs (Adminer, Website) and FTP client settings"
 	@echo "   make rmi         - Remove built images for all services"
 	@echo "   make health      - Check Nginx health endpoint (/healthz)"
 	@echo "   make fclean      - Clean everything (containers, volumes, images, .env) (⚠️ deletes data)"
@@ -279,6 +282,12 @@ ifneq ($(strip $(DOMAIN)),)
 	@echo "$(GREEN)Post page:     https://$(DOMAIN)/?page_id=1$(RESET)"
 	@echo "$(GREEN)Static page:   https://$(DOMAIN)/me$(RESET)"
 	@echo "$(GREEN)Database page: https://$(DOMAIN)/adminer$(RESET)"
+	@echo ""
+	@echo "$(CYAN)==> FTP settings$(RESET)"
+	@echo "$(GREEN)Host:          $$( [ -n \"$(FTP_HOST)\" ] && echo $(FTP_HOST) || echo $(DOMAIN) )$(RESET)"
+	@echo "$(GREEN)Port:          $$( [ -n \"$(FTP_PORT)\" ] && echo $(FTP_PORT) || echo 21 )$(RESET)"
+	@echo "$(GREEN)Username:      $(FTP_USER)$(RESET)"
+	@echo "$(GREEN)TLS enable:    $$( [ \"$(FTP_TLS_ENABLE)\" = \"true\" ] && echo true || echo false )$(RESET)"
 else
 	@echo "$(YELL)Nginx entrypoint: https://<DOMAIN>/ (set DOMAIN in $(ENV_FILE))$(RESET)"
 endif
@@ -308,6 +317,6 @@ fclean:
 	@$(MAKE) --no-print-directory down-v || true
 	@$(MAKE) --no-print-directory rmi || true
 	@echo "$(RED)Removing $(ENV_FILE)$(RESET)"
-# 	@rm -f $(ENV_FILE)
+	@rm -f $(ENV_FILE)
 	@echo "$(RED)Removing $(COMPOSE_DIR)/requirements/nginx/certs$(RESET)"
-# 	@rm -rf $(COMPOSE_DIR)/requirements/nginx/certs
+	@rm -rf $(COMPOSE_DIR)/requirements/nginx/certs

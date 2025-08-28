@@ -32,8 +32,7 @@ RUN useradd -m appuser \
  && chown -R appuser:appuser /app
 USER appuser
 
-EXPOSE 3000
-
+# 3) Healthcheck for Website (check if port 3000 responds)
 HEALTHCHECK --interval=15s --timeout=5s --retries=5 \
   CMD curl -fsS http://127.0.0.1:3000/ >/dev/null || exit 1
 

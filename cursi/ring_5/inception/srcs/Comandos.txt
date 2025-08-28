@@ -3,6 +3,9 @@ docker-compose down
 
 docker volume rm mariadb_data
 
+docker-compose exec <service>
+docker-compose exec ftp-server
+
 # Entrar a la base de datos como root
 docker exec -it mariadb mariadb -uroot
 

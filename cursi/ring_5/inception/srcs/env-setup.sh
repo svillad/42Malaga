@@ -98,6 +98,10 @@ echo "${BOLD}${MAGENTA}########################################${RESET}\n"
 
 FTP_USER=$(ask "FTP user" "$LOGIN")
 FTP_PASSWORD=$(ask "FTP password" "1234")
+FTP_HOST=$DOMAIN
+FTP_PORT=21
+FTP_PASV_ADDRESS=$DOMAIN
+FTP_TLS_ENABLE=$(ask "Enable FTPS (TLS)? (true/false)" "false")
 
 # Ensure host directories for bind mounts (Linux vs macOS)
 if [ "$(uname)" = "Darwin" ]; then
@@ -165,6 +169,10 @@ WORDPRESS_USER_PASS=$WORDPRESS_USER_PASS
 # FTP configuration
 FTP_USER=$FTP_USER
 FTP_PASSWORD=$FTP_PASSWORD
+FTP_HOST=$FTP_HOST
+FTP_PORT=$FTP_PORT
+FTP_PASV_ADDRESS=$FTP_PASV_ADDRESS
+FTP_TLS_ENABLE=$FTP_TLS_ENABLE
 
 # Networking
 STACK_NETWORK=$STACK_NETWORK
