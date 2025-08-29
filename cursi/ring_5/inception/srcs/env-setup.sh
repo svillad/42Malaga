@@ -39,6 +39,7 @@ NGINX_IMAGE=$(ask "Nginx image" "nginx-local:bookworm")
 WORDPRESS_IMAGE=$(ask "WordPress image" "wordpress-local:bookworm")
 FTP_IMAGE=$(ask "FTP image" "ftp-local:bookworm")
 WEBSITE_IMAGE=$(ask "Website image" "website-local:bookworm")
+REDIS_IMAGE=$(ask "Redis image" "redis-local:bookworm")
 
 echo "\n${BOLD}${MAGENTA}########################################${RESET}"
 echo "${BOLD}${MAGENTA}###   Database configuration        ###${RESET}"
@@ -103,6 +104,15 @@ FTP_PORT=21
 FTP_PASV_ADDRESS=$DOMAIN
 FTP_TLS_ENABLE=$(ask "Enable FTPS (TLS)? (true/false)" "false")
 
+echo "\n${BOLD}${MAGENTA}########################################${RESET}"
+echo "${BOLD}${MAGENTA}###   Redis configuration            ###${RESET}"
+echo "${BOLD}${MAGENTA}########################################${RESET}\n"
+
+REDIS_HOST=redis
+REDIS_PORT=$(ask "Redis port" "6379")
+REDIS_PASS=$(ask "Redis password" "redispass")
+REDIS_DATA_VOLUME=$(ask "Redis data volume name" "redis_data")
+
 # Ensure host directories for bind mounts (Linux vs macOS)
 if [ "$(uname)" = "Darwin" ]; then
   HOST_DATA_DIR="/Users/$LOGIN/data"
@@ -112,9 +122,10 @@ fi
 
 DB_DIR="$HOST_DATA_DIR/$WORDPRESS_DB_VOLUME"
 SITE_DIR="$HOST_DATA_DIR/$WORDPRESS_DATA_VOLUME"
+REDIS_DIR="$HOST_DATA_DIR/$REDIS_DATA_VOLUME"
 
 echo "\n${CYAN}Creating host directories for volumes in $HOST_DATA_DIR...${RESET}"
-mkdir -p "$DB_DIR" "$SITE_DIR"
+mkdir -p "$DB_DIR" "$SITE_DIR" "$REDIS_DIR"
 
 echo "\n${BOLD}${MAGENTA}########################################${RESET}"
 echo "${BOLD}${MAGENTA}###   Networking and volumes        ###${RESET}"
@@ -135,6 +146,7 @@ NGINX_IMAGE=$NGINX_IMAGE
 WORDPRESS_IMAGE=$WORDPRESS_IMAGE
 FTP_IMAGE=$FTP_IMAGE
 WEBSITE_IMAGE=$WEBSITE_IMAGE
+REDIS_IMAGE=$REDIS_IMAGE
 
 # Database credentials
 DATABASE_SERVER=$DATABASE_SERVER
@@ -173,6 +185,12 @@ FTP_HOST=$FTP_HOST
 FTP_PORT=$FTP_PORT
 FTP_PASV_ADDRESS=$FTP_PASV_ADDRESS
 FTP_TLS_ENABLE=$FTP_TLS_ENABLE
+
+# Redis configuration
+REDIS_HOST=$REDIS_HOST
+REDIS_PORT=$REDIS_PORT
+REDIS_PASS=$REDIS_PASS
+REDIS_DATA_VOLUME=$REDIS_DATA_VOLUME
 
 # Networking
 STACK_NETWORK=$STACK_NETWORK

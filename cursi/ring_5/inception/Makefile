@@ -19,20 +19,21 @@ ENV_FILE := $(COMPOSE_DIR)/.env
 
 # Read values from .env
 ifneq ("$(wildcard $(ENV_FILE))","")
-  WORDPRESS_DB_VOLUME := $(shell grep -E '^WORDPRESS_DB_VOLUME=' $(ENV_FILE) | cut -d= -f2-)
+  WORDPRESS_DB_VOLUME   := $(shell grep -E '^WORDPRESS_DB_VOLUME=' $(ENV_FILE) | cut -d= -f2-)
   WORDPRESS_DATA_VOLUME := $(shell grep -E '^WORDPRESS_DATA_VOLUME=' $(ENV_FILE) | cut -d= -f2-)
-  STACK_NETWORK  := $(shell grep -E '^STACK_NETWORK='  $(ENV_FILE) | cut -d= -f2-)
-  DOMAIN         := $(shell grep -E '^DOMAIN='         $(ENV_FILE) | cut -d= -f2-)
-  MARIADB_IMAGE  := $(shell grep -E '^MARIADB_IMAGE='  $(ENV_FILE) | cut -d= -f2-)
-  ADMINER_IMAGE  := $(shell grep -E '^ADMINER_IMAGE='  $(ENV_FILE) | cut -d= -f2-)
-  NGINX_IMAGE    := $(shell grep -E '^NGINX_IMAGE='    $(ENV_FILE) | cut -d= -f2-)
+  REDIS_DATA_VOLUME     := $(shell grep -E '^REDIS_DATA_VOLUME=' $(ENV_FILE) | cut -d= -f2-)
+  STACK_NETWORK   := $(shell grep -E '^STACK_NETWORK='  $(ENV_FILE) | cut -d= -f2-)
+  DOMAIN          := $(shell grep -E '^DOMAIN='         $(ENV_FILE) | cut -d= -f2-)
+  MARIADB_IMAGE   := $(shell grep -E '^MARIADB_IMAGE='  $(ENV_FILE) | cut -d= -f2-)
+  ADMINER_IMAGE   := $(shell grep -E '^ADMINER_IMAGE='  $(ENV_FILE) | cut -d= -f2-)
+  NGINX_IMAGE     := $(shell grep -E '^NGINX_IMAGE='    $(ENV_FILE) | cut -d= -f2-)
   WORDPRESS_IMAGE := $(shell grep -E '^WORDPRESS_IMAGE=' $(ENV_FILE) | cut -d= -f2-)
-  LOGIN          := $(shell grep -E '^LOGIN='          $(ENV_FILE) | cut -d= -f2-)
-  FTP_IMAGE      := $(shell grep -E '^FTP_IMAGE='      $(ENV_FILE) | cut -d= -f2-)
-  WEBSITE_IMAGE  := $(shell grep -E '^WEBSITE_IMAGE='  $(ENV_FILE) | cut -d= -f2-)
-  FTP_USER      := $(shell grep -E '^FTP_USER='      $(ENV_FILE) | cut -d= -f2-)
-  FTP_PORT      := $(shell grep -E '^FTP_PORT='      $(ENV_FILE) | cut -d= -f2-)
-  FTP_HOST      := $(shell grep -E '^FTP_HOST='      $(ENV_FILE) | cut -d= -f2-)
+  FTP_IMAGE       := $(shell grep -E '^FTP_IMAGE='      $(ENV_FILE) | cut -d= -f2-)
+  WEBSITE_IMAGE   := $(shell grep -E '^WEBSITE_IMAGE='  $(ENV_FILE) | cut -d= -f2-)
+  LOGIN           := $(shell grep -E '^LOGIN='          $(ENV_FILE) | cut -d= -f2-)
+  FTP_USER        := $(shell grep -E '^FTP_USER='      $(ENV_FILE) | cut -d= -f2-)
+  FTP_PORT        := $(shell grep -E '^FTP_PORT='      $(ENV_FILE) | cut -d= -f2-)
+  FTP_HOST        := $(shell grep -E '^FTP_HOST='      $(ENV_FILE) | cut -d= -f2-)
 endif
 
 # Compose command helper (echo the exact command, run from $(COMPOSE_DIR))
@@ -56,7 +57,7 @@ RESET := \033[0m
 
 .PHONY: \
 	help setup build up up-build start stop restart \
-	logs logs-f logs-db logs-adminer logs-nginx logs-wp logs-ftp logs-website sh-ftp sh-website \
+	logs logs-f logs-db logs-adminer logs-nginx logs-wp logs-ftp logs-website logs-redis sh-ftp sh-website sh-redis \
 	ps exec-db sh-db sh-adminer sh-nginx sh-wp \
 	down down-v clean re reset-wp-db reset-wp-data \
 	config url rmi health require-env fclean ensure-dirs
@@ -78,9 +79,11 @@ ensure-dirs: require-env
 	  if [ "$$(uname)" = "Darwin" ]; then HOST_DATA_DIR="/Users/$$LOGIN_VAL/data"; else HOST_DATA_DIR="/home/$$LOGIN_VAL/data"; fi; \
 	  DB_DIR="$$HOST_DATA_DIR/$(WORDPRESS_DB_VOLUME)"; \
 	  SITE_DIR="$$HOST_DATA_DIR/$(WORDPRESS_DATA_VOLUME)"; \
+	  REDIS_DIR="$$HOST_DATA_DIR/$(REDIS_DATA_VOLUME)"; \
 	  echo "Creating (if not exists): $$DB_DIR"; \
 	  echo "Creating (if not exists): $$SITE_DIR"; \
-	  mkdir -p "$$DB_DIR" "$$SITE_DIR"; \
+	  echo "Creating (if not exists): $$REDIS_DIR"; \
+	  mkdir -p "$$DB_DIR" "$$SITE_DIR" "$$REDIS_DIR"; \
 	  echo -e "$(GREEN)OK: host volume directories are present$(RESET)"; \
 	'
 
@@ -103,6 +106,7 @@ help:
 	@echo "   make logs-wp      - Show logs of WordPress service"
 	@echo "   make logs-ftp     - Show logs of FTP service"
 	@echo "   make logs-website - Show logs of Website service"
+	@echo "   make logs-redis   - Show logs of Redis service"
 	@echo "   make ps          - List services"
 	@echo "   make exec-db     - Open mysql client inside DB container"
 	@echo "   make sh-db       - /bin/sh in DB container"
@@ -111,6 +115,7 @@ help:
 	@echo "   make sh-wp        - /bin/sh in WordPress container"
 	@echo "   make sh-ftp       - /bin/sh in FTP container"
 	@echo "   make sh-website   - /bin/sh in Website container"
+	@echo "   make sh-redis     - /bin/sh in Redis container"
 	@echo "   make down        - Stop and remove containers + default network"
 	@echo "   make down-v      - Down + remove named volumes (⚠️ deletes data)"
 	@echo "   make reset-wp-db    - Remove WordPress DB volume only (⚠️ deletes data)"
@@ -210,6 +215,11 @@ logs-website:
 	@echo "$(CYAN)==> Logs (Website)$(RESET)"
 	$(call DC,logs website)
 
+# Logs (Redis)
+logs-redis:
+	@echo "$(CYAN)==> Logs (Redis)$(RESET)"
+	$(call DC,logs redis)
+
 # List services
 ps:
 	@echo "$(CYAN)==> Services status$(RESET)"
@@ -249,6 +259,11 @@ sh-ftp:
 sh-website:
 	@echo "$(CYAN)==> Shell (Website)$(RESET)"
 	$(call DC,exec website /bin/sh)
+
+# /bin/sh inside Redis container
+sh-redis:
+	@echo "$(CYAN)==> Shell (Redis)$(RESET)"
+	$(call DC,exec redis /bin/sh)
 
 # Down (remove containers + default network)
 down:
@@ -321,6 +336,7 @@ rmi:
 	$(call RUN,docker rmi -f $(WORDPRESS_IMAGE) || true)
 	$(call RUN,docker rmi -f $(FTP_IMAGE) || true)
 	$(call RUN,docker rmi -f $(WEBSITE_IMAGE) || true)
+	$(call RUN,docker rmi -f $(REDIS_IMAGE) || true)
 
 # Health check for Nginx
 health:

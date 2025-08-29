@@ -3,14 +3,20 @@ FROM debian:bookworm-slim
 
 ENV DEBIAN_FRONTEND=noninteractive \
     WORDPRESS_PORT= \
-    WORDPRESS_VERSION=latest
+    WORDPRESS_VERSION=latest \
+    WORDPRESS_REDIS_HOST= \
+    WORDPRESS_REDIS_PORT= \
+    WORDPRESS_REDIS_PASS=
 
 # Install PHP-FPM and common extensions for WordPress + tools
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gettext-base ca-certificates curl tar unzip mariadb-client \
     php-fpm php-mysql php-xml php-mbstring php-curl php-zip php-gd php-intl procps \
+    php-cli php-redis \
  && rm -rf /var/lib/apt/lists/*
 
+# Verify redis extension is available in CLI (fail build if not)
+RUN php -m | grep -qi '^redis$' || (echo 'ERROR: php-redis not loaded' >&2; exit 1)
 
 # Download WordPress sources to a staging dir
 RUN mkdir -p /usr/src/wordpress \
@@ -36,9 +42,11 @@ COPY wordpress-setup.sh /usr/local/bin/wordpress-setup.sh
 RUN sed -i 's/\r$//' /usr/local/bin/wordpress-setup.sh && \
     chmod +x /usr/local/bin/wordpress-setup.sh
 
-# Healthcheck: ensure PHP-FPM is running and its Unix socket exists
-HEALTHCHECK --interval=10s --timeout=5s --retries=5 \
-  CMD sh -lc '[ -S /run/php/php-fpm.sock ] && pgrep -x php-fpm >/dev/null'
+RUN mkdir -p /run/php && chown www-data:www-data /run/php
+
+# Simple healthcheck: PHP-FPM process exists
+HEALTHCHECK --interval=10s --timeout=5s --retries=5 --start-period=45s \
+  CMD sh -lc 'pgrep -x php-fpm >/dev/null || pgrep -x php-fpm8.2 >/dev/null'
 
 WORKDIR /var/www/html
 ENTRYPOINT ["/usr/local/bin/wordpress-setup.sh"]

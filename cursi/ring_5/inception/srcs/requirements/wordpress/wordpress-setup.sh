@@ -1,9 +1,34 @@
 #!/bin/sh
 set -e
 
+# ============================================================================== 
+# WordPress container entrypoint
+# Order of execution:
+# [0] Helpers & runtime checks
+# [1] PHP-FPM pool configuration
+# [2] Environment (Redis & Database)
+# [3] WordPress files & permissions
+# [4] Database wait (MariaDB/MySQL)
+# [5] WP-CLI bootstrap
+# [6] Generate credentials
+# [7] Create wp-config.php
+# [8] Configure Redis constants
+# [9] Install WordPress core
+# [10] Language & locale
+# [11] Users (admin & common)
+# [12] Redis Object Cache plugin
+# [13] Start php-fpm
+# ==============================================================================
+
+# [0] Helpers & runtime checks
+# ---------------------------
+# Logging helper
 log() {
   printf "[wordpress-setup][%s] %s\n" "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" "$*" >&2
 }
+
+# Run a command as www-data user
+as_www() { su -s /bin/sh -c "$*" www-data; }
 
 # Detect php-fpm binary
 PHP_FPM_BIN="$(command -v php-fpm || command -v php-fpm8.2 || true)"
@@ -12,9 +37,8 @@ if [ -z "$PHP_FPM_BIN" ]; then
   exit 1
 fi
 
-# ---------------------------
-# Configure PHP-FPM pool
-# ---------------------------
+# [1] PHP-FPM pool configuration
+# ------------------------------
 # Resolve pool.d path (Debian layout)
 POOL_DIR="$(find /etc/php -type d -path '*/fpm/pool.d' -print -quit 2>/dev/null || true)"
 if [ -z "$POOL_DIR" ]; then
@@ -48,9 +72,28 @@ else
   fi
 fi
 
-# ---------------------------
-# WordPress files & perms
-# ---------------------------
+# [2] Environment – Redis (Object Cache)
+# --------------------------------------
+REDIS_HOST="${WORDPRESS_REDIS_HOST:-}"
+REDIS_PORT="${WORDPRESS_REDIS_PORT:-6379}"
+REDIS_PASS="${WORDPRESS_REDIS_PASS:-}"
+
+if [ -n "$REDIS_HOST" ]; then
+  log "Redis enabled: host='${REDIS_HOST}', port=${REDIS_PORT}"
+else
+  log "Redis not configured (set WORDPRESS_REDIS_HOST to enable)."
+fi
+
+# [2] Environment – Database
+# --------------------------
+DB_HOST="${WORDPRESS_DB_HOST}"
+DB_PORT="${WORDPRESS_DB_PORT}"
+DB_NAME="${WORDPRESS_DB_NAME}"
+DB_USER="${WORDPRESS_DB_USER}"
+DB_PASS="${WORDPRESS_DB_PASSWORD}"
+
+# [3] WordPress files & permissions
+# ---------------------------------
 mkdir -p /var/www/html
 if [ ! -e /var/www/html/wp-settings.php ] || [ ! -d /var/www/html/wp-includes ]; then
   log "Populating WordPress core into /var/www/html (missing wp-includes/wp-settings.php)"
@@ -59,15 +102,8 @@ if [ ! -e /var/www/html/wp-settings.php ] || [ ! -d /var/www/html/wp-includes ];
 fi
 chown -R www-data:www-data /var/www/html
 
-# ---------------------------
-# DB wait using MariaDB/MySQL CLI
-# ---------------------------
-DB_HOST="${WORDPRESS_DB_HOST}"
-DB_PORT="${WORDPRESS_DB_PORT}"
-DB_NAME="${WORDPRESS_DB_NAME}"
-DB_USER="${WORDPRESS_DB_USER}"
-DB_PASS="${WORDPRESS_DB_PASSWORD}"
-
+# [4] Database wait (MariaDB/MySQL)
+# ---------------------------------
 DB_CLI="$(command -v mariadb || true)"
 [ -z "$DB_CLI" ] && DB_CLI="$(command -v mysql || true)"
 if [ -z "$DB_CLI" ]; then
@@ -87,11 +123,8 @@ until $DB_CLI -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USER" -p"$DB_PASS" "$DB_NAME" -e 
 done
 log "DB is reachable."
 
-# ---------------------------
-# WordPress provision (WP-CLI)
-# ---------------------------
-as_www() { su -s /bin/sh -c "$*" www-data; }
-
+# [5] WP-CLI bootstrap
+# --------------------
 # Install wp-cli if missing
 if ! command -v wp >/dev/null 2>&1; then
   log "wp-cli not found; installing locally"
@@ -99,18 +132,33 @@ if ! command -v wp >/dev/null 2>&1; then
   chmod +x /usr/local/bin/wp
 fi
 
+# [6] Generate credentials
+# ------------------------
 # Generate passwords if blank
 gen_pass() { tr -dc 'A-Za-z0-9!@#%^&*' </dev/urandom | head -c 20; }
 [ -z "${WORDPRESS_ADMIN_PASS:-}" ] && WORDPRESS_ADMIN_PASS="$(gen_pass)" && export WORDPRESS_ADMIN_PASS && log "Generated WORDPRESS_ADMIN_PASS (hidden)"
 [ -z "${WORDPRESS_USER_PASS:-}" ] && WORDPRESS_USER_PASS="$(gen_pass)" && export WORDPRESS_USER_PASS && log "Generated WORDPRESS_USER_PASS (hidden)"
 
-# Ensure wp-config.php
+# [7] Create wp-config.php
+# ------------------------
 if [ ! -f /var/www/html/wp-config.php ]; then
   log "Creating wp-config.php"
   as_www "wp config create --skip-check --dbname='${DB_NAME}' --dbuser='${DB_USER}' --dbpass='${DB_PASS}' --dbhost='${DB_HOST}:${DB_PORT}' --path=/var/www/html --allow-root"
 fi
 
-# Install core if needed
+# [8] Configure Redis constants (idempotent)
+# ------------------------------------------
+if [ -n "$REDIS_HOST" ]; then
+  as_www "wp config set WP_CACHE true --type=constant --raw --path=/var/www/html --allow-root" || true
+  as_www "wp config set WP_REDIS_HOST '${REDIS_HOST:-redis}' --type=constant --path=/var/www/html --allow-root" || true
+  as_www "wp config set WP_REDIS_PORT ${REDIS_PORT} --type=constant --raw --path=/var/www/html --allow-root" || true
+  if [ -n "$REDIS_PASS" ]; then
+    as_www "wp config set WP_REDIS_PASSWORD '${REDIS_PASS}' --type=constant --path=/var/www/html --allow-root" || true
+  fi
+fi
+
+# [9] Install WordPress core (idempotent)
+# ---------------------------------------
 if ! as_www "wp core is-installed --path=/var/www/html --allow-root" >/dev/null 2>&1; then
   log "Installing WordPress core at ${WORDPRESS_SITE_URL}"
   log "Data: title='${WORDPRESS_SITE_TITLE}', admin_user='${WORDPRESS_ADMIN_USER}', admin_email='${WORDPRESS_ADMIN_EMAIL}', locale='${WORDPRESS_LOCALE}'"
@@ -128,8 +176,8 @@ else
   log "WordPress core already installed"
 fi
 
-# ---------------------------
-# Ensure the requested language is actually installed and activated
+# [10] Language & locale
+# ----------------------
 if [ -n "${WORDPRESS_LOCALE:-}" ]; then
   log "Ensuring core language '${WORDPRESS_LOCALE}' is installed and active"
   # Try to install if not present (don't fail the script if it doesn't exist upstream)
@@ -152,6 +200,8 @@ if [ -n "${WORDPRESS_LOCALE:-}" ]; then
   fi
 fi
 
+# [11] Users (admin & common)
+# ---------------------------
 # Ensure admin user (update password/email if exists)
 if as_www "wp user get '${WORDPRESS_ADMIN_USER}' --path=/var/www/html --allow-root" >/dev/null 2>&1; then
   log "Admin user '${WORDPRESS_ADMIN_USER}' exists; updating password/email"
@@ -170,5 +220,36 @@ else
   as_www "wp user create '${WORDPRESS_USER}' '${WORDPRESS_USER_EMAIL}' --role='${WORDPRESS_USER_ROLE}' --user_pass='${WORDPRESS_USER_PASS}' --path=/var/www/html --allow-root"
 fi
 
+# [12] Redis Object Cache plugin (install & enable)
+# -------------------------------------------------
+if [ -n "$REDIS_HOST" ]; then
+  log "Configuring Redis Object Cache (best-effort)"
+
+  # Ensure plugin is installed (do not fail the script if it can't be installed)
+  if ! as_www "wp plugin is-installed redis-cache --path=/var/www/html --allow-root" >/dev/null 2>&1; then
+    if as_www "wp plugin install redis-cache --path=/var/www/html --allow-root" >/dev/null 2>&1; then
+      log "Installed 'redis-cache' plugin"
+    else
+      log "WARNING: could not install 'redis-cache' plugin; continuing without Redis cache"
+    fi
+  fi
+
+  # Try to activate plugin (non-fatal)
+  if as_www "wp plugin activate redis-cache --path=/var/www/html --allow-root" >/dev/null 2>&1; then
+    log "Plugin 'redis-cache' is active"
+  else
+    log "WARNING: could not activate 'redis-cache' plugin; continuing"
+  fi
+
+  # Try to enable object cache. If Redis is down, this may fail — that's OK.
+  if as_www "wp redis enable --path=/var/www/html --allow-root" >/dev/null 2>&1; then
+    log "Redis object cache enabled"
+  else
+    log "WARNING: Redis not enabled (likely unreachable or plugin inactive). Site will run without object cache."
+  fi
+fi
+
+# [13] Start php-fpm
+# ------------------
 log "Provision complete. Starting php-fpm on port ${WORDPRESS_PORT}"
 exec "$PHP_FPM_BIN" -F

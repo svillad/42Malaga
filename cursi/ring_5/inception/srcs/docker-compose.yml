@@ -50,10 +50,14 @@ services:
       - WORDPRESS_USER=${WORDPRESS_USER}
       - WORDPRESS_USER_EMAIL=${WORDPRESS_USER_EMAIL}
       - WORDPRESS_USER_PASS=${WORDPRESS_USER_PASS}
+      - WORDPRESS_REDIS_HOST=${REDIS_HOST}
+      - WORDPRESS_REDIS_PORT=${REDIS_PORT}
+      - WORDPRESS_REDIS_PASS=${REDIS_PASS}
     volumes:
       - wp_data:/var/www/html
     depends_on:
       - mariadb
+      - redis
     restart: unless-stopped
     networks:
       - stack_net
@@ -112,6 +116,20 @@ services:
     networks:
       - stack_net
 
+  redis:
+    build:
+      context: ./requirements/bonus/redis
+    image: ${REDIS_IMAGE}
+    container_name: redis
+    environment:
+      - REDIS_PORT=${REDIS_PORT}
+      - REDIS_PASS=${REDIS_PASS}
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    networks:
+      - stack_net
+      
 volumes:
   wp_db:
     name: $WORDPRESS_DB_VOLUME
@@ -127,6 +145,13 @@ volumes:
       type: none
       o: bind
       device: $HOST_DATA_DIR/${WORDPRESS_DATA_VOLUME}
+  redis_data:
+    name: $REDIS_DATA_VOLUME
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: $HOST_DATA_DIR/${REDIS_DATA_VOLUME}
 
 networks:
   stack_net:
