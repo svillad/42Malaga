@@ -5,8 +5,8 @@ log() {
   printf "[ftp][%s] %s\n" "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" "$*" >&2
 }
 
-# 1. Load FTP password from *_FILE if provided
-[ -n "${FTP_PASS_FILE:-}" ] && [ -f "${FTP_PASS_FILE}" ] && export FTP_PASSWORD="$(cat "${FTP_PASS_FILE}")"
+# 1. Load FTP credentials from *_FILE if provided
+[ -n "${FTP_CREDENTIALS_FILE:-}" ] && [ -f "${FTP_CREDENTIALS_FILE}" ] && set -a && . "${FTP_CREDENTIALS_FILE}" && set +a
 
 # 2. Print startup information (hide password unless in development mode)
 if [ -n "${APP_ENV:-}" ] && [ "${APP_ENV}" = "development" ]; then

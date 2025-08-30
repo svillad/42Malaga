@@ -27,10 +27,10 @@ log() {
 }
 
 # Load secrets from *_FILE if present
-[ -n "${WORDPRESS_ADMIN_PASS_FILE:-}" ] && [ -f "${WORDPRESS_ADMIN_PASS_FILE}" ] && export WORDPRESS_ADMIN_PASS="$(cat "${WORDPRESS_ADMIN_PASS_FILE}")"
-[ -n "${WORDPRESS_USER_PASS_FILE:-}" ] && [ -f "${WORDPRESS_USER_PASS_FILE}" ] && export WORDPRESS_USER_PASS="$(cat "${WORDPRESS_USER_PASS_FILE}")"
 [ -n "${MARIADB_PASSWORD_FILE:-}" ] && [ -f "${MARIADB_PASSWORD_FILE}" ] && export WORDPRESS_DB_PASSWORD="$(cat "${MARIADB_PASSWORD_FILE}")"
 [ -n "${REDIS_PASS_FILE:-}" ] && [ -f "${REDIS_PASS_FILE}" ] && export WORDPRESS_REDIS_PASS="$(cat "${REDIS_PASS_FILE}")"
+[ -n "${WORDPRESS_ADMIN_CREDENTIALS_FILE:-}" ] && [ -f "${WORDPRESS_ADMIN_CREDENTIALS_FILE}" ] && set -a && . "${WORDPRESS_ADMIN_CREDENTIALS_FILE}" && set +a
+[ -n "${WORDPRESS_USER_CREDENTIALS_FILE:-}" ] && [ -f "${WORDPRESS_USER_CREDENTIALS_FILE}" ] && set -a && . "${WORDPRESS_USER_CREDENTIALS_FILE}" && set +a
 
 # Development mode: print credentials in log
 if [ -n "${APP_ENV:-}" ] && [ "${APP_ENV}" = "development" ]; then

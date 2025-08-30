@@ -19,6 +19,11 @@ write_secret() {
   ( umask 077; printf "%s" "$2" > "$1" )
 }
 
+write_credentials_file() {
+  mkdir -p "$(dirname "$1")"
+  ( umask 077; cat > "$1" )
+}
+
  # Si existe, salir
 if [ -f "$ENV_FILE" ]; then
   echo "${YELL}⚠️  The file $ENV_FILE already exists.${RESET}"
@@ -145,7 +150,7 @@ STACK_NETWORK=$(ask "Network name" "inception_net")
 echo "\n${CYAN}Creating host directories for volumes in $HOST_DATA_DIR...${RESET}"
 mkdir -p "$DB_DIR" "$SITE_DIR" "$REDIS_DIR"
 
-echo "\n${CYAN}Creating $ENV_FILE...${RESET}"
+echo "${CYAN}Creating $ENV_FILE...${RESET}"
 cat > "$ENV_FILE" <<EOL
 # App configuration
 APP_ENV=$APP_ENV
@@ -189,17 +194,10 @@ WORDPRESS_SITE_URL=$WORDPRESS_SITE_URL
 WORDPRESS_SITE_TITLE=$WORDPRESS_SITE_TITLE
 WORDPRESS_LOCALE=$WORDPRESS_LOCALE
 
-WORDPRESS_ADMIN_USER=$WORDPRESS_ADMIN_USER
-WORDPRESS_ADMIN_EMAIL=$WORDPRESS_ADMIN_EMAIL
-
-WORDPRESS_USER=$WORDPRESS_USER
-WORDPRESS_USER_EMAIL=$WORDPRESS_USER_EMAIL
-
 WORDPRESS_REDIS_HOST=${REDIS_HOST}
 WORDPRESS_REDIS_PORT=${REDIS_PORT}
 
 # FTP configuration
-FTP_USER=$FTP_USER
 FTP_HOST=$FTP_HOST
 FTP_PORT=$FTP_PORT
 FTP_PASV_ADDRESS=$FTP_PASV_ADDRESS
@@ -215,12 +213,26 @@ STACK_NETWORK=$STACK_NETWORK
 
 EOL
 
-echo "\n${CYAN}Creating ${SECRETS_DIR}...${RESET}"
+echo "${CYAN}Creating secrets...${RESET}"
 write_secret "${SECRETS_DIR}/db_password.txt"        "$MARIADB_PASSWORD"
 write_secret "${SECRETS_DIR}/db_root_password.txt"   "$MARIADB_ROOT_PASSWORD"
-write_secret "${SECRETS_DIR}/wp_admin_password.txt"  "$WORDPRESS_ADMIN_PASS"
-write_secret "${SECRETS_DIR}/wp_user_password.txt"   "$WORDPRESS_USER_PASS"
-write_secret "${SECRETS_DIR}/ftp_password.txt"       "$FTP_PASSWORD"
 write_secret "${SECRETS_DIR}/redis_password.txt"     "$REDIS_PASS"
 
-echo "${GREEN}✅ Archivo $ENV_FILE creado exitosamente.${RESET}"
+write_credentials_file "${SECRETS_DIR}/wp_admin_credentials.txt" <<EOF
+WORDPRESS_ADMIN_USER=${WORDPRESS_ADMIN_USER}
+WORDPRESS_ADMIN_PASS=${WORDPRESS_ADMIN_PASS}
+WORDPRESS_ADMIN_EMAIL=${WORDPRESS_ADMIN_EMAIL}
+EOF
+
+write_credentials_file "${SECRETS_DIR}/wp_user_credentials.txt" <<EOF
+WORDPRESS_USER=${WORDPRESS_USER}
+WORDPRESS_USER_PASS=${WORDPRESS_USER_PASS}
+WORDPRESS_USER_EMAIL=${WORDPRESS_USER_EMAIL}
+EOF
+
+write_credentials_file "${SECRETS_DIR}/ftp_credentials.txt" <<EOF
+FTP_USER=${FTP_USER}
+FTP_PASSWORD=${FTP_PASSWORD}
+EOF
+
+echo "${GREEN}✅ Files created successfully.${RESET}\n"

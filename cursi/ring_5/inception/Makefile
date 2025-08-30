@@ -326,7 +326,6 @@ ifneq ($(strip $(DOMAIN)),)
 	@echo "$(CYAN)==> FTP settings$(RESET)"
 	@echo "$(GREEN)Host:          $$( [ -n \"$(FTP_HOST)\" ] && echo $(FTP_HOST) || echo $(DOMAIN) )$(RESET)"
 	@echo "$(GREEN)Port:          $$( [ -n \"$(FTP_PORT)\" ] && echo $(FTP_PORT) || echo 21 )$(RESET)"
-	@echo "$(GREEN)Username:      $(FTP_USER)$(RESET)"
 	@echo "$(GREEN)TLS enable:    $$( [ \"$(FTP_TLS_ENABLE)\" = \"true\" ] && echo true || echo false )$(RESET)"
 else
 	@echo "$(YELL)Set environment variables in $(ENV_FILE). Or run 'make setup' first.$(RESET)"
