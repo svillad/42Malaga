@@ -30,6 +30,7 @@ ifneq ("$(wildcard $(ENV_FILE))","")
   WORDPRESS_IMAGE := $(shell grep -E '^WORDPRESS_IMAGE=' $(ENV_FILE) | cut -d= -f2-)
   FTP_IMAGE       := $(shell grep -E '^FTP_IMAGE='      $(ENV_FILE) | cut -d= -f2-)
   WEBSITE_IMAGE   := $(shell grep -E '^WEBSITE_IMAGE='  $(ENV_FILE) | cut -d= -f2-)
+  REDIS_IMAGE     := $(shell grep -E '^REDIS_IMAGE='    $(ENV_FILE) | cut -d= -f2-)
   LOGIN           := $(shell grep -E '^LOGIN='          $(ENV_FILE) | cut -d= -f2-)
   FTP_USER        := $(shell grep -E '^FTP_USER='      $(ENV_FILE) | cut -d= -f2-)
   FTP_PORT        := $(shell grep -E '^FTP_PORT='      $(ENV_FILE) | cut -d= -f2-)
@@ -137,7 +138,7 @@ setup:
 	@echo "$(CYAN)==> Setup$(RESET)"
 	@if [ ! -f "$(ENV_FILE)" ]; then \
 			echo "$(YELL)Creating $(ENV_FILE)$(RESET)"; \
-			cd $(COMPOSE_DIR) && chmod +x ./env-setup.sh && ./env-setup.sh \
+			cd $(COMPOSE_DIR) && chmod +x ./app-setup.sh && ./app-setup.sh \
 		else \
 			echo "$(GREEN)$(ENV_FILE) exists$(RESET)"; \
 		fi
@@ -351,12 +352,20 @@ else
 	@echo "$(RED)DOMAIN is not set in $(ENV_FILE)$(RESET)"
 endif
 
-# Clean everything (containers, volumes, images, .env)
+# Clean everything (containers, volumes, images, .env, certs, secrets)
 fclean:
-	@echo "$(RED)==> Nuking environment (DESTRUCTIVE: containers, volumes, images, .env)$(RESET)"
-	@$(MAKE) --no-print-directory down-v || true
-	@$(MAKE) --no-print-directory rmi || true
-	@echo "$(RED)Removing $(ENV_FILE)$(RESET)"
-	@rm -f $(ENV_FILE)
-	@echo "$(RED)Removing $(COMPOSE_DIR)/requirements/nginx/certs$(RESET)"
-	@rm -rf $(COMPOSE_DIR)/requirements/nginx/certs
+	@read -p "⚠️  This will NUKE your environment (containers, volumes, images, .env, certs, secrets). Continue? [Y/n] " ans; \
+	if [ "$$ans" = "n" ] || [ "$$ans" = "N" ]; then \
+		echo "❌ Aborted."; \
+		exit 1; \
+	fi; \
+	echo "$(RED)==> Nuking environment (DESTRUCTIVE: containers, volumes, images, .env)$(RESET)"; \
+	$(MAKE) --no-print-directory down-v || true; \
+	$(MAKE) --no-print-directory rmi || true; \
+	echo "$(RED)Removing $(ENV_FILE)$(RESET)"; \
+	rm -f $(ENV_FILE); \
+	echo "$(RED)Removing $(COMPOSE_DIR)/requirements/nginx/certs$(RESET)"; \
+	rm -rf $(COMPOSE_DIR)/requirements/nginx/certs; \
+	echo "$(RED)Removing secrets$(RESET)"; \
+	rm -rf secrets; \
+	echo "$(GREEN)Nuke complete.$(RESET)"

@@ -12,14 +12,20 @@ RESET='\033[0m'
 BOLD='\033[1m'
 
 ENV_FILE=".env"
+SECRETS_DIR="../secrets"
+
+write_secret() {
+  mkdir -p "$(dirname "$1")"
+  ( umask 077; printf "%s" "$2" > "$1" )
+}
 
  # Si existe, salir
 if [ -f "$ENV_FILE" ]; then
-  echo "${YELL}⚠️  El archivo $ENV_FILE ya existe.${RESET}"
+  echo "${YELL}⚠️  The file $ENV_FILE already exists.${RESET}"
   exit 0
 fi
 
-echo "${CYAN}==> Creando archivo $ENV_FILE...${RESET}"
+echo "${CYAN}==> Creating enviroments and secrets...${RESET}"
 
 ask() {
   local prompt=$1
@@ -29,17 +35,30 @@ ask() {
 }
 
 echo "\n${BOLD}${MAGENTA}########################################${RESET}"
+echo "${BOLD}${MAGENTA}###        App configuration        ###${RESET}"
+echo "${BOLD}${MAGENTA}########################################${RESET}\n"
+LOGIN=$(whoami)
+echo "You are logged in as: $LOGIN"
+APP_ENV=$(ask "Applicaction enviroment" "development")
+
+if [ "$(uname)" = "Darwin" ]; then
+  HOST_DATA_DIR="/Users/$LOGIN/data"
+else
+  HOST_DATA_DIR="/home/$LOGIN/data"
+fi
+
+echo "\n${BOLD}${MAGENTA}########################################${RESET}"
 echo "${BOLD}${MAGENTA}###   Services configuration        ###${RESET}"
 echo "${BOLD}${MAGENTA}########################################${RESET}\n"
 
 # Services
-MARIADB_IMAGE=$(ask "MariaDB image" "mariadb-local:bookworm")
-ADMINER_IMAGE=$(ask "Adminer image" "adminer-local:bookworm")
-NGINX_IMAGE=$(ask "Nginx image" "nginx-local:bookworm")
-WORDPRESS_IMAGE=$(ask "WordPress image" "wordpress-local:bookworm")
-FTP_IMAGE=$(ask "FTP image" "ftp-local:bookworm")
-WEBSITE_IMAGE=$(ask "Website image" "website-local:bookworm")
-REDIS_IMAGE=$(ask "Redis image" "redis-local:bookworm")
+MARIADB_IMAGE=$(ask "MariaDB image" "mariadb-local:1.0.0")
+ADMINER_IMAGE=$(ask "Adminer image" "adminer-local:1.0.0")
+NGINX_IMAGE=$(ask "Nginx image" "nginx-local:1.0.0")
+WORDPRESS_IMAGE=$(ask "WordPress image" "wordpress-local:1.0.0")
+FTP_IMAGE=$(ask "FTP image" "ftp-local:1.0.0")
+WEBSITE_IMAGE=$(ask "Website image" "website-local:1.0.0")
+REDIS_IMAGE=$(ask "Redis image" "redis-local:1.0.0")
 
 echo "\n${BOLD}${MAGENTA}########################################${RESET}"
 echo "${BOLD}${MAGENTA}###   Database configuration        ###${RESET}"
@@ -58,7 +77,6 @@ echo "${BOLD}${MAGENTA}###   Nginx configuration           ###${RESET}"
 echo "${BOLD}${MAGENTA}########################################${RESET}\n"
 
 # Nginx configuration
-LOGIN=$(whoami)
 DEFAULT_DOMAIN="${LOGIN}.42.fr"
 DOMAIN=$(ask "Public domain (for TLS/server_name)" "$DEFAULT_DOMAIN")
 UPSTREAM="http://adminer:80"
@@ -113,19 +131,9 @@ REDIS_PORT=$(ask "Redis port" "6379")
 REDIS_PASS=$(ask "Redis password" "redispass")
 REDIS_DATA_VOLUME=$(ask "Redis data volume name" "redis_data")
 
-# Ensure host directories for bind mounts (Linux vs macOS)
-if [ "$(uname)" = "Darwin" ]; then
-  HOST_DATA_DIR="/Users/$LOGIN/data"
-else
-  HOST_DATA_DIR="/home/$LOGIN/data"
-fi
-
 DB_DIR="$HOST_DATA_DIR/$WORDPRESS_DB_VOLUME"
 SITE_DIR="$HOST_DATA_DIR/$WORDPRESS_DATA_VOLUME"
 REDIS_DIR="$HOST_DATA_DIR/$REDIS_DATA_VOLUME"
-
-echo "\n${CYAN}Creating host directories for volumes in $HOST_DATA_DIR...${RESET}"
-mkdir -p "$DB_DIR" "$SITE_DIR" "$REDIS_DIR"
 
 echo "\n${BOLD}${MAGENTA}########################################${RESET}"
 echo "${BOLD}${MAGENTA}###   Networking and volumes        ###${RESET}"
@@ -134,8 +142,13 @@ echo "${BOLD}${MAGENTA}########################################${RESET}\n"
 # Networking and volumes
 STACK_NETWORK=$(ask "Network name" "inception_net")
 
+echo "\n${CYAN}Creating host directories for volumes in $HOST_DATA_DIR...${RESET}"
+mkdir -p "$DB_DIR" "$SITE_DIR" "$REDIS_DIR"
+
+echo "\n${CYAN}Creating $ENV_FILE...${RESET}"
 cat > "$ENV_FILE" <<EOL
-# User
+# App configuration
+APP_ENV=$APP_ENV
 LOGIN=$LOGIN
 HOST_DATA_DIR=$HOST_DATA_DIR
 
@@ -152,9 +165,10 @@ REDIS_IMAGE=$REDIS_IMAGE
 DATABASE_SERVER=$DATABASE_SERVER
 MARIADB_DATABASE=$MARIADB_DATABASE
 MARIADB_USER=$MARIADB_USER
-MARIADB_PASSWORD=$MARIADB_PASSWORD
 MARIADB_PORT=$MARIADB_PORT
-MARIADB_ROOT_PASSWORD=$MARIADB_ROOT_PASSWORD
+
+# Adminer configuration
+ADMINER_DEFAULT_SERVER=${DATABASE_SERVER}:${MARIADB_PORT}
 
 # Nginx configuration
 DOMAIN=$DOMAIN
@@ -162,6 +176,11 @@ UPSTREAM=$UPSTREAM
 GENERATE_SELF_SIGNED=$GENERATE_SELF_SIGNED
 
 # WordPress configuration
+WORDPRESS_DB_HOST=${DATABASE_SERVER}
+WORDPRESS_DB_NAME=${MARIADB_DATABASE}
+WORDPRESS_DB_USER=${MARIADB_USER}
+WORDPRESS_DB_PORT=${MARIADB_PORT}
+
 WORDPRESS_DB_VOLUME=$WORDPRESS_DB_VOLUME
 WORDPRESS_DATA_VOLUME=$WORDPRESS_DATA_VOLUME
 WORDPRESS_PORT=$WORDPRESS_PORT
@@ -172,15 +191,15 @@ WORDPRESS_LOCALE=$WORDPRESS_LOCALE
 
 WORDPRESS_ADMIN_USER=$WORDPRESS_ADMIN_USER
 WORDPRESS_ADMIN_EMAIL=$WORDPRESS_ADMIN_EMAIL
-WORDPRESS_ADMIN_PASS=$WORDPRESS_ADMIN_PASS
 
 WORDPRESS_USER=$WORDPRESS_USER
 WORDPRESS_USER_EMAIL=$WORDPRESS_USER_EMAIL
-WORDPRESS_USER_PASS=$WORDPRESS_USER_PASS
+
+WORDPRESS_REDIS_HOST=${REDIS_HOST}
+WORDPRESS_REDIS_PORT=${REDIS_PORT}
 
 # FTP configuration
 FTP_USER=$FTP_USER
-FTP_PASSWORD=$FTP_PASSWORD
 FTP_HOST=$FTP_HOST
 FTP_PORT=$FTP_PORT
 FTP_PASV_ADDRESS=$FTP_PASV_ADDRESS
@@ -189,12 +208,19 @@ FTP_TLS_ENABLE=$FTP_TLS_ENABLE
 # Redis configuration
 REDIS_HOST=$REDIS_HOST
 REDIS_PORT=$REDIS_PORT
-REDIS_PASS=$REDIS_PASS
 REDIS_DATA_VOLUME=$REDIS_DATA_VOLUME
 
 # Networking
 STACK_NETWORK=$STACK_NETWORK
 
 EOL
+
+echo "\n${CYAN}Creating ${SECRETS_DIR}...${RESET}"
+write_secret "${SECRETS_DIR}/db_password.txt"        "$MARIADB_PASSWORD"
+write_secret "${SECRETS_DIR}/db_root_password.txt"   "$MARIADB_ROOT_PASSWORD"
+write_secret "${SECRETS_DIR}/wp_admin_password.txt"  "$WORDPRESS_ADMIN_PASS"
+write_secret "${SECRETS_DIR}/wp_user_password.txt"   "$WORDPRESS_USER_PASS"
+write_secret "${SECRETS_DIR}/ftp_password.txt"       "$FTP_PASSWORD"
+write_secret "${SECRETS_DIR}/redis_password.txt"     "$REDIS_PASS"
 
 echo "${GREEN}✅ Archivo $ENV_FILE creado exitosamente.${RESET}"

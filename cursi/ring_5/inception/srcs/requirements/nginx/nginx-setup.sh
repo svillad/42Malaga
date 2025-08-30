@@ -1,17 +1,23 @@
-#!/bin/sh
+#!/usr/bin/env sh
 set -e
 
+# 1. Logging helper
 log() {
-  printf "[nginx-setup][%s] %s\n" "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" "$*" >&2
+  printf "[nginx][%s] %s\n" "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" "$*" >&2
 }
 
+# 2. Default configuration (env fallbacks)
 : "${CERTS_DIR:=/etc/nginx/certs}"
 : "${RSA_BITS:=2048}"
 : "${CERT_DAYS:=365}"
 
+# 3. Startup log (context)
 log "Starting service nginx with DOMAIN=${DOMAIN} UPSTREAM=${UPSTREAM} WORDPRESS_PORT=${WORDPRESS_PORT} GENERATE_SELF_SIGNED=${GENERATE_SELF_SIGNED}"
 
+# 4. Ensure certificates directory exists
 mkdir -p "${CERTS_DIR}"
+
+# 5. Generate self-signed certificates if enabled
 if [ "${GENERATE_SELF_SIGNED}" = "true" ]; then
   log "Generating self-signed certificate for ${DOMAIN} (bits=${RSA_BITS}, days=${CERT_DAYS})"
   if [ ! -f "${CERTS_DIR}/privkey.pem" ] || [ ! -f "${CERTS_DIR}/fullchain.pem" ]; then
@@ -28,13 +34,17 @@ if [ "${GENERATE_SELF_SIGNED}" = "true" ]; then
   fi
 fi
 
+# 6. Clean previous Nginx vhost configs
 rm -f /etc/nginx/conf.d/*.conf 2>/dev/null || true
 
-# TLS template rendering
+# 7. Render TLS-enabled server block from template
 envsubst '${DOMAIN} ${UPSTREAM} ${WORDPRESS_PORT}' \
   < /etc/nginx/templates/default.conf.template \
   > /etc/nginx/conf.d/default.conf
 
+# 8. Ensure runtime directory
 mkdir -p /run/nginx
-log "Launching nginx..."
+
+# 9. Launch Nginx (CMD/ARGS passed by Docker)
+log "✅ Provision complete. Launching nginx"
 exec "$@"
