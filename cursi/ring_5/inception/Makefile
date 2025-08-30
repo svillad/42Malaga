@@ -137,7 +137,7 @@ help:
 setup:
 	@echo "$(CYAN)==> Setup$(RESET)"
 	@if [ ! -f "$(ENV_FILE)" ]; then \
-			echo "$(YELL)Creating $(ENV_FILE)$(RESET)"; \
+			echo "$(YELL)Creating $(ENV_FILE) and secrets/*$(RESET)"; \
 			cd $(COMPOSE_DIR) && chmod +x ./app-setup.sh && ./app-setup.sh \
 		else \
 			echo "$(GREEN)$(ENV_FILE) exists$(RESET)"; \

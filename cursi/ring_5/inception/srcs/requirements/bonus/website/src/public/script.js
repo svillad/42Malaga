@@ -9,8 +9,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const headerTitle = document.getElementById("greeting-title");
   const headerSubtitle = document.getElementById("greeting-subtitle");
-  headerTitle.textContent = `Hello, I'm Sebastian Villa 👋`;
-  headerSubtitle.textContent = `${greeting} ${login} — Welcome to my website`;
+  headerTitle.textContent = `${greeting} ${login}`;
+  headerSubtitle.textContent = `I'm Sebastian Villa 👋`;
 
   const splash = document.getElementById("splash");
   const main = document.getElementById("main-content");
