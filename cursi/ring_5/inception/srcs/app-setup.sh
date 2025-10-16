@@ -108,7 +108,16 @@ WORDPRESS_SITE_TITLE=$(ask "WordPress site title" "My Site")
 WORDPRESS_PORT=$(ask "WordPress port" "9000")
 
 echo "\n${BOLD}${CYAN}=== WordPress admin ===${RESET}"
-WORDPRESS_ADMIN_USER=$(ask "WordPress admin user" "svillad")
+while true; do
+  WORDPRESS_ADMIN_USER=$(ask "WordPress admin user" "svillad")
+  # Validate: username must NOT contain "admin" in any case
+  if echo "$WORDPRESS_ADMIN_USER" | grep -qi "admin"; then
+    echo "${RED}❌ The administrator username cannot contain 'admin' (case-insensitive).${RESET}"
+    echo "${YELL}Examples of invalid names: admin, Admin, administrator, Admin123...${RESET}"
+    continue
+  fi
+  break
+done
 WORDPRESS_ADMIN_EMAIL=$(ask "WordPress admin email" "svillad@example.com")
 WORDPRESS_ADMIN_PASS=$(ask "WordPress admin password" "1234")
 
