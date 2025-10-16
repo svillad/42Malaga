@@ -64,6 +64,7 @@ WORDPRESS_IMAGE=$(ask "WordPress image" "wordpress-local:1.0.0")
 FTP_IMAGE=$(ask "FTP image" "ftp-local:1.0.0")
 WEBSITE_IMAGE=$(ask "Website image" "website-local:1.0.0")
 REDIS_IMAGE=$(ask "Redis image" "redis-local:1.0.0")
+PROMETHEUS_IMAGE=$(ask "Prometheus image" "prometheus-local:1.0.0")
 
 echo "\n${BOLD}${MAGENTA}########################################${RESET}"
 echo "${BOLD}${MAGENTA}###   Database configuration        ###${RESET}"
@@ -141,6 +142,15 @@ SITE_DIR="$HOST_DATA_DIR/$WORDPRESS_DATA_VOLUME"
 REDIS_DIR="$HOST_DATA_DIR/$REDIS_DATA_VOLUME"
 
 echo "\n${BOLD}${MAGENTA}########################################${RESET}"
+echo "${BOLD}${MAGENTA}###   Prometheus configuration       ###${RESET}"
+echo "${BOLD}${MAGENTA}########################################${RESET}\n"
+
+# Prometheus configuration
+PROMETHEUS_DATA_VOLUME=$(ask "Prometheus data volume name" "prometheus_data")
+EXPORTER_USER=$(ask "Prometheus exporter user" "exporter")
+EXPORTER_MYSQLD_PASSWORD=$(ask "Prometheus MySQLD exporter password" "exporterpass")
+
+echo "\n${BOLD}${MAGENTA}########################################${RESET}"
 echo "${BOLD}${MAGENTA}###   Networking and volumes        ###${RESET}"
 echo "${BOLD}${MAGENTA}########################################${RESET}\n"
 
@@ -165,6 +175,7 @@ WORDPRESS_IMAGE=$WORDPRESS_IMAGE
 FTP_IMAGE=$FTP_IMAGE
 WEBSITE_IMAGE=$WEBSITE_IMAGE
 REDIS_IMAGE=$REDIS_IMAGE
+PROMETHEUS_IMAGE=$PROMETHEUS_IMAGE
 
 # Database credentials
 DATABASE_SERVER=$DATABASE_SERVER
@@ -208,6 +219,18 @@ REDIS_HOST=$REDIS_HOST
 REDIS_PORT=$REDIS_PORT
 REDIS_DATA_VOLUME=$REDIS_DATA_VOLUME
 
+# Prometheus configuration
+PROMETHEUS_DATA_VOLUME=$PROMETHEUS_DATA_VOLUME
+EXPORTER_USER=$EXPORTER_USER
+MARIADB_EXPORTER_USER=$EXPORTER_USER
+EXPORTER_MYSQLD_PASSWORD=$EXPORTER_MYSQLD_PASSWORD
+EXPORTER_MYSQLD_HOST=$DATABASE_SERVER
+EXPORTER_MYSQLD_PORT=$MARIADB_PORT
+EXPORTER_REDIS_HOST=$REDIS_HOST
+EXPORTER_REDIS_PORT=$REDIS_PORT
+EXPORTER_MYSQLD_IMAGE=exporter-mysqld-local:1.0.0
+REDIS_EXPORTER_IMAGE=exporter-redis-local:1.0.0
+
 # Networking
 STACK_NETWORK=$STACK_NETWORK
 
@@ -216,6 +239,7 @@ EOL
 echo "${CYAN}Creating secrets...${RESET}"
 write_secret "${SECRETS_DIR}/db_password.txt"        "$MARIADB_PASSWORD"
 write_secret "${SECRETS_DIR}/db_root_password.txt"   "$MARIADB_ROOT_PASSWORD"
+write_secret "${SECRETS_DIR}/db_exporter_password.txt" "$EXPORTER_MYSQLD_PASSWORD"
 write_secret "${SECRETS_DIR}/redis_password.txt"     "$REDIS_PASS"
 
 write_credentials_file "${SECRETS_DIR}/wp_admin_credentials.txt" <<EOF

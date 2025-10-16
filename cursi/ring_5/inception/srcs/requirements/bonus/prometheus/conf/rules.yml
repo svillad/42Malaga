@@ -1,0 +1,38 @@
+groups:
+- name: service-health
+  rules:
+  - alert: MySQLDown
+    expr: mysql_up == 0
+    for: 30s
+    labels:
+      severity: critical
+    annotations:
+      summary: "MariaDB caído en {{ $labels.instance }}"
+      description: "mysqld_exporter no puede conectarse a MariaDB (mysql_up=0)."
+
+  - alert: RedisDown
+    expr: redis_up == 0
+    for: 30s
+    labels:
+      severity: critical
+    annotations:
+      summary: "Redis caído en {{ $labels.instance }}"
+      description: "redis_exporter no puede conectarse a Redis (redis_up=0)."
+
+  - alert: MySQLExporterDown
+    expr: up{job="mariadb"} == 0
+    for: 30s
+    labels:
+      severity: warning
+    annotations:
+      summary: "mysqld_exporter no responde"
+      description: "El target del exporter está DOWN."
+
+  - alert: RedisExporterDown
+    expr: up{job="redis"} == 0
+    for: 30s
+    labels:
+      severity: warning
+    annotations:
+      summary: "redis_exporter no responde"
+      description: "El target del exporter está DOWN."

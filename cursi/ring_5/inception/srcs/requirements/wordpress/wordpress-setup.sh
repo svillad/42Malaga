@@ -109,6 +109,25 @@ until $DB_CLI -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USER" -p"$DB_PASS" "$DB_NAME" -e 
 done
 log "DB is reachable."
 
+# 5b. Redis wait (DNS + port) — evita fallos de resolución/conexión durante WP-CLI
+# if [ -n "$REDIS_HOST" ]; then
+#   log "Waiting for Redis DNS: ${REDIS_HOST}"
+#   i=0
+#   until getent hosts "$REDIS_HOST" >/dev/null 2>&1; do
+#     i=$((i+1)); [ $i -gt 120 ] && log "DNS for ${REDIS_HOST} not resolving after 120s (continuing anyway)" && break
+#     sleep 1
+#   done
+
+#   log "Waiting for Redis port: ${REDIS_HOST}:${REDIS_PORT}"
+#   i=0
+#   # shellcheck disable=SC3037  # /dev/tcp es soportado por busybox/ash y bash
+#   until (exec 3<>/dev/tcp/"$REDIS_HOST"/"$REDIS_PORT") 2>/dev/null; do
+#     i=$((i+1)); [ $i -gt 120 ] && log "Redis ${REDIS_HOST}:${REDIS_PORT} not accepting connections after 120s (continuing anyway)" && break
+#     sleep 1
+#   done
+#   log "Redis is reachable at ${REDIS_HOST}:${REDIS_PORT}"
+# fi
+
 # 6. WP-CLI bootstrap
 # -------------------
 if ! command -v wp >/dev/null 2>&1; then

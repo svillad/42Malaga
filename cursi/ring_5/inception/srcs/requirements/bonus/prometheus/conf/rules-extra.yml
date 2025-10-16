@@ -1,0 +1,12 @@
+groups:
+- name: recordings
+  interval: 15s
+  rules:
+    - record: mysql:qps:rate5m
+      expr: rate(mysql_global_status_questions_total[5m])
+    - record: redis:ops:rate5m
+      expr: rate(redis_commands_processed_total[5m])
+    - record: mysql:connections
+      expr: mysql_global_status_threads_connected
+    - record: redis:connected_clients
+      expr: redis_connected_clients

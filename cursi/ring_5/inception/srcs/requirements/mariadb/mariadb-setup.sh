@@ -9,6 +9,7 @@ log() {
 # 2. Load MariaDB passwords from *_FILE if provided
 [ -n "${MARIADB_PASSWORD_FILE:-}" ] && [ -f "${MARIADB_PASSWORD_FILE}" ] && export MARIADB_PASSWORD="$(cat "${MARIADB_PASSWORD_FILE}")"
 [ -n "${MARIADB_ROOT_PASSWORD_FILE:-}" ] && [ -f "${MARIADB_ROOT_PASSWORD_FILE}" ] && export MARIADB_ROOT_PASSWORD="$(cat "${MARIADB_ROOT_PASSWORD_FILE}")"
+[ -n "${MARIADB_EXPORTER_PASSWORD_FILE:-}" ] && [ -f "${MARIADB_EXPORTER_PASSWORD_FILE}" ] && export MARIADB_EXPORTER_PASSWORD="$(cat "${MARIADB_EXPORTER_PASSWORD_FILE}")"
 
 # 3. Print startup information (hide password unless in development mode)
 if [ -n "${APP_ENV:-}" ] && [ "${APP_ENV}" = "development" ]; then
@@ -20,6 +21,8 @@ fi
 # 4. Define variables
 DATADIR="/var/lib/mysql"
 EXTRA_ARGS=""
+SOCKET="${DATADIR}/mysqld.sock"
+[ -d "${DATADIR}" ] && chown -R mysql:mysql "${DATADIR}"
 
 # 5. Initialize data directory if it does not exist
 if [ ! -d "${DATADIR}/mysql" ]; then
@@ -89,6 +92,14 @@ EOSQL
     fi
   fi
 
+  if [ -n "${MARIADB_EXPORTER_USER:-}" ] && [ -n "${MARIADB_EXPORTER_PASSWORD:-}" ]; then
+    mariadb --protocol=socket --socket="${SOCKET}" -uroot <<-EOSQL
+      CREATE USER IF NOT EXISTS '${MARIADB_EXPORTER_USER}'@'%' IDENTIFIED BY '${MARIADB_EXPORTER_PASSWORD}';
+      GRANT PROCESS, REPLICATION CLIENT, SLAVE MONITOR, SELECT ON *.* TO '${MARIADB_EXPORTER_USER}'@'%';
+      FLUSH PRIVILEGES;
+EOSQL
+  fi
+
   # 12. Stop temporary mysqld
   kill -s TERM "$pid"
   wait "$pid"
@@ -130,6 +141,16 @@ if [ -d "${DATADIR}/mysql" ]; then
     NEED_BOOTSTRAP=1
   fi
 
+  # 13e. Ensure exporter user and privileges
+  if [ -n "${MARIADB_EXPORTER_USER:-}" ] && [ -n "${MARIADB_EXPORTER_PASSWORD:-}" ]; then
+    {
+      echo "CREATE USER IF NOT EXISTS '${MARIADB_EXPORTER_USER}'@'%' IDENTIFIED BY '${MARIADB_EXPORTER_PASSWORD}';"
+      echo "GRANT PROCESS, REPLICATION CLIENT, SLAVE MONITOR, SELECT ON *.* TO '${MARIADB_EXPORTER_USER}'@'%';"
+      echo "FLUSH PRIVILEGES;"
+    } >> "${BOOTSTRAP_SQL}"
+    NEED_BOOTSTRAP=1
+  fi
+
   # 13d. Clean bootstrap file if nothing to do, otherwise add as init-file
   if [ "${NEED_BOOTSTRAP}" = "0" ]; then
     rm -f "${BOOTSTRAP_SQL}"
@@ -141,11 +162,9 @@ fi
 # 14. Exec the main process, ensuring desired port is set
 if [ "${1:-}" = "mysqld" ]; then
   DESIRED_PORT="${MARIADB_PORT:-3306}"
-  # shellcheck disable=SC2086
   log "✅ Provision complete. Starting mysqld on port ${DESIRED_PORT}"
-  exec "$@" ${EXTRA_ARGS} "--port=${DESIRED_PORT}"
+  exec "$@" ${EXTRA_ARGS} "--user=mysql" "--port=${DESIRED_PORT}"
 else
-  # shellcheck disable=SC2086
   log "✅ Provision complete. Starting ${*}"
   exec "$@" ${EXTRA_ARGS}
 fi

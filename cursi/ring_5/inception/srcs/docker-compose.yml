@@ -9,9 +9,11 @@ services:
     secrets:
       - db_password
       - db_root_password
+      - db_exporter_password
     environment:
       - MARIADB_PASSWORD_FILE=/run/secrets/db_password
       - MARIADB_ROOT_PASSWORD_FILE=/run/secrets/db_root_password
+      - MARIADB_EXPORTER_PASSWORD_FILE=/run/secrets/db_exporter_password
     volumes:
       - wp_db:/var/lib/mysql
     restart: unless-stopped
@@ -72,6 +74,7 @@ services:
     depends_on:
       - wordpress
       - adminer
+      - prometheus
     restart: unless-stopped
     networks:
       - stack_net
@@ -123,6 +126,57 @@ services:
     restart: unless-stopped
     networks:
       - stack_net
+
+  prometheus:
+    build:
+      context: ./requirements/bonus/prometheus
+    image: ${PROMETHEUS_IMAGE}
+    container_name: prometheus
+    env_file:
+      - .env
+    volumes:
+      - prometheus_data:/prometheus
+    restart: unless-stopped
+    networks:
+      - stack_net
+  
+  exporter-mysqld:
+    build:
+      context: ./requirements/bonus/prometheus/exporter-mysqld
+      args:
+        EXPORTER_USER: ${EXPORTER_USER}
+    image: ${EXPORTER_MYSQLD_IMAGE:-exporter-mysqld-local:1.0.0}
+    container_name: exporter-mysqld
+    env_file:
+      - .env
+    secrets:
+      - db_exporter_password
+    environment:
+      - EXPORTER_MYSQLD_PASSWORD_FILE=/run/secrets/db_exporter_password
+    depends_on:
+      - mariadb
+    restart: unless-stopped
+    networks:
+      - stack_net
+
+  exporter-redis:
+    build:
+      context: ./requirements/bonus/prometheus/exporter-redis
+      args:
+        EXPORTER_USER: ${EXPORTER_USER}
+    image: ${REDIS_EXPORTER_IMAGE:-exporter-redis-local:1.0.0}
+    container_name: exporter-redis
+    env_file:
+      - .env
+    secrets:
+      - redis_password
+    environment:
+      - REDIS_PASSWORD_FILE=/run/secrets/redis_password
+    depends_on:
+      - redis
+    restart: unless-stopped
+    networks:
+      - stack_net
       
 volumes:
   wp_db:
@@ -146,6 +200,13 @@ volumes:
       type: none
       o: bind
       device: $HOST_DATA_DIR/${REDIS_DATA_VOLUME}
+  prometheus_data:
+    name: ${PROMETHEUS_DATA_VOLUME}
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: $HOST_DATA_DIR/${PROMETHEUS_DATA_VOLUME}
 
 networks:
   stack_net:
@@ -157,6 +218,8 @@ secrets:
     file: ../secrets/db_password.txt
   db_root_password:
     file: ../secrets/db_root_password.txt
+  db_exporter_password:
+    file: ../secrets/db_exporter_password.txt
   redis_password:
     file: ../secrets/redis_password.txt
   wp_admin_credentials:

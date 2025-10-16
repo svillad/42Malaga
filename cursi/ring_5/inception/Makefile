@@ -22,16 +22,20 @@ ifneq ("$(wildcard $(ENV_FILE))","")
   WORDPRESS_DB_VOLUME   := $(shell grep -E '^WORDPRESS_DB_VOLUME=' $(ENV_FILE) | cut -d= -f2-)
   WORDPRESS_DATA_VOLUME := $(shell grep -E '^WORDPRESS_DATA_VOLUME=' $(ENV_FILE) | cut -d= -f2-)
   REDIS_DATA_VOLUME     := $(shell grep -E '^REDIS_DATA_VOLUME=' $(ENV_FILE) | cut -d= -f2-)
-  STACK_NETWORK   := $(shell grep -E '^STACK_NETWORK='  $(ENV_FILE) | cut -d= -f2-)
-  DOMAIN          := $(shell grep -E '^DOMAIN='         $(ENV_FILE) | cut -d= -f2-)
-  MARIADB_IMAGE   := $(shell grep -E '^MARIADB_IMAGE='  $(ENV_FILE) | cut -d= -f2-)
-  ADMINER_IMAGE   := $(shell grep -E '^ADMINER_IMAGE='  $(ENV_FILE) | cut -d= -f2-)
-  NGINX_IMAGE     := $(shell grep -E '^NGINX_IMAGE='    $(ENV_FILE) | cut -d= -f2-)
-  WORDPRESS_IMAGE := $(shell grep -E '^WORDPRESS_IMAGE=' $(ENV_FILE) | cut -d= -f2-)
-  FTP_IMAGE       := $(shell grep -E '^FTP_IMAGE='      $(ENV_FILE) | cut -d= -f2-)
-  WEBSITE_IMAGE   := $(shell grep -E '^WEBSITE_IMAGE='  $(ENV_FILE) | cut -d= -f2-)
-  REDIS_IMAGE     := $(shell grep -E '^REDIS_IMAGE='    $(ENV_FILE) | cut -d= -f2-)
-  LOGIN           := $(shell grep -E '^LOGIN='          $(ENV_FILE) | cut -d= -f2-)
+  PROMETHEUS_DATA_VOLUME := $(shell grep -E '^PROMETHEUS_DATA_VOLUME=' $(ENV_FILE) | cut -d= -f2-)
+  STACK_NETWORK   := $(shell grep -E '^STACK_NETWORK='    $(ENV_FILE) | cut -d= -f2-)
+  DOMAIN          := $(shell grep -E '^DOMAIN='           $(ENV_FILE) | cut -d= -f2-)
+  MARIADB_IMAGE   := $(shell grep -E '^MARIADB_IMAGE='    $(ENV_FILE) | cut -d= -f2-)
+  ADMINER_IMAGE   := $(shell grep -E '^ADMINER_IMAGE='    $(ENV_FILE) | cut -d= -f2-)
+  NGINX_IMAGE     := $(shell grep -E '^NGINX_IMAGE='      $(ENV_FILE) | cut -d= -f2-)
+  WORDPRESS_IMAGE := $(shell grep -E '^WORDPRESS_IMAGE='  $(ENV_FILE) | cut -d= -f2-)
+  FTP_IMAGE       := $(shell grep -E '^FTP_IMAGE='        $(ENV_FILE) | cut -d= -f2-)
+  WEBSITE_IMAGE   := $(shell grep -E '^WEBSITE_IMAGE='    $(ENV_FILE) | cut -d= -f2-)
+  REDIS_IMAGE     := $(shell grep -E '^REDIS_IMAGE='      $(ENV_FILE) | cut -d= -f2-)
+  PROMETHEUS_IMAGE:= $(shell grep -E '^PROMETHEUS_IMAGE=' $(ENV_FILE) | cut -d= -f2-)
+  EXPORTER_MYSQLD_IMAGE := $(shell grep -E '^EXPORTER_MYSQLD_IMAGE=' $(ENV_FILE) | cut -d= -f2-)
+  REDIS_EXPORTER_IMAGE  := $(shell grep -E '^REDIS_EXPORTER_IMAGE='  $(ENV_FILE) | cut -d= -f2-)
+  LOGIN           := $(shell grep -E '^LOGIN='         $(ENV_FILE) | cut -d= -f2-)
   FTP_USER        := $(shell grep -E '^FTP_USER='      $(ENV_FILE) | cut -d= -f2-)
   FTP_PORT        := $(shell grep -E '^FTP_PORT='      $(ENV_FILE) | cut -d= -f2-)
   FTP_HOST        := $(shell grep -E '^FTP_HOST='      $(ENV_FILE) | cut -d= -f2-)
@@ -81,10 +85,12 @@ ensure-dirs: require-env
 	  DB_DIR="$$HOST_DATA_DIR/$(WORDPRESS_DB_VOLUME)"; \
 	  SITE_DIR="$$HOST_DATA_DIR/$(WORDPRESS_DATA_VOLUME)"; \
 	  REDIS_DIR="$$HOST_DATA_DIR/$(REDIS_DATA_VOLUME)"; \
+	  PROMETHEUS_DIR="$$HOST_DATA_DIR/$(PROMETHEUS_DATA_VOLUME)"; \
 	  echo "Creating (if not exists): $$DB_DIR"; \
 	  echo "Creating (if not exists): $$SITE_DIR"; \
 	  echo "Creating (if not exists): $$REDIS_DIR"; \
-	  mkdir -p "$$DB_DIR" "$$SITE_DIR" "$$REDIS_DIR"; \
+	  echo "Creating (if not exists): $$PROMETHEUS_DIR"; \
+	  mkdir -p "$$DB_DIR" "$$SITE_DIR" "$$REDIS_DIR" "$$PROMETHEUS_DIR"; \
 	  echo -e "$(GREEN)OK: host volume directories are present$(RESET)"; \
 	'
 
@@ -306,7 +312,7 @@ clean:
 	$(call RUN,docker network prune -f)
 
 # Rebuild & restart
-re: down build up
+re: down build clean up
 
 # Show effective compose config
 config:
@@ -322,6 +328,7 @@ ifneq ($(strip $(DOMAIN)),)
 	@echo "$(GREEN)Post page:     https://$(DOMAIN)/?page_id=1$(RESET)"
 	@echo "$(GREEN)Static page:   https://$(DOMAIN)/me$(RESET)"
 	@echo "$(GREEN)Database page: https://$(DOMAIN)/adminer$(RESET)"
+	@echo "$(GREEN)Prometheus page: https://prometheus.$(DOMAIN)$(RESET)"
 	@echo ""
 	@echo "$(CYAN)==> FTP settings$(RESET)"
 	@echo "$(GREEN)Host:          $$( [ -n \"$(FTP_HOST)\" ] && echo $(FTP_HOST) || echo $(DOMAIN) )$(RESET)"
@@ -341,6 +348,9 @@ rmi:
 	$(call RUN,docker rmi -f $(FTP_IMAGE) || true)
 	$(call RUN,docker rmi -f $(WEBSITE_IMAGE) || true)
 	$(call RUN,docker rmi -f $(REDIS_IMAGE) || true)
+	$(call RUN,docker rmi -f $(PROMETHEUS_IMAGE) || true)
+	$(call RUN,docker rmi -f $(EXPORTER_MYSQLD_IMAGE) || true)
+	$(call RUN,docker rmi -f $(REDIS_EXPORTER_IMAGE) || true)
 
 # Health check for Nginx
 health:
@@ -361,10 +371,10 @@ fclean:
 	echo "$(RED)==> Nuking environment (DESTRUCTIVE: containers, volumes, images, .env)$(RESET)"; \
 	$(MAKE) --no-print-directory down-v || true; \
 	$(MAKE) --no-print-directory rmi || true; \
-	echo "$(RED)Removing $(ENV_FILE)$(RESET)"; \
-	rm -f $(ENV_FILE); \
-	echo "$(RED)Removing $(COMPOSE_DIR)/requirements/nginx/certs$(RESET)"; \
-	rm -rf $(COMPOSE_DIR)/requirements/nginx/certs; \
-	echo "$(RED)Removing secrets$(RESET)"; \
-	rm -rf secrets; \
-	echo "$(GREEN)Nuke complete.$(RESET)"
+ 	echo "$(RED)Removing $(ENV_FILE)$(RESET)"; \
+ 	rm -f $(ENV_FILE); \
+ 	echo "$(RED)Removing $(COMPOSE_DIR)/requirements/nginx/certs$(RESET)"; \
+ 	rm -rf $(COMPOSE_DIR)/requirements/nginx/certs; \
+ 	echo "$(RED)Removing secrets$(RESET)"; \
+ 	rm -rf secrets; \
+ 	echo "$(GREEN)Nuke complete.$(RESET)"
