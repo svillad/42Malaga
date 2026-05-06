@@ -43,12 +43,14 @@ endif
 
 # Compose command helper (echo the exact command, run from $(COMPOSE_DIR))
 define DC
+	@$(MAKE) --no-print-directory require-docker
 	@echo "$(CYAN)$(COMPOSE) $(1)$(RESET)"
 	@cd $(COMPOSE_DIR) && $(COMPOSE) $(1)
 endef
 
 # Generic runner: echo the command then execute it
 define RUN
+	@$(MAKE) --no-print-directory require-docker
 	@echo "$(CYAN)$(1)$(RESET)"
 	@$(1)
 endef
@@ -74,8 +76,30 @@ require-env:
 	  exit 1; \
 	fi
 
+require-docker:
+	@if ! docker info >/dev/null 2>&1; then \
+		echo "$(YELL)Docker is not running. Attempting to start...$(RESET)"; \
+		if [ "$$(uname)" = "Darwin" ]; then \
+			open -a Docker; \
+		else \
+			sudo systemctl start docker 2>/dev/null || sudo service docker start 2>/dev/null; \
+		fi; \
+		echo "$(CYAN)Waiting for Docker to become available...$(RESET)"; \
+		MAX_WAIT=60; \
+		WHILE_CNT=0; \
+		while ! docker info >/dev/null 2>&1; do \
+			sleep 2; \
+			WHILE_CNT=$$((WHILE_CNT + 2)); \
+			if [ $$WHILE_CNT -ge $$MAX_WAIT ]; then \
+				echo "$(RED)Timeout waiting for Docker to start.$(RESET)"; \
+				exit 1; \
+			fi; \
+		done; \
+		echo "$(GREEN)Docker is now running.$(RESET)"; \
+	fi
+
 # Ensure host directories for bind mounts exist (macOS vs Linux)
-ensure-dirs: require-env
+ensure-dirs: require-env require-docker
 	@echo "$(CYAN)==> Ensuring host directories for volumes exist$(RESET)"
 	@bash -lc '\
 	  LOGIN_VAL="$(LOGIN)"; \

@@ -81,3 +81,92 @@ These named volumes explicitly utilize the local driver with bind options pointi
 - **Secrets Protocol:** Never write passwords or tokens manually into `docker-compose.yml`. Applications are built to strictly read from `/run/secrets/...` initialized dynamically by `app-setup.sh`.
 - **Environment Driven:** Any path, port, or logical fork must be configurable through variables propagated from `srcs/.env`.
 - **Prohibited Patterns:** `tail -f /dev/null`, `sleep infinity`, or `while true` loops to keep containers artificially alive are banned. Processes must hook natively into the daemon (e.g., `nginx -g 'daemon off;'` or `php-fpm -F`). Host networking (`network_mode: "host"`) is also strictly prohibited.
+
+## Essential Docker Compose commands
+The most common commands for managing the multi-container stack.
+
+```bash
+docker-compose up -d --build    # Build images and start the stack in the background
+docker-compose down             # Stop and remove all containers and networks
+docker-compose ps               # Check the status of your services
+docker-compose logs -f <svc>    # View live logs (omit <svc> for all logs)
+docker-compose exec <svc> sh    # Open a terminal inside a running service
+```
+
+## Common Docker commands
+Useful commands for managing individual containers and images.
+
+```bash
+docker ps                       # List running containers
+docker images                   # List downloaded/built images
+docker stop <container>         # Stop a running container
+docker start <container>        # Start a stopped container
+docker pause <container>        # Freeze all processes in a container (SIGSTOP)
+docker unpause <container>      # Resume a paused container (SIGCONT)
+docker rm -f <container>        # Force remove a container
+docker rmi <image>              # Remove an image
+docker system prune -a          # Cleanup: remove all unused containers, networks, and images
+```
+
+## SQL commands (inside MariaDB CLI)
+You can enter the MariaDB shell using the following shortcut: `make exec-db`. Alternatively, use the direct Docker command: `docker exec -it mariadb mariadb -uroot`. Once inside, use these queries to explore databases, tables, and WordPress user data.
+
+```sql
+SHOW DATABASES;
+USE mysql;
+SHOW TABLES;
+SELECT User, Password, Host, plugin, authentication_string FROM user;
+
+USE appdb;
+SELECT * FROM <table>;
+SHOW TABLES;
+SELECT * FROM wp_users;
+SELECT user_login, user_email FROM wp_users;
+```
+
+## Debugging and verification
+Handy one-liners for verifying HTTPS connectivity, checking environment variables inside containers, and confirming that theme assets are correctly mounted.
+
+```bash
+# Test HTTPS access to the site
+curl -vk https://svilla-d.42.fr/
+
+# Health check through NGINX
+docker compose -f srcs/docker-compose.yml exec nginx curl -vk https://localhost/healthz
+
+# Verify WordPress environment variables
+docker compose -f srcs/docker-compose.yml exec wordpress sh -lc \
+  'env | grep -E "WORDPRESS_DB_HOST|MARIADB_(DATABASE|USER|PASSWORD)"'
+
+# Check theme CSS files in NGINX
+docker compose -f srcs/docker-compose.yml exec nginx sh -lc \
+  'ls -l /var/www/html/wp-content/themes/twentytwentyfive/assets/css/style.min.css || true'
+
+docker compose -f srcs/docker-compose.yml exec nginx sh -lc \
+  'ls -l /var/www/html/wp-content/themes/twentytwentyfive/assets/css/editor-style.css || true'
+
+# Check theme CSS files in WordPress
+docker compose -f srcs/docker-compose.yml exec wordpress sh -lc \
+  'ls -l /var/www/html/wp-content/themes/twentytwentyfive/assets/css/editor-style.css || true'
+```
+
+## Port connectivity checks
+Use `curl` and `nc` (netcat) to verify that each service port is reachable from the host. A "No publicado" message indicates the port is not exposed or the service is down.
+
+```bash
+# HTTPS (443)
+curl -vk https://localhost:443
+nc -vz 127.0.0.1 443 || echo "No publicado"
+
+# HTTP (80)
+curl -vk https://localhost:80
+nc -vz 127.0.0.1 80 || echo "No publicado"
+
+# MariaDB (3306)
+curl -vk https://localhost:3306
+nc -vz 127.0.0.1 3306 || echo "No publicado"
+
+# PHP-FPM (9000)
+curl -vk https://localhost:9000
+nc -vz 127.0.0.1 9000 || echo "No publicado"
+```
